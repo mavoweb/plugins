@@ -12,7 +12,7 @@
 		},
 		{
 			"name": "Mavo inspector",
-			"description": "Discover mistakes more easily by inspecting the current values of all properties and expressions and being able to change them on the fly.",
+			"description": "Inspect the current values of properties and expressions and change them on the fly.",
 			"tag": [],
 			"id": "debug",
 			"path": "debug",
