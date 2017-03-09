@@ -3,7 +3,9 @@
 		{
 			"name": "TinyMCE",
 			"description": "Edit rich text, straight from Mavo!",
-			"tag": [],
+			"tag": [
+				"Editing"
+			],
 			"id": "tinymce",
 			"path": "tinymce",
 			"author": "leaverou"
