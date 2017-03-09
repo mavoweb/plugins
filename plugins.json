@@ -1,0 +1,9 @@
+{
+	"plugin": [
+		{
+			"name": "TinyMCE",
+			"description": "Description",
+			"tag": []
+		}
+	]
+}
