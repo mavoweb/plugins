@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Home &bull; Mavo Plugins</title>
+	<link rel="stylesheet" href="/mavo/mavo.css" />
+	<link rel="stylesheet" href="http://mavo.io/css/style.css">
+	<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header>
+	<h1 class="logo">
+		<a href="/"><img src="http://mavo.io/logo.svg" alt="Mavo"></a>
+	</h1>
+</header>
+
+
+<h2>Plugins</h2>
+
+<section>
+	<section mv-app="plugins" mv-storage="https://github.com/LeaVerou/mavo-plugins" mv-source="http://plugins.mavo.io/plugins.json">
+		<meta property="tagFilter" content="[urlOption('tag')]">
+		<p class="notice" mv-if="tagFilter">
+			Some plugins are hidden. <a href="?">Show All.</a>
+		</p>
+		<div>
+			<article property="plugin" mv-multiple mv-if="!tagFilter or count(tag = tagFilter) > 0">
+				<a href="/demos/[id]">
+					<img src="[path]/preview.png" />
+					<h1 property="name">Name</h1>
+				</a>
+				<p property="description">Description</p>
+				<a href="?tag=[tag]" property="tag" mv-attribute="null" mv-multiple></a>
+				<meta property="id">
+			</article>
+		</div>
+
+		<p class="tip">Add <code>?debug</code> to the URL to view in debug mode!</p>
+	</section>
+
+</section>
+
+<footer>
+	<div>
+		<p>
+			Made with &hearts; by <a href="http://lea.verou.me">Lea Verou</a> and <a href="https://github.com/LeaVerou/mavo-plugins/graphs/contributors">contributors</a>
+			&bull; <a href="https://twitter.com/mavohtml">@mavohtml on 🐦 Twitter</a>
+			&bull; <a href="https://github.com/leaverou/mavo">Mavo on Github</a>
+		</p>
+	</div>
+
+	<a href="http://mit.edu" class="logo"><img src="http://mavo.io/img/logo-mit.svg" alt="MIT" /></a>
+	<a href="http://csail.mit.edu" class="logo"><img src="http://mavo.io/img/logo-csail.svg" alt="CSAIL" /></a>
+</footer>
+
+
+<script src="../mavo/mavo.js"></script>
+
+</body>
+</html>
