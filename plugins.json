@@ -5,7 +5,16 @@
 			"description": "Edit rich text, straight from Mavo!",
 			"tag": [],
 			"id": "tinymce",
-			"path": "tinymce"
+			"path": "tinymce",
+			"author": "leaverou"
+		},
+		{
+			"name": "Mavo inspector",
+			"description": "Discover mistakes more easily by inspecting the current values of all properties and expressions and being able to change them on the fly.",
+			"tag": [],
+			"id": "debug",
+			"path": "debug",
+			"author": "leaverou"
 		}
 	]
 }
