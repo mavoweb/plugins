@@ -2,9 +2,10 @@
 	"plugin": [
 		{
 			"name": "TinyMCE",
-			"description": "Description",
+			"description": "Edit rich text, straight from Mavo!",
 			"tag": [],
-			"id": "tinymce"
+			"id": "tinymce",
+			"path": "tinymce"
 		}
 	]
 }
