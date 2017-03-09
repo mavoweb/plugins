@@ -19,6 +19,8 @@
 <h2>Plugins</h2>
 
 <section>
+	<p class="intro">Plugins teach Mavo new tricks, so you can create even more awesomeness!</p>
+
 	<section mv-app="plugins" mv-storage="https://github.com/LeaVerou/mavo-plugins" mv-source="http://plugins.mavo.io/plugins.json">
 		<meta property="tagFilter" content="[urlOption('tag')]">
 		<p class="notice" mv-if="tagFilter">
@@ -26,17 +28,22 @@
 		</p>
 		<div>
 			<article property="plugin" mv-multiple mv-if="!tagFilter or count(tag = tagFilter) > 0">
-				<a href="/demos/[id]">
-					<img src="[path]/preview.png" />
-					<h1 property="name">Name</h1>
-				</a>
-				<p property="description">Description</p>
-				<a href="?tag=[tag]" property="tag" mv-attribute="null" mv-multiple></a>
-				<meta property="id">
+				<div>
+					<h1><a href="view.html?storage=[path]/mavo-plugin.json" property="name" mv-attribute="null">Name</a></h1>
+					<p property="description">Description</p>
+					<a href="?tag=[tag]" property="tag" mv-attribute="null" mv-multiple></a>
+					<meta property="id">
+					<meta property="path" mv-default="[id]">
+				</div>
+
+				<footer>
+					<a class="author" href="http://github.com/[author]">
+						<img src="http://github.com/[author].png?size=40" alt="">
+						<span property="author">leaverou</span>
+					</a>
+				</footer>
 			</article>
 		</div>
-
-		<p class="tip">Add <code>?debug</code> to the URL to view in debug mode!</p>
 	</section>
 
 </section>
@@ -45,6 +52,7 @@
 	<div>
 		<p>
 			Made with &hearts; by <a href="http://lea.verou.me">Lea Verou</a> and <a href="https://github.com/LeaVerou/mavo-plugins/graphs/contributors">contributors</a>
+			&bull; <a href="http://mavo.io">mavo.io</a>
 			&bull; <a href="https://twitter.com/mavohtml">@mavohtml on 🐦 Twitter</a>
 			&bull; <a href="https://github.com/leaverou/mavo">Mavo on Github</a>
 		</p>

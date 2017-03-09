@@ -1,6 +1,16 @@
-@charset "UTF-8";
+.logo a::after {
+  content: "+";
+  display: inline-block;
+  vertical-align: .09em;
+  color: rgba(255, 255, 255, 0.6); }
+
+body > header + h2 {
+  background: var(--color-blue); }
+
+.intro {
+  font-size: 200%; }
+
 section[mv-app="plugins"] > div {
-  width: 65rem;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-flow: row wrap;
@@ -9,25 +19,45 @@ section[mv-app="plugins"] > div {
   justify-content: space-between; }
 
 article[property="plugin"] {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-flow: column;
+  flex-flow: column;
   vertical-align: top;
-  max-width: 20rem;
-  margin: 1rem auto; }
+  padding: .75em 1em;
+  width: 45%;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: .2em;
+  margin: 1rem 0; }
+  article[property="plugin"] > div {
+    -ms-flex: 1;
+    flex: 1; }
   article[property="plugin"] h1 {
-    margin: .3em 0;
-    font-family: var(--font-heading);
-    font-size: 150%; }
-  article[property="plugin"] img {
+    margin: 0;
+    font-size: 160%;
+    font-weight: 300; }
+    article[property="plugin"] h1 a {
+      color: var(--color-magenta); }
+  article[property="plugin"] footer {
     display: block;
-    max-width: 100%;
-    height: 12.5rem;
-    background: #e3e5e8 url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 160 100" opacity=".5">\a 	<text x="50" y="60" font-size="350%">📽</text>\a 	<text x="20" y="80" font-size="75%" font-weight="bold" font-family="sans-serif">Preview coming soon</text>\a</svg>') center no-repeat; }
+    padding: inherit;
+    margin: .6em -1rem -.75em;
+    background: rgba(0, 0, 0, 0.05); }
+    article[property="plugin"] footer a {
+      font-weight: bold;
+      color: var(--color-magenta); }
+
+a.author img {
+  display: inline-block;
+  vertical-align: text-top;
+  max-height: 20px; }
 
 a[property="tag"] {
   display: inline-block;
   padding: .1em .4em;
   margin-right: .3em;
   border-radius: .3em;
-  background: var(--color-blue);
+  background: var(--color-orange);
   color: white;
   font-weight: bold;
   text-transform: uppercase;
