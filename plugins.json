@@ -7,7 +7,6 @@
 				"Editing"
 			],
 			"id": "tinymce",
-			"path": "tinymce",
 			"author": "leaverou"
 		},
 		{
@@ -15,7 +14,6 @@
 			"description": "Inspect the current values of properties and expressions and change them on the fly.",
 			"tag": [],
 			"id": "debug",
-			"path": "debug",
 			"author": "leaverou"
 		}
 	]

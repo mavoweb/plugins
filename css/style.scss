@@ -78,4 +78,9 @@ a[property="tag"] {
 	font-weight: bold;
 	text-transform: uppercase;
 	font-size: 75%;
+
+	&:hover, &:focus {
+		text-decoration: none;
+		background: var(--color-blue);
+	}
 }

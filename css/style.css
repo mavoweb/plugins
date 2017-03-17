@@ -62,5 +62,8 @@ a[property="tag"] {
   font-weight: bold;
   text-transform: uppercase;
   font-size: 75%; }
+  a[property="tag"]:hover, a[property="tag"]:focus {
+    text-decoration: none;
+    background: var(--color-blue); }
 
 /*# sourceMappingURL=style.css.map */
