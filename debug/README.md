@@ -10,18 +10,20 @@ On every group, you will get a table with the current values of all properties a
 
 Hovering over the elements in the last column will highlight them in the app.
 
+## Example
+
 ```html
-	<div mv-storage class="mv-debug">
-		<p>
-			<label>x = <input type="number" property="x" value="15" /></label>,
-			<label>y = <input type="number" property="y" value="5" /></label>
-		</p>
-		<ul>
-			<li>x + y = <span property="sum">[x + y]</span></li>
-			<li>x - y = [x - y]</li>
-			<li>x * y = [x * y]</li>
-			<li>x / y = [x / y]</li>
-			<li>(x + y)<sup>2</sup> = [pow(sum, 2)]</li>
-		</ul>
-	</div>
+<div mv-app class="mv-debug">
+	<p>
+		<label>x = <input type="number" property="x" value="15" /></label>,
+		<label>y = <input type="number" property="y" value="5" /></label>
+	</p>
+	<ul>
+		<li>x + y = <span property="sum">[x + y]</span></li>
+		<li>x - y = [x - y]</li>
+		<li>x * y = [x * y]</li>
+		<li>x / y = [x / y]</li>
+		<li>(x + y)<sup>2</sup> = [pow(sum, 2)]</li>
+	</ul>
+</div>
 ```
