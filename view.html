@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" mv-app="plugin" mv-storage="https://github.com/LeaVerou/mavo-plugins" mv-source="http://plugins.mavo.io/plugins.json" mv-path="plugin/[urlOption(i)]">
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>[name] &bull; Mavo Plugins</title>
+	<title>View Plugin &bull; Mavo Plugins</title>
 	<link rel="stylesheet" href="/mavo/mavo.css" />
 	<link rel="stylesheet" href="http://mavo.io/css/style.css">
 	<link rel="stylesheet" href="/css/style.css">
 </head>
-<body mv-app="single">
+<body>
 
 <header>
 	<h1 class="logo">
@@ -18,22 +18,32 @@
 
 <h2>Plugins</h2>
 
-<section>
+<section mv-app="plugin" mv-storage="https://github.com/LeaVerou/mavo-plugins" mv-source="plugins.json" mv-path="plugin/[$url.plugin]">
 	<div class="mv-bar mv-ui"></div>
 	<h1 property="name"></h1>
 	<p property="description"></p>
 	<p>
 		<a href="index.html?tag=[tag]" property="tag" mv-attribute="null" mv-multiple></a>
 	</p>
+	<meta property="id" />
+	<meta property="repo" />
+
 	<p>
+		<meta property="github" content="https://github.com/[if(repo, repo, 'leaverou/mavo-plugins/' & id)]" />
+		<meta property="github2" content="https://github.com/['leaverou/mavo-plugins/' & id]" />
+
 		<div mv-if="repo">
 			<a href="http://github.com/[repo]">Github</a>
-			<a class="github-button" href="https://github.com/[repo]" data-icon="octicon-star" data-style="mega" data-count-href="/[repo]/stargazers" data-count-api="/repos/[repo]#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star [repo] on GitHub">Star</a>
+			<a class="github-button" href="[github]" data-icon="octicon-star" data-style="mega" data-count-href="/[repo]/stargazers" data-count-api="/repos/[repo]#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star [repo] on GitHub">Star</a>
 		</div>
 		<div mv-if="!repo">
 			<a href="http://github.com/leaverou/mavo-plugins/tree/master/[id]">Github</a>
 		</div>
 	</p>
+</section>
+
+<section mv-app="pluginreadme" mv-storage="[plugin.github]/README.md">
+	<div property="content"></div>
 </section>
 
 <footer>
@@ -52,6 +62,12 @@
 
 <script src="../mavo/mavo.js"></script>
 <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<script>
+$('[property="github2"]').addEventListener("mavo:datachange", evt => {
+	console.log(evt.node.value)
+})
+</script>
 
 </body>
 </html>

@@ -1,19 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="plugins">
 <head>
 	<meta charset="UTF-8">
-	<title>Home &bull; Mavo Plugins</title>
+	<title>Mavo Plugins</title>
 	<link rel="stylesheet" href="/mavo/mavo.css" />
-	<link rel="stylesheet" href="http://mavo.io/css/style.css">
-	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="http://mavo.io/css/style.css" />
+	<link rel="icon" href="/favicon.ico">
+
+	<link rel='stylesheet' href='/css/style.css'>
+
+	<script src="/mavo/mavo.js"></script>
 </head>
+
+
 <body>
 
 <header>
 	<h1 class="logo">
 		<a href="/"><img src="http://mavo.io/logo.svg" alt="Mavo"></a>
 	</h1>
+	<nav>
+	<a href="/docs/primer">Get started</a>
+	<a href="/docs">Docs</a>
+	<a href="/demos">Demos</a>
+	<a href="#" class="soon">Plugins</a>
+	<a href="#" class="soon">Github</a>
+</nav>
+
 </header>
+
 
 
 <h2>Plugins</h2>
@@ -21,25 +36,24 @@
 <section>
 	<p class="intro">Plugins teach Mavo new tricks, so you can create even more awesomeness!</p>
 
-	<section mv-app="plugins" mv-storage="https://github.com/LeaVerou/mavo-plugins" mv-source="http://plugins.mavo.io/plugins.json">
-		<meta property="tagFilter" content="[urlOption('tag')]">
+	<section mv-app="plugins" mv-storage="https://github.com/LeaVerou/mavo-plugins" mv-source="plugins.json">
+		<meta property="tagFilter" content="[$url.tag]">
 		<p class="notice" mv-if="tagFilter">
 			Some plugins are hidden. <a href="?">Show All.</a>
 		</p>
 		<div>
 			<article property="plugin" mv-multiple mv-if="!tagFilter or count(tag = tagFilter) > 0">
 				<div>
-					<h1><a href="view.html?i=[$index]" property="name" mv-attribute="null">Name</a></h1>
+					<h1><a href="view.html?plugin=[id]" property="name" mv-attribute="null">Name</a></h1>
 					<p property="description">Description</p>
 					<a href="?tag=[tag]" property="tag" mv-attribute="null" mv-multiple></a>
 					<meta property="id">
-					<meta property="path" mv-default="[id]">
 					<meta property="repo" mv-edit-placeholder="E.g. leaverou/mavo-debug">
 				</div>
 
 				<footer>
-					<a class="author" href="http://github.com/[author]">
-						<img src="http://github.com/[author].png?size=40" alt="">
+					<a class="author" href="//github.com/[author]">
+						<img src="//github.com/[author].png?size=40" alt="">
 						<span property="author">leaverou</span>
 					</a>
 				</footer>
@@ -52,19 +66,22 @@
 <footer>
 	<div>
 		<p>
-			Made with &hearts; by <a href="http://lea.verou.me">Lea Verou</a> and <a href="https://github.com/LeaVerou/mavo-plugins/graphs/contributors">contributors</a>
-			&bull; <a href="http://mavo.io">mavo.io</a>
+			Made with &hearts; by <a href="http://lea.verou.me">Lea Verou</a> and <a href="https://github.com/LeaVerou/mavo/graphs/contributors">contributors</a>
 			&bull; <a href="https://twitter.com/mavohtml">@mavohtml on 🐦 Twitter</a>
-			&bull; <a href="https://github.com/leaverou/mavo">Mavo on Github</a>
+			&bull; <a href="https://github.com/leaverou/mavo">Github</a>
 		</p>
+		<p>This work was supported in part by a collaborative grant from the <a href="http://www.wistron.com/">Wistron Corporation</a>.</p>
 	</div>
+
 
 	<a href="http://mit.edu" class="logo"><img src="http://mavo.io/img/logo-mit.svg" alt="MIT" /></a>
 	<a href="http://csail.mit.edu" class="logo"><img src="http://mavo.io/img/logo-csail.svg" alt="CSAIL" /></a>
 </footer>
 
 
-<script src="../mavo/mavo.js"></script>
+<script src="http://mavo.io/js/prism.js"></script>
+<script src="http://mavo.io/js/sitewide.js"></script>
+
 
 </body>
 </html>

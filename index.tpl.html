@@ -1,0 +1,47 @@
+@@include('_head.html', {
+	"rootclass": "plugins",
+	"title": "Mavo Plugins",
+	"includes": "<link rel='stylesheet' href='/css/style.css'>"
+})
+
+<body>
+
+@@include('_header.html')
+
+
+<h2>Plugins</h2>
+
+<section>
+	<p class="intro">Plugins teach Mavo new tricks, so you can create even more awesomeness!</p>
+
+	<section mv-app="plugins" mv-storage="https://github.com/LeaVerou/mavo-plugins" mv-source="plugins.json">
+		<meta property="tagFilter" content="[$url.tag]">
+		<p class="notice" mv-if="tagFilter">
+			Some plugins are hidden. <a href="?">Show All.</a>
+		</p>
+		<div>
+			<article property="plugin" mv-multiple mv-if="!tagFilter or count(tag = tagFilter) > 0">
+				<div>
+					<h1><a href="view.html?plugin=[id]" property="name" mv-attribute="null">Name</a></h1>
+					<p property="description">Description</p>
+					<a href="?tag=[tag]" property="tag" mv-attribute="null" mv-multiple></a>
+					<meta property="id">
+					<meta property="repo" mv-edit-placeholder="E.g. leaverou/mavo-debug">
+				</div>
+
+				<footer>
+					<a class="author" href="//github.com/[author]">
+						<img src="//github.com/[author].png?size=40" alt="">
+						<span property="author">leaverou</span>
+					</a>
+				</footer>
+			</article>
+		</div>
+	</section>
+
+</section>
+
+@@include('_footer.html')
+
+</body>
+</html>

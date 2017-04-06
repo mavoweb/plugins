@@ -1,9 +1,15 @@
-.logo a {
-	&::after {
-		content: "+";
-		display: inline-block;
-		vertical-align: .09em;
-		color: hsla(0,0%,100%, .6);
+body > header {
+	.logo a {
+		img {
+			display: inline-block;
+		}
+
+		&::after {
+			content: "+";
+			display: inline-block;
+			vertical-align: .09em;
+			color: hsla(0,0%,100%, .6);
+		}
 	}
 }
 
@@ -44,6 +50,7 @@ article[property="plugin"] {
 
 		a {
 			color: var(--color-magenta);
+			font-weight: inherit;
 		}
 	}
 

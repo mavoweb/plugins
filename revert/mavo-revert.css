@@ -1,0 +1,7 @@
+.mv-bar.mv-ui .mv-revert::before {
+	content: "✘";
+}
+
+.mv-bar.mv-ui .mv-revert:enabled:hover {
+	background: #c50;
+}

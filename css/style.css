@@ -1,4 +1,7 @@
-.logo a::after {
+body > header .logo a img {
+  display: inline-block; }
+
+body > header .logo a::after {
   content: "+";
   display: inline-block;
   vertical-align: .09em;
@@ -37,7 +40,8 @@ article[property="plugin"] {
     font-size: 160%;
     font-weight: 300; }
     article[property="plugin"] h1 a {
-      color: var(--color-magenta); }
+      color: var(--color-magenta);
+      font-weight: inherit; }
   article[property="plugin"] footer {
     display: block;
     padding: inherit;

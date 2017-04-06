@@ -1,20 +1,34 @@
 {
 	"plugin": [
 		{
+			"id": "tinymce",
 			"name": "TinyMCE",
 			"description": "Edit rich text, straight from Mavo!",
 			"tag": [
 				"Editing"
 			],
-			"id": "tinymce",
 			"author": "leaverou"
 		},
 		{
+			"id": "debug",
 			"name": "Mavo inspector",
 			"description": "Inspect the current values of properties and expressions and change them on the fly.",
 			"tag": [],
-			"id": "debug",
-			"author": "leaverou"
+			"author": "leaverou",
+			"dependencies": [
+				"prettyprint.js",
+				"mavo-debug.css"
+			]
+		},
+		{
+			"id": "firebase",
+			"name": "Mavo Firebase",
+			"description": "Store your data in Google Firebase",
+			"tag": [
+				"backend"
+			],	
+			"author": "lizziew",
+			"repo": "lizziew/mavo-firebase"
 		}
 	]
 }
