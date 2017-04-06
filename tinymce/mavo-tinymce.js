@@ -1,14 +1,15 @@
 (function($) {
 
-var tinymceInclude;
+Mavo.Plugins.register({
+	name: "tinymce",
+	ready: $.include(self.tinymce, "https://cdn.tinymce.com/4/tinymce.min.js")
+});
 
-Mavo.Elements[".tinymce"] = {
+Mavo.Elements.register(".tinymce", {
 	hasChildren: true,
-	init: function() {
-		tinymceInclude = tinymceInclude || $.include(self.tinymce, "https://cdn.tinymce.com/4/tinymce.min.js");
-	},
+	default: true,
 	edit: function() {
-		Promise.all([tinymceInclude, this.preEdit]).then(evt => {
+		this.preEdit.then(evt => {
 			if (this.tinymce) {
 				// Previously edited, we already have an editor
 				tinymce.EditorManager.execCommand("mceAddEditor", true, this.tinymce.id);
@@ -32,12 +33,12 @@ Mavo.Elements[".tinymce"] = {
 		});
 	},
 	done: function() {
-		tinymceInclude.then(() => {
+		if (this.tinymce) {
 			tinymce.EditorManager.execCommand("mceRemoveEditor", true, this.tinymce.id);
-		});
+		}
 	},
 	getValue: element => element.innerHTML,
 	setValue: (element, value) => element.innerHTML = value
-};
+});
 
 })(Bliss);

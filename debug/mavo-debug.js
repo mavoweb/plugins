@@ -1,5 +1,13 @@
 (function($, $$) {
 
+Mavo.Plugins.register({
+	name: "debug",
+	dependencies: [
+		"prettyprint.js",
+		"mavo-debug.css"
+	]
+});
+
 var _ = Mavo.Debug = {
 	friendlyError: (e, expr) => {
 		var type = e.constructor.name.replace(/Error$/, "").toLowerCase();
@@ -192,7 +200,7 @@ Mavo.hooks.add("group-init-start", function() {
 		if (group.debug) {
 			return true;
 		}
-	}) || Mavo.Functions.urlOption("debug") !== null;
+	}) || "debug" in Mavo.Functions.$url;
 
 	if (!this.debug && this.element.closest(Mavo.selectors.debug)) {
 		this.debug = true;

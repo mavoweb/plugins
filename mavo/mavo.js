@@ -768,13 +768,7 @@ var _ = self.Mavo = $.Class({
 		},
 
 		superKey: navigator.platform.indexOf("Mac") === 0? "metaKey" : "ctrlKey",
-
-		ready: function() {
-			var isDecentBrowser = Array.from && window.Intl && document.documentElement.closest;
-			var polyfills = $.include(isDecentBrowser, "https://cdn.polyfill.io/v2/polyfill.min.js?features=blissfuljs,Intl.~locale.en");
-
-			Promise.all([$.ready(), polyfills, _.Plugins.load()]);
-		},
+		dependencies: [],
 
 		init: function(container = document) {
 			return $$(_.selectors.init, container)
@@ -833,7 +827,18 @@ $.extend(_.selectors, {
 }
 
 // Init mavo. Async to give other scripts a chance to modify stuff.
-requestAnimationFrame(() => _.ready.catch(console.error).then(() => Mavo.init()));
+requestAnimationFrame(() => {
+	var isDecentBrowser = Array.from && window.Intl && document.documentElement.closest;
+
+	_.dependencies.push(
+		$.ready(),
+		_.Plugins.load(),
+		$.include(isDecentBrowser, "https://cdn.polyfill.io/v2/polyfill.min.js?features=blissfuljs,Intl.~locale.en")
+	);
+
+	_.ready = _.all(_.dependencies);
+	_.inited = _.ready.catch(console.error).then(() => Mavo.init());
+});
 
 Stretchy.selectors.filter = ".mv-editor:not([property]), .mv-autosize";
 
@@ -842,6 +847,34 @@ Stretchy.selectors.filter = ".mv-editor:not([property]), .mv-autosize";
 (function ($, $$) {
 
 var _ = $.extend(Mavo, {
+	/**
+	 * Load a file, only once
+	 */
+	load: (url, base = document.currentScript? document.currentScript.src : location) => {
+		_.loaded = _.loaded || new Set();
+
+		if (_.loaded.has(url + "")) {
+			return;
+		}
+
+		url = new URL(url, base);
+
+		if (/\.css$/.test(url.pathname)) {
+			// CSS file
+			$.create("link", {
+				"href": url,
+				"rel": "stylesheet",
+				"inside": document.head
+			});
+
+			// No need to wait for stylesheets
+			return Promise.resolve();
+		}
+
+		// JS file
+		return $.include(url);
+	},
+
 	toJSON: data => {
 		if (data === null) {
 			return "";
@@ -1165,6 +1198,31 @@ var _ = $.extend(Mavo, {
 	},
 
 	/**
+	 * Similar to Promise.all() but can handle post-hoc additions
+	 * and does not reject if one promise rejects.
+	 */
+	all: function(iterable) {
+		// Turn rejected promises into resolved ones
+		for (let promise of iterable) {
+			if ($.type(promise) == "promise") {
+				promise = promise.catch(err => err);
+			}
+		}
+
+		return Promise.all(iterable).then(resolved => {
+			if (iterable.length != resolved.length) {
+				// The list of promises or values changed. Return a new Promise.
+				// The original promise won't resolve until the new one does.
+				return _.all(iterable);
+			}
+
+			// The list of promises or values stayed the same.
+			// Return results immediately.
+			return resolved;
+		});
+	},
+
+	/**
 	 * Run & Return a function
 	 */
 	rr: function(f) {
@@ -1246,7 +1304,7 @@ updateWithin("focus", document.activeElement !== document.body? document.activeE
 
 })(Bliss, Bliss.$);
 
-(function ($, $$) {
+(function ($) {
 
 Mavo.attributes.push("mv-plugins");
 
@@ -1254,67 +1312,73 @@ var _ = Mavo.Plugins = {
 	loaded: {},
 
 	load: function() {
-		var element = $("[mv-plugins]");
+		_.plugins = {};
 
-		if (!element) {
+		for (let element of $$("[mv-plugins]")) {
+			let plugins = element.getAttribute("mv-plugins").trim().split(/\s+/);
+
+			for (let plugin of plugins) {
+				_.plugins[plugin] = 1;
+			}
+		}
+
+		if (!Object.keys(_.plugins).length) {
 			return;
 		}
 
-		_.plugins = _.plugins || element.getAttribute("mv-plugins").trim().split(/\s+/) || _.defaultPlugins;
+		// Fetch plugin index
+		$.fetch(_.url + "/plugins.json", {
+			responseType: "json"
+		}).then(xhr => {
+			// Fetch plugins
+			return Promise.all(xhr.response.plugin
+				.filter(plugin => plugins.indexOf(plugin.id) > -1)
+				.map(plugin => {
+					// Load plugin
 
-		if (_.plugins.length) {
-			// Fetch plugin index
-			$.fetch(_.url + "/plugins.json", {
-				responseType: "json"
-			}).then(xhr => {
-				// Fetch plugins
-				return Promise.all(xhr.response.plugin
-					.filter(plugin => plugins.indexOf(plugin.id) > -1)
-					.map(plugin => {
-						// Load plugin
+					if (plugin.repo) {
+						// Plugin hosted in a separate repo
+						var base = `https://raw.githubusercontent.com/${plugin.repo}/`;
+					}
+					else {
+						// Plugin hosted in the mavo-plugins repo
+						var base = `${_.url}/${plugin.id}/`;
+					}
 
-						if (plugin.repo) {
-							// Plugin hosted in a separate repo
-							var base = `https://raw.githubusercontent.com/${plugin.repo}/`;
-						}
-						else {
-							// Plugin hosted in the mavo-plugins repo
-							var base = `${_.url}/${plugin.id}/`;
-						}
+					var url = `${base}mavo-${plugin.id}.js`;
 
-						// Load dependencies first
-						if (plugin.dependencies && plugin.dependencies.length) {
-							var dependencies = plugin.dependencies.map(url => new URL(url, base)).map(url => {
-								if (/\.css$/.test(url.pathname)) {
-									// CSS file
-									$.create("link", {
-										"href": url,
-										"rel": "stylesheet",
-										"inside": document.head
-									});
-
-									return Promise.resolve();
-								}
-
-								// JS file
-								return $.include(url);
-							});
-						}
-
-						var url = `${base}mavo-${plugin.id}.js`;
-
-						return dependencies.then(() => $.include(_.loaded[plugin.id], url));
-					}));
-			});
-		}
+					return $.include(_.loaded[plugin.id], url);
+				}));
+		});
 	},
 
 	register: function(o) {
+		if (o.name && _.loaded[o.name]) {
+			// Do not register same plugin twice
+			return;
+		}
+
 		Mavo.hooks.add(o.hooks);
 
 		for (let Class in o.extend) {
-			let def = Class == "Mavo"? _ : _[Class];
-			$.Class(def, o.extend[Class]);
+			let existing = Class == "Mavo"? Mavo : Mavo[Class];
+
+			if ($.type(existing) === "function") {
+				$.Class(existing, o.extend[Class]);
+			}
+			else {
+				$.extend(existing, o.extend[Class]);
+			}
+		}
+
+		if (o.ready) {
+			Mavo.dependencies.push(o.ready);
+		}
+
+		if (o.dependencies) {
+			var base = document.currentScript? document.currentScript.src : location;
+			var ready = o.dependencies.map(url => Mavo.load(url, base));
+			Mavo.dependencies.push(...ready);
 		}
 
 		if (o.name) {
@@ -1325,7 +1389,7 @@ var _ = Mavo.Plugins = {
 	url: "https://plugins.mavo.io/"
 };
 
-})(Bliss, Bliss.$);
+})(Bliss);
 
 (function ($, $$) {
 

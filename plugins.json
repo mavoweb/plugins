@@ -14,11 +14,7 @@
 			"name": "Mavo inspector",
 			"description": "Inspect the current values of properties and expressions and change them on the fly.",
 			"tag": [],
-			"author": "leaverou",
-			"dependencies": [
-				"prettyprint.js",
-				"mavo-debug.css"
-			]
+			"author": "leaverou"
 		},
 		{
 			"id": "firebase",
@@ -26,7 +22,7 @@
 			"description": "Store your data in Google Firebase",
 			"tag": [
 				"backend"
-			],	
+			],
 			"author": "lizziew",
 			"repo": "lizziew/mavo-firebase"
 		}

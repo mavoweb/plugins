@@ -2,6 +2,9 @@
 
 Mavo.Plugins.register({
 	name: "revert",
+	dependencies: [
+		"mavo-revert.css"
+	],
 	extend: {
 		Mavo: {
 			revert: function() {
