@@ -1,8 +1,8 @@
 {
 	"plugin": [
 		{
-			"id": "tinymce",
 			"name": "TinyMCE",
+			"id": "tinymce",
 			"description": "Edit rich text, straight from Mavo!",
 			"tag": [
 				"Editing"
@@ -10,21 +10,27 @@
 			"author": "leaverou"
 		},
 		{
-			"id": "debug",
 			"name": "Mavo inspector",
+			"id": "debug",
 			"description": "Inspect the current values of properties and expressions and change them on the fly.",
 			"tag": [],
 			"author": "leaverou"
 		},
 		{
-			"id": "firebase",
 			"name": "Mavo Firebase",
+			"id": "firebase",
 			"description": "Store your data in Google Firebase",
 			"tag": [
 				"backend"
 			],
-			"author": "lizziew",
-			"repo": "lizziew/mavo-firebase"
+			"repo": "lizziew/mavo-firebase",
+			"author": "lizziew"
+		},
+		{
+			"name": "Markdown",
+			"id": "markdown",
+			"description": "Edit properties in Markdown and display them with HTML. Uses the popular Showdown library.",
+			"tag": []
 		}
 	]
 }
