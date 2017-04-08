@@ -18,8 +18,9 @@ Mavo.Plugins.register({
 	}
 });
 
-Mavo.Elements.register(".markdown", {
+Mavo.Elements.register("markdown", {
 	default: true,
+	selector: ".markdown",
 	init: function() {
 		this.element.setAttribute("mv-expressions", "none");
 		requestAnimationFrame(() => this.done());
@@ -38,14 +39,28 @@ Mavo.Elements.register(".markdown", {
 	done: function() {
 		this.element.innerHTML = Showdown.makeHtml(this.value);
 	},
-	// getValue: function(element) {
-	// 	return this.editor? this.editor.value : this._value;
-	// },
-	// setValue: function(element, value) {
-	// 	if (this.editor) {
-	// 		this.editor.value = value;
-	// 	}
-	// }
+	setValue: function(element, value) {
+		if (this.editor) {
+			this.editor.value = value;
+		}
+		else {
+			this.element.innerHTML = Showdown.makeHtml(value);
+		}
+	}
+});
+
+Mavo.Formats.Markdown = $.Class({
+	extends: Mavo.Formats.Base,
+	constructor: function(backend) {
+		this.property = this.mavo.root.getNames("Primitive")[0];
+		this.mavo.root.children[this.property].config = Mavo.Elements.markdown[0];
+	},
+
+	static: {
+		extensions: [".md", ".markdown"],
+		parse: Mavo.Formats.Text.parse,
+		stringify: Mavo.Formats.Text.parse.stringify
+	}
 });
 
 })(Bliss);

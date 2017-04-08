@@ -69,6 +69,31 @@ Mavo.init();
 	</table>
 </section>
 
+<section mv-app="markdown" mv-storage="https://github.com/leaverou/mavo-test/data/markdown.md">
+	<h1>Rendered asynchronously</h1>
+
+	<table class="reftest">
+		<tr data-test="elements">
+			<td>
+				<div property="content"></div>
+			</td>
+			<td>
+				<div>
+					<h1 id="heading">Heading</h1>
+					<p>Paragraph <strong>bold</strong> <em>italic</em></p>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>[content]</td>
+			<td># Heading
+
+Paragraph **bold** *italic*
+</td>
+		</tr>
+	</table>
+</section>
+
 <script src="mavo-markdown.js"></script>
 
 <script src="http://localhost:8002/mavo-test/test.js"></script>

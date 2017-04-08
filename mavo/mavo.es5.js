@@ -2774,7 +2774,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 		},
 
 		static: {
-			extensions: [".txt", ".md", ".markdown"],
+			extensions: [".txt"],
 			parse: function parse(serialized, me) {
 				return Promise.resolve(_defineProperty({}, me ? me.property : "content", serialized));
 			},
@@ -4490,7 +4490,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 	Object.defineProperties(_, {
 		"register": {
-			value: function value(selector, o) {
+			value: function value(id, o) {
 				if (_typeof(arguments[0]) === "object") {
 					// Multiple definitions
 					for (var s in arguments[0]) {
@@ -4522,8 +4522,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 								var _o = $.extend({}, config);
 								_o.attribute = attribute;
-								_[selector] = _[selector] || [];
-								_[selector].push(_o);
+								_o.selector = _o.selector || id;
+								_o.id = id;
+
+								_[id] = _[id] || [];
+								_[id].push(_o);
 							}
 						} catch (err) {
 							_didIteratorError2 = true;

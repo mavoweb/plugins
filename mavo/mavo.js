@@ -2267,7 +2267,7 @@ var text = _.Text = $.Class({
 	},
 
 	static: {
-		extensions: [".txt", ".md", ".markdown"],
+		extensions: [".txt"],
 		parse: (serialized, me) => Promise.resolve({[me? me.property : "content"]: serialized}),
 		stringify: (data, me) => Promise.resolve(data[me? me.property : "content"])
 	}
@@ -3854,7 +3854,7 @@ var _ = Mavo.Elements = {};
 
 Object.defineProperties(_, {
 	"register": {
-		value: function(selector, o) {
+		value: function(id, o) {
 			if (typeof arguments[0] === "object") {
 				// Multiple definitions
 				for (let s in arguments[0]) {
@@ -3872,8 +3872,11 @@ Object.defineProperties(_, {
 				for (attribute of config.attribute) {
 					let o = $.extend({}, config);
 					o.attribute = attribute;
-					_[selector] = _[selector] || [];
-					_[selector].push(o);
+					o.selector = o.selector || id;
+					o.id = id;
+
+					_[id] = _[id] || [];
+					_[id].push(o);
 				}
 			}
 
