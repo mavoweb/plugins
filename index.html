@@ -44,16 +44,20 @@
 		<div>
 			<article property="plugin" mv-multiple mv-if="!tagFilter or count(tag = tagFilter) > 0">
 				<div>
-					<h1><a href="view.html?plugin=[id]" property="name" mv-attribute="null">Name</a></h1>
+					<h1>
+						<a href="view.html?plugin=[id]">
+							<span property="name">Name</span>
+							<span property="id" title="Use this id in the mv-plugins to dynamically load this plugin"></span>
+						</a>
+					</h1>
 					<p property="description">Description</p>
 					<a href="?tag=[tag]" property="tag" mv-attribute="null" mv-multiple></a>
-					<meta property="id">
-					<meta property="repo" mv-edit-placeholder="E.g. leaverou/mavo-debug">
+					<meta property="repo" mv-edit-placeholder="E.g. [author]/mavo-[id]">
 				</div>
 
 				<footer>
-					<a class="author" href="//github.com/[author]">
-						<img src="//github.com/[author].png?size=40" alt="">
+					<a class="author" href="https://github.com/[author]">
+						<img src="https://github.com/[author].png?size=40" alt="">
 						<span property="author">leaverou</span>
 					</a>
 				</footer>

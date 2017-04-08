@@ -1,31 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="plugins">
 <head>
 	<meta charset="UTF-8">
 	<title>View Plugin &bull; Mavo Plugins</title>
 	<link rel="stylesheet" href="/mavo/mavo.css" />
-	<link rel="stylesheet" href="http://mavo.io/css/style.css">
-	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="http://mavo.io/css/style.css" />
+	<link rel="icon" href="/favicon.ico">
+
+	<link rel='stylesheet' href='/css/style.css'>
+
+	<script src="/mavo/mavo.js"></script>
 </head>
+
 <body>
 
 <header>
 	<h1 class="logo">
 		<a href="/"><img src="http://mavo.io/logo.svg" alt="Mavo"></a>
 	</h1>
+	<nav>
+	<a href="/docs/primer">Get started</a>
+	<a href="/docs">Docs</a>
+	<a href="/demos">Demos</a>
+	<a href="#" class="soon">Plugins</a>
+	<a href="#" class="soon">Github</a>
+</nav>
+
 </header>
+
 
 
 <h2>Plugins</h2>
 
 <section mv-app="plugin" mv-storage="https://github.com/LeaVerou/mavo-plugins" mv-source="plugins.json" mv-path="plugin/[$url.plugin]">
 	<div class="mv-bar mv-ui"></div>
+	<meta property="id" />
 	<h1 property="name"></h1>
 	<p property="description"></p>
 	<p>
 		<a href="index.html?tag=[tag]" property="tag" mv-attribute="null" mv-multiple></a>
 	</p>
-	<meta property="id" />
+
 	<meta property="repo" />
 
 	<p>
@@ -49,18 +64,23 @@
 <footer>
 	<div>
 		<p>
-			Made with &hearts; by <a href="http://lea.verou.me">Lea Verou</a> and <a href="https://github.com/LeaVerou/mavo-plugins/graphs/contributors">contributors</a>
+			Made with &hearts; by <a href="http://lea.verou.me">Lea Verou</a> and <a href="https://github.com/LeaVerou/mavo/graphs/contributors">contributors</a>
 			&bull; <a href="https://twitter.com/mavohtml">@mavohtml on 🐦 Twitter</a>
-			&bull; <a href="https://github.com/leaverou/mavo">Mavo on Github</a>
+			&bull; <a href="https://github.com/leaverou/mavo">Github</a>
 		</p>
+		<p>This work was supported in part by a collaborative grant from the <a href="http://www.wistron.com/">Wistron Corporation</a>.</p>
 	</div>
+
 
 	<a href="http://mit.edu" class="logo"><img src="http://mavo.io/img/logo-mit.svg" alt="MIT" /></a>
 	<a href="http://csail.mit.edu" class="logo"><img src="http://mavo.io/img/logo-csail.svg" alt="CSAIL" /></a>
 </footer>
 
 
-<script src="../mavo/mavo.js"></script>
+<script src="http://mavo.io/js/prism.js"></script>
+<script src="http://mavo.io/js/sitewide.js"></script>
+
+
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 
 <script>

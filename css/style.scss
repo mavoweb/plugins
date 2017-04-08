@@ -47,10 +47,32 @@ article[property="plugin"] {
 		margin: 0;
 		font-size: 160%;
 		font-weight: 300;
+		font-family: var(--font-body);
 
 		a {
+			display: flex;
 			color: var(--color-magenta);
 			font-weight: inherit;
+		}
+
+		[property="name"] {
+			flex: 1;
+		}
+
+		[property="id"] {
+			padding: .5em .8em;
+			border-radius: 1em;
+			margin: auto;
+			background: hsl(330, 100%, 95%);
+			font-size: 50%;
+			line-height: 1;
+			font-weight: bold;
+		}
+
+		a:hover [property="id"] {
+			background: var(--color-magenta);
+			color: white;
+			text-decoration: none;
 		}
 	}
 

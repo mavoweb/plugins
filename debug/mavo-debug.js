@@ -5,7 +5,163 @@ Mavo.Plugins.register({
 	dependencies: [
 		"prettyprint.js",
 		"mavo-debug.css"
-	]
+	],
+	extend: {
+		"Group": {
+			debugRow: function({element, attribute = null, tds = []}) {
+				if (!this.debug) {
+					return;
+				}
+
+				this.debug.parentNode.style.display = "";
+
+				var type = tds[0];
+
+				tds[0] = $.create("td", {
+					title: type
+				});
+
+				if (!tds[3]) {
+					var elementLabel = _.elementLabel(element, attribute);
+
+					tds[3] = $.create("td", {
+						textContent: elementLabel,
+						title: elementLabel,
+						events: {
+							"mouseenter mouseleave": evt => {
+								element.classList.toggle("mv-highlight", evt.type === "mouseenter");
+							},
+							"click": evt => {
+								element.scrollIntoView({behavior: "smooth"});
+							}
+						}
+					});
+				}
+
+				tds = tds.map(td => {
+					if (!(td instanceof Node)) {
+						return $.create("td", typeof td == "object"? td : { textContent: td });
+					}
+
+					return td;
+				});
+
+				if (type == "Warning") {
+					tds[1].setAttribute("colspan", 2);
+				}
+
+				var tr = $.create("tr", {
+					className: "mv-debug-" + type.toLowerCase(),
+					contents: tds,
+					inside: this.debug
+				});
+			}
+		}
+	},
+	hooks: {
+		"init-tree-after": function() {
+			// Add element to show saved data
+			if (this.root.debug) {
+				this.element.classList.add("mv-debug-saving");
+			}
+
+			if (this.store && this.element.classList.contains("mv-debug-saving")) {
+				var element;
+
+				var details = $.create("details", {
+					className: "mv-debug-storage",
+					contents: [
+						{tag: "Summary", textContent: "Saved data"},
+						element = $.create("pre", {id: this.id + "-debug-storage"})
+					],
+					after: this.element
+				});
+
+				this.element.addEventListener("mavo:save", evt => {
+					element.innerHTML = "";
+
+					element.appendChild(prettyPrint(evt.data));
+				});
+			}
+		},
+		"render-start": function({data}) {
+			if (this.backend && this.element.classList.contains("mv-debug-saving")) {
+				var element = $(`#${this.id}-debug-storage`);
+
+				if (element) {
+					element.innerHTML = "";
+
+					if (data) {
+						element.appendChild(prettyPrint(data));
+					}
+				}
+			}
+		},
+		"node-init-end": function() {
+			if (this.collection) {
+				this.debug = this.collection.debug;
+			}
+		},
+		"expression-eval-beforeeval": function() {
+			if (this.debug) {
+				this.debug.classList.remove("mv-error");
+			}
+		},
+		"expression-eval-error": function(env) {
+			if (this.debug) {
+				this.debug.innerHTML = _.friendlyError(env.exception, env.expression);
+				this.debug.classList.add("mv-error");
+			}
+		},
+		"domexpression-init-end": function() {
+			if (this.mavo.debug) {
+				this.debug = {};
+
+				this.parsed.forEach(expr => {
+					if (expr instanceof Mavo.Expression && !this.element.matches(".mv-debuginfo *")) {
+						this.group.debugRow({
+							element: this.element,
+							attribute: this.attribute,
+							tds: ["Expression", {
+									tag: "td",
+									contents: {
+										tag: "textarea",
+										value: expr.expression,
+										events: {
+											input: evt => {
+												expr.expression = evt.target.value;
+												expr.debug = evt.target.parentNode.nextElementSibling;
+												this.update(this.data);
+											}
+										},
+										once: {
+											focus: evt => Stretchy.resize(evt.target)
+										}
+									}
+								},
+								expr.debug = $.create("td")
+							]
+						});
+					}
+				});
+			}
+		},
+		"domexpression-update-beforeeval": function(env) {
+			if (this.debug) {
+				env.td = env.expr.debug;
+
+				if (env.td) {
+					env.td.classList.remove("mv-error");
+				}
+			}
+		},
+		"domexpression-update-aftereval": function(env) {
+			if (env.td && !env.td.classList.contains("mv-error")) {
+				var value = _.printValue(env.value);
+				env.td.textContent = env.td.title = value;
+			}
+		}
+	}
 });
 
 var _ = Mavo.Debug = {
@@ -151,49 +307,8 @@ Mavo.prototype.render = _.timed("render", Mavo.prototype.render);
 
 Mavo.selectors.debug = ".mv-debug";
 
-var selector = ", .mv-debuginfo";
+Stretchy.selectors.filter += ", .mv-debuginfo";
 
-Stretchy.selectors.filter += selector;
-
-// Add element to show saved data
-Mavo.hooks.add("init-tree-after", function() {
-	if (this.root.debug) {
-		this.element.classList.add("mv-debug-saving");
-	}
-
-	if (this.store && this.element.classList.contains("mv-debug-saving")) {
-		var element;
-
-		var details = $.create("details", {
-			className: "mv-debug-storage",
-			contents: [
-				{tag: "Summary", textContent: "Saved data"},
-				element = $.create("pre", {id: this.id + "-debug-storage"})
-			],
-			after: this.element
-		});
-
-		this.element.addEventListener("mavo:save", evt => {
-			element.innerHTML = "";
-
-			element.appendChild(prettyPrint(evt.data));
-		});
-	}
-});
-
-Mavo.hooks.add("render-start", function({data}) {
-	if (this.backend && this.element.classList.contains("mv-debug-saving")) {
-		var element = $(`#${this.id}-debug-storage`);
-
-		if (element) {
-			element.innerHTML = "";
-
-			if (data) {
-				element.appendChild(prettyPrint(data));
-			}
-		}
-	}
-});
 
 Mavo.hooks.add("group-init-start", function() {
 	this.debug = this.debug || this.walkUp(group => {
@@ -230,108 +345,6 @@ Mavo.hooks.add("group-init-start", function() {
 		});
 	}
 }, true);
-
-Mavo.hooks.add("node-init-end", function() {
-	if (this.collection) {
-		this.debug = this.collection.debug;
-	}
-});
-
-Mavo.hooks.add("expression-eval-beforeeval", function() {
-	if (this.debug) {
-		this.debug.classList.remove("mv-error");
-	}
-});
-
-Mavo.hooks.add("expression-eval-error", function(env) {
-	if (this.debug) {
-		this.debug.innerHTML = _.friendlyError(env.exception, env.expression);
-		this.debug.classList.add("mv-error");
-	}
-});
-
-Mavo.Group.prototype.debugRow = function({element, attribute = null, tds = []}) {
-	if (!this.debug) {
-		return;
-	}
-
-	this.debug.parentNode.style.display = "";
-
-	var type = tds[0];
-
-	tds[0] = $.create("td", {
-		title: type
-	});
-
-	if (!tds[3]) {
-		var elementLabel = _.elementLabel(element, attribute);
-
-		tds[3] = $.create("td", {
-			textContent: elementLabel,
-			title: elementLabel,
-			events: {
-				"mouseenter mouseleave": evt => {
-					element.classList.toggle("mv-highlight", evt.type === "mouseenter");
-				},
-				"click": evt => {
-					element.scrollIntoView({behavior: "smooth"});
-				}
-			}
-		});
-	}
-
-	tds = tds.map(td => {
-		if (!(td instanceof Node)) {
-			return $.create("td", typeof td == "object"? td : { textContent: td });
-		}
-
-		return td;
-	});
-
-	if (type == "Warning") {
-		tds[1].setAttribute("colspan", 2);
-	}
-
-	var tr = $.create("tr", {
-		className: "mv-debug-" + type.toLowerCase(),
-		contents: tds,
-		inside: this.debug
-	});
-};
-
-Mavo.hooks.add("domexpression-init-end", function() {
-	if (this.mavo.debug) {
-		this.debug = {};
-
-		this.parsed.forEach(expr => {
-			if (expr instanceof Mavo.Expression && !this.element.matches(".mv-debuginfo *")) {
-				this.group.debugRow({
-					element: this.element,
-					attribute: this.attribute,
-					tds: ["Expression", {
-							tag: "td",
-							contents: {
-								tag: "textarea",
-								value: expr.expression,
-								events: {
-									input: evt => {
-										expr.expression = evt.target.value;
-										expr.debug = evt.target.parentNode.nextElementSibling;
-										this.update(this.data);
-									}
-								},
-								once: {
-									focus: evt => Stretchy.resize(evt.target)
-								}
-							}
-						},
-						expr.debug = $.create("td")
-					]
-				});
-			}
-		});
-	}
-});
 
 Mavo.hooks.add("group-init-end", function() {
 	// TODO make properties update, collapse duplicate expressions
@@ -385,23 +398,6 @@ Mavo.hooks.add("group-init-end", function() {
 	}
 });
 
-Mavo.hooks.add("domexpression-update-beforeeval", function(env) {
-	if (this.debug) {
-		env.td = env.expr.debug;
-
-		if (env.td) {
-			env.td.classList.remove("mv-error");
-		}
-	}
-});
-
-Mavo.hooks.add("domexpression-update-aftereval", function(env) {
-	if (env.td && !env.td.classList.contains("mv-error")) {
-		var value = _.printValue(env.value);
-		env.td.textContent = env.td.title = value;
-	}
-});
-
-//Mavo.Debug.time("Mavo.Expressions.prototype", "update");
+// Mavo.Debug.time("Mavo.Expressions.prototype", "update");
 
 })(Bliss, Bliss.$);

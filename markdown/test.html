@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Markdown tests</title>
+	<link rel="stylesheet" href="https://test.mavo.io/style.css" />
+	<link rel="stylesheet" href="/mavo/mavo.css" />
+	<script src="/mavo/mavo.js"></script>
+</head>
+<body>
+
+<h1>Markdown tests</h1>
+
+<section mv-app="markdown">
+	<h1>Basic</h1>
+
+	<table class="reftest">
+		<tr data-test="elements">
+			<td>
+				<div class="markdown" property="markdown">
+## Heading
+Hello, I am **Lea Verou**. [Mavo](http://mavo.io) is awesome.
+
+```js
+Mavo.init();
+```</div>
+			</td>
+			<td>
+				<div>
+					<h2 id="heading">Heading</h2>
+					<p>Hello, I am <strong>Lea Verou</strong>. <a href="http://mavo.io">Mavo</a> is awesome.</p>
+					<pre><code class="js language-js">Mavo.init();</code></pre>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				[markdown]
+			</td>
+			<td mv-expressions="none">
+				<script>document.write($$('td div[property="markdown"]').pop().innerHTML)</script>
+			</td>
+		</tr>
+	</table>
+</section>
+
+<section mv-app="markdown" mv-storage="#data">
+	<h1>Rendered</h1>
+
+	<table class="reftest" mv-expressions="none">
+		<tr>
+			<td>
+				<pre id="data">{
+	"markdown": "Foo **bar** [baz](http://mavo.io)"
+}</pre>
+			</td>
+			<td>
+				<script>document.write($$("td pre").pop().outerHTML)</script>
+			</td>
+		</tr>
+		<tr data-test="elements">
+			<td>
+				<div class="markdown" property="markdown"></div>
+			</td>
+			<td>
+				<div><p>Foo <strong>bar</strong> <a href="http://mavo.io">baz</a></p></div>
+			</td>
+		</tr>
+	</table>
+</section>
+
+<script src="mavo-markdown.js"></script>
+
+<script src="http://localhost:8002/mavo-test/test.js"></script>
+
+</body>
+</html>

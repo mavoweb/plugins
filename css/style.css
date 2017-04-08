@@ -38,10 +38,28 @@ article[property="plugin"] {
   article[property="plugin"] h1 {
     margin: 0;
     font-size: 160%;
-    font-weight: 300; }
+    font-weight: 300;
+    font-family: var(--font-body); }
     article[property="plugin"] h1 a {
+      display: -ms-flexbox;
+      display: flex;
       color: var(--color-magenta);
       font-weight: inherit; }
+    article[property="plugin"] h1 [property="name"] {
+      -ms-flex: 1;
+      flex: 1; }
+    article[property="plugin"] h1 [property="id"] {
+      padding: .5em .8em;
+      border-radius: 1em;
+      margin: auto;
+      background: #ffe6f2;
+      font-size: 50%;
+      line-height: 1;
+      font-weight: bold; }
+    article[property="plugin"] h1 a:hover [property="id"] {
+      background: var(--color-magenta);
+      color: white;
+      text-decoration: none; }
   article[property="plugin"] footer {
     display: block;
     padding: inherit;
