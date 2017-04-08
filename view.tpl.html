@@ -3,18 +3,18 @@
 	"title": "View Plugin &bull; Mavo Plugins",
 	"includes": "<link rel='stylesheet' href='/css/style.css'>"
 })
-<body>
+<body mv-plugins="markdown">
 
 @@include('_header.html')
 
 
 <h2>Plugins</h2>
 
-<section mv-app="plugin" mv-storage="https://github.com/LeaVerou/mavo-plugins" mv-source="plugins.json" mv-path="plugin/[$url.plugin]">
+<section mv-app="plugin" mv-storage="https://github.com/LeaVerou/mavo-plugins/plugins.json" mv-source="https://plugins.mavo.io/plugins.json" mv-path="plugin/[$url.plugin]">
 	<div class="mv-bar mv-ui"></div>
 	<meta property="id" />
 	<h1 property="name"></h1>
-	<p property="description"></p>
+	<p property="description" class="markdown"></p>
 	<p>
 		<a href="index.html?tag=[tag]" property="tag" mv-attribute="null" mv-multiple></a>
 	</p>
@@ -35,19 +35,13 @@
 	</p>
 </section>
 
-<section mv-app="pluginreadme" mv-storage="[plugin.github]/README.md" mv-plugins="markdown">
-	<div property="content" class="markdown"></div>
+<section mv-app="pluginreadme" mv-storage="[plugin.github]/README.md">
+	<div property="content"></div>
 </section>
 
 @@include('_footer.html')
 
 <script async defer src="https://buttons.github.io/buttons.js"></script>
-
-<script>
-$('[property="github2"]').addEventListener("mavo:datachange", evt => {
-	console.log(evt.node.value)
-})
-</script>
 
 </body>
 </html>

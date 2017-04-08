@@ -40,7 +40,12 @@ gulp.task("sass", function() {
 });
 
 gulp.task("update", function() {
-	gulp.src(["../mavo/dist/**/*"]).pipe(gulp.dest("mavo"));
+	gulp.src(["../mavo/dist/**/*"])
+		.pipe(gulp.dest("mavo"))
+		.pipe(notify({
+			message: "Plugin Mavo updated!",
+			onLast: true
+		}));
 	gulp.src(["../mavo/.eslintrc.json"]).pipe(gulp.dest("."));
 });
 

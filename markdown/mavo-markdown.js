@@ -1,4 +1,4 @@
-(function($) {
+(function($, $$) {
 
 Mavo.Plugins.register({
 	name: "markdown",
@@ -59,8 +59,8 @@ Mavo.Formats.Markdown = $.Class({
 	static: {
 		extensions: [".md", ".markdown"],
 		parse: Mavo.Formats.Text.parse,
-		stringify: Mavo.Formats.Text.parse.stringify
+		stringify: Mavo.Formats.Text.stringify
 	}
 });
 
-})(Bliss);
+})(Bliss, Bliss.$);
