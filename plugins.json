@@ -30,9 +30,12 @@
 			"id": "markdown",
 			"name": "Markdown",
 			"description": "Edit properties in Markdown and display them with HTML. Uses the popular [Showdown](http://showdownjs.github.io/demo/) library.",
-			"tag": [],
+			"tag": [
+				"Editing"
+			],
 			"github": "https://github.com/leaverou/mavo-plugins/markdown",
-			"github2": "https://github.com/leaverou/mavo-plugins/markdown"
+			"github2": "https://github.com/leaverou/mavo-plugins/markdown",
+			"author": "leaverou"
 		}
 	]
 }
