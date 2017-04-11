@@ -94,11 +94,10 @@ section[mv-app="plugins"] {
 			flex: 1;
 		}
 
-		.button {
+		.button, .github-button {
 			padding: .35em .8em;
 			border-radius: .3em;
 			border: 1px solid rgba(0,0,0,.15);
-			margin: 0 .25em;
 			background: linear-gradient(white, transparent);
 			font: 600 12px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; // same as GH button
 			color: inherit;
@@ -110,6 +109,10 @@ section[mv-app="plugins"] {
 			}
 		}
 
+		.button, .github-button, iframe {
+			margin: 0 .1em;
+		}
+
 		a {
 			font-weight: bold;
 			color: var(--color-magenta)
@@ -117,7 +120,7 @@ section[mv-app="plugins"] {
 	}
 
 	&[mv-app] { // View page
-		font-size: 120%;
+		font-size: 140%;
 	}
 }
 
@@ -125,7 +128,8 @@ a.author {
 	img {
 		display: inline-block;
 		vertical-align: text-top;
-		max-height: 20px;
+		max-height: 1.2em;
+		border-radius: .1em;
 	}
 }
 

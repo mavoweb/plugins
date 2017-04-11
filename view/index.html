@@ -44,10 +44,10 @@
 				<span property="id" title="Use this id in the mv-plugins attribute to dynamically load this plugin"></span>
 			</a>
 		</h1>
-		<p property="description" class="markdown"></p>
-		<p>
+		<div property="description" class="markdown"></div>
+		<div>
 			<a href="index.html?tag=[tag]" property="tag" mv-attribute="null" mv-multiple></a>
-		</p>
+		</div>
 
 		<meta property="repo" />
 		<meta property="github" content="https://github.com/[if(repo, repo, 'leaverou/mavo-plugins/' & id)]" />
@@ -60,14 +60,13 @@
 			</a>
 
 			<div mv-if="repo">
-				<a href="http://github.com/[repo]" class="github button">Github</a>
-				<a href="http://github.com/[repo]/issues" class="bugs button">Bugs</a>
-
+				<a class="github-button" href="http://github.com/[repo]" data-icon="octicon-mark-github" data-style="mega" aria-label="Plugin files on GitHub">Files</a>
+				<a class="github-button" href="https://github.com/[repo]/issues" data-icon="octicon-issue-opened" data-style="mega" data-count-api="/repos/[repo]#open_issues_count" data-count-aria-label="# issues on GitHub" aria-label="Issue [repo] on GitHub">Issues</a>
 				<a class="github-button" href="[github]" data-icon="octicon-star" data-style="mega" data-count-href="/[repo]/stargazers" data-count-api="/repos/[repo]#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star [repo] on GitHub">Star</a>
 			</div>
 			<div mv-if="!repo">
-				<a href="http://github.com/leaverou/mavo-plugins/tree/master/[id]" class="github button">Github</a>
-				<a href="http://github.com/leaverou/mavo-plugins/issues?q=[id]%20in%3Atitle%20" class="bugs button">Bugs</a>
+				<a class="github-button" href="http://github.com/leaverou/mavo-plugins/tree/master/[id]" data-icon="octicon-mark-github" data-style="mega" aria-label="Plugin files on GitHub">Files</a>
+				<a href="http://github.com/leaverou/mavo-plugins/issues?q=[id]%20in%3Atitle%20" class="bugs button">Issues</a>
 			</div>
 		</footer>
 	</article>
@@ -134,7 +133,6 @@
 <script src="http://mavo.io/js/sitewide.js"></script>
 
 
-<script async defer src="https://buttons.github.io/buttons.js"></script>
 <script src="view.js"></script>
 
 </body>
