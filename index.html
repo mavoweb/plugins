@@ -36,21 +36,21 @@
 <section>
 	<p class="intro">Plugins teach Mavo new tricks, so you can create even more awesomeness!</p>
 
-	<section mv-app="plugins" mv-storage="https://github.com/LeaVerou/mavo-plugins" mv-source="https://plugins.mavo.io/plugins.json">
+	<section mv-app="plugins" mv-storage="https://github.com/LeaVerou/mavo-plugins" mv-source="https://plugins.mavo.io/plugins.json" mv-plugins="markdown">
 		<meta property="tagFilter" content="[$url.tag]">
 		<p class="notice" mv-if="tagFilter">
 			Some plugins are hidden. <a href="?">Show All.</a>
 		</p>
 		<div>
-			<article property="plugin" mv-multiple mv-if="!tagFilter or count(tag = tagFilter) > 0">
+			<article property class="plugin" mv-multiple mv-if="!tagFilter or count(tag = tagFilter) > 0">
 				<div>
 					<h1>
-						<a href="view.html?plugin=[id]">
+						<a href="view/?plugin=[id]">
 							<span property="name">Name</span>
-							<span property="id" title="Use this id in the mv-plugins to dynamically load this plugin"></span>
+							<span property="id" title="Use this id in the mv-plugins attribute to dynamically load this plugin"></span>
 						</a>
 					</h1>
-					<p property="description">Description</p>
+					<p property="description" class="markdown">Description</p>
 					<a href="?tag=[tag]" property="tag" mv-attribute="null" mv-multiple></a>
 					<meta property="repo" mv-edit-placeholder="E.g. [author]/mavo-[id]">
 				</div>
@@ -71,7 +71,7 @@
 	<div>
 		<p>
 			Made with &hearts; by <a href="http://lea.verou.me">Lea Verou</a> and <a href="https://github.com/LeaVerou/mavo/graphs/contributors">contributors</a>
-			&bull; <a href="https://twitter.com/mavohtml">@mavohtml on 🐦 Twitter</a>
+			&bull; 🐦 Tweet to <a href="https://twitter.com/mavoweb">@mavoweb</a>
 			&bull; <a href="https://github.com/leaverou/mavo">Github</a>
 		</p>
 		<p>This work was supported in part by a collaborative grant from the <a href="http://www.wistron.com/">Wistron Corporation</a>.</p>

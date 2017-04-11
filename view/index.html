@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" class="plugins">
+<head>
+	<meta charset="UTF-8">
+	<title>View Plugin &bull; Mavo Plugins</title>
+	<link rel="stylesheet" href="/mavo/mavo.css" />
+	<link rel="stylesheet" href="http://mavo.io/css/style.css" />
+	<link rel="icon" href="/favicon.ico">
+
+	<link rel='stylesheet' href='/css/style.css'>
+
+	<script src="/mavo/mavo.js"></script>
+</head>
+
+<body mv-plugins="markdown">
+
+<header>
+	<h1 class="logo">
+		<a href="/"><img src="http://mavo.io/logo.svg" alt="Mavo"></a>
+	</h1>
+	<nav>
+	<a href="/docs/primer">Get started</a>
+	<a href="/docs">Docs</a>
+	<a href="/demos">Demos</a>
+	<a href="#" class="soon">Plugins</a>
+	<a href="#" class="soon">Github</a>
+</nav>
+
+</header>
+
+
+
+<h2>Plugins</h2>
+
+<section>
+	<article class="plugin" mv-app="plugin"
+	         mv-storage="https://github.com/LeaVerou/mavo-plugins/plugins.json" mv-source="https://plugins.mavo.io/plugins.json"
+	         mv-path="plugin/[$url.plugin]">
+		<div class="mv-bar mv-ui"></div>
+
+		<h1>
+			<a href="view/?plugin=[id]">
+				<span property="name">Name</span>
+				<span property="id" title="Use this id in the mv-plugins attribute to dynamically load this plugin"></span>
+			</a>
+		</h1>
+		<p property="description" class="markdown"></p>
+		<p>
+			<a href="index.html?tag=[tag]" property="tag" mv-attribute="null" mv-multiple></a>
+		</p>
+
+		<meta property="repo" />
+		<meta property="github" content="https://github.com/[if(repo, repo, 'leaverou/mavo-plugins/' & id)]" />
+		<meta property="web" content="[if(repo, 'https://github.com/' & repo, 'https://plugins.mavo.io/' & id)]" />
+
+		<footer>
+			<a class="author" href="https://github.com/[author]">
+				<img src="https://github.com/[author].png?size=40" alt="">
+				<span property="author">leaverou</span>
+			</a>
+
+			<div mv-if="repo">
+				<a href="http://github.com/[repo]" class="github button">Github</a>
+				<a href="http://github.com/[repo]/issues" class="bugs button">Bugs</a>
+
+				<a class="github-button" href="[github]" data-icon="octicon-star" data-style="mega" data-count-href="/[repo]/stargazers" data-count-api="/repos/[repo]#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star [repo] on GitHub">Star</a>
+			</div>
+			<div mv-if="!repo">
+				<a href="http://github.com/leaverou/mavo-plugins/tree/master/[id]" class="github button">Github</a>
+				<a href="http://github.com/leaverou/mavo-plugins/issues?q=[id]%20in%3Atitle%20" class="bugs button">Bugs</a>
+			</div>
+		</footer>
+	</article>
+</section>
+
+<section mv-app="pluginreadme" mv-storage="[plugin.github]/README.md" mv-source="[plugin.web]/README.md">
+	<div property="readme"></div>
+</section>
+
+<section mv-app mv-bar="none" class="language-markup">
+	<h1>How to use this plugin</h1>
+
+	<p>To use this plugin, you first need to include it. The easiest way for that is to use the <code>mv-plugins</code> attribute with the id of the plugin (<code>[plugin.id]</code>), like this:</p>
+
+	<script type="text/plain">
+		<div mv-app="myCoolApp" mv-plugins="[plugin.id]">
+			...
+		</div>
+	</script>
+
+	<p>You can have multiple <code>mv-plugins</code> attributes on different elements. Its value also accepts multiple plugin ids, separated by spaces (e.g. <code>mv-plugins="[plugin.id] plugin1 plugin2"</code>).
+		This way, every Mavo app can individually declare which plugins it needs and each plugin is only fetched once.</p>
+
+	<div mv-if="plugin.repo">
+		<p>Alternatively, you can download the source files for this plugin by visiting its repository on Github</p>
+
+		<p><a href="https://github.com/[plugin.repo]" class="call-to-action button">Visit [plugin.repo]</a></p>
+	</div>
+	<div mv-if="!plugin.repo">
+		<p>Alternatively, you can download the JavaScript file of this plugin by clicking below:</p>
+
+		<p><a href="/[plugin.id]/mavo-[plugin.id].js" class="call-to-action button">Download mavo-[plugin.id].js</a></p>
+	</div>
+
+
+	<p>Then, you can include it by using the <code>&lt;script></code> element, right after the one for Mavo:</p>
+
+	<script type="text/plain">
+		<script src="mavo.js">&lt;/script>
+		<script src="mavo-[plugin.id].js">&lt;/script>
+	</script>
+
+	<p>Note that some plugins may also include CSS or other JavaScript files, which they expect to find in the same directory as the plugin’s main JS file.
+	You do not have to worry about this if including the plugin via the <code>mv-plugins</code> attribute.</p>
+</section>
+
+<footer>
+	<div>
+		<p>
+			Made with &hearts; by <a href="http://lea.verou.me">Lea Verou</a> and <a href="https://github.com/LeaVerou/mavo/graphs/contributors">contributors</a>
+			&bull; 🐦 Tweet to <a href="https://twitter.com/mavoweb">@mavoweb</a>
+			&bull; <a href="https://github.com/leaverou/mavo">Github</a>
+		</p>
+		<p>This work was supported in part by a collaborative grant from the <a href="http://www.wistron.com/">Wistron Corporation</a>.</p>
+	</div>
+
+
+	<a href="http://mit.edu" class="logo"><img src="http://mavo.io/img/logo-mit.svg" alt="MIT" /></a>
+	<a href="http://csail.mit.edu" class="logo"><img src="http://mavo.io/img/logo-csail.svg" alt="CSAIL" /></a>
+</footer>
+
+
+<script src="http://mavo.io/js/prism.js"></script>
+<script src="http://mavo.io/js/sitewide.js"></script>
+
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script src="view.js"></script>
+
+</body>
+</html>
