@@ -215,8 +215,9 @@ var _ = self.Mavo = $.Class({
 		Object.defineProperty(_.all, this.index - 1, {value: this});
 
 		// Convert any data-mv-* attributes to mv-*
-		var dataMv = _.attributes.map(attribute => `[data-${attribute}]`);
-		for (let element of $$(dataMv.join(", "), this.element).concat(this.element)) {
+		var selector = _.attributes.map(attribute => `[data-${attribute}]`).join(", ");
+
+		[this.element, ...$$(selector, this.element)].forEach(element => {
 			for (let attribute of _.attributes) {
 				let value = element.getAttribute("data-" + attribute);
 
@@ -224,7 +225,7 @@ var _ = self.Mavo = $.Class({
 					element.setAttribute(attribute, value);
 				}
 			}
-		}
+		});
 
 		// Assign a unique (for the page) id to this mavo instance
 		this.id = Mavo.getAttribute(this.element, "mv-app", "id") || `mavo${this.index}`;
@@ -250,7 +251,7 @@ var _ = self.Mavo = $.Class({
 		Mavo.hooks.run("init-start", this);
 
 		// Apply heuristic for groups
-		for (let element of $$(_.selectors.primitive, this.element)) {
+		for (var element of $$(_.selectors.primitive, this.element)) {
 			var hasChildren = $(`${_.selectors.not(_.selectors.formControl)}, ${_.selectors.property}`, element);
 
 			if (hasChildren) {
@@ -492,15 +493,6 @@ var _ = self.Mavo = $.Class({
 		this.root.edit();
 
 		$.events(this.element, "mouseenter.mavo:edit mouseleave.mavo:edit", evt => {
-			if (evt.target.matches(".mv-item-controls *")) {
-				var itemControls = evt.target.closest(".mv-item-controls");
-				var item = Mavo.data(itemControls, "item");
-
-				if (item && item.element) {
-					item.element.classList.toggle("mv-highlight", evt.type == "mouseenter");
-				}
-			}
-
 			if (evt.target.matches(_.selectors.multiple)) {
 				evt.target.classList.remove("mv-has-hovered-item");
 
@@ -683,6 +675,25 @@ var _ = self.Mavo = $.Class({
 			});
 	},
 
+	upload: function(file, path = "images/" + file.name) {
+		if (!this.uploadBackend) {
+			return Promise.reject();
+		}
+
+		this.inProgress = "Uploading";
+
+		return this.uploadBackend.upload(file, path)
+			.then(url => {
+				this.inProgress = false;
+				return url;
+			})
+			.catch(err => {
+				this.error("Error uploading file", err);
+				this.inProgress = false;
+				return null;
+			});
+	},
+
 	save: function() {
 		return this.store().then(saved => {
 			if (saved) {
@@ -748,6 +759,15 @@ var _ = self.Mavo = $.Class({
 
 				return value;
 			}
+		},
+
+		uploadBackend: {
+			get: function() {
+				if (this.storage && this.storage.upload) {
+					// Prioritize storage
+					return this.storage;
+				}
+			}
 		}
 	},
 
@@ -776,6 +796,7 @@ var _ = self.Mavo = $.Class({
 		},
 
 		superKey: navigator.platform.indexOf("Mac") === 0? "metaKey" : "ctrlKey",
+		base: location.protocol == "about:"? (document.currentScript? document.currentScript.src : "http://mavo.io") : location,
 		dependencies: [],
 
 		init: function(container = document) {
@@ -829,14 +850,14 @@ let andNot = s.andNot = (selector1, selector2) => and(selector1, not(selector2))
 $.extend(_.selectors, {
 	primitive: andNot(s.property, s.group),
 	rootGroup: andNot(s.group, s.property),
-	output: or(s.specificProperty("output"), ".mv-output, .mv-value")
+	output: or(s.specificProperty("output"), ".mv-output")
 });
 
 }
 
 // Init mavo. Async to give other scripts a chance to modify stuff.
 requestAnimationFrame(() => {
-	var isDecentBrowser = Array.from && window.Intl && document.documentElement.closest;
+	var isDecentBrowser = Array.from && window.Intl && document.documentElement.closest && self.URL && "searchParams" in URL.prototype;
 
 	_.dependencies.push(
 		$.ready(),
@@ -881,6 +902,16 @@ var _ = $.extend(Mavo, {
 
 		// JS file
 		return $.include(url);
+	},
+
+	readFile: (file, format = "DataURL") => {
+		var reader = new FileReader();
+
+		return new Promise((resolve, reject) => {
+			reader.onload = f => resolve(reader.result);
+			reader.onerror = reader.onabort = reject;
+			reader["readAs" + format](file);
+		});
 	},
 
 	toJSON: data => {
@@ -1457,7 +1488,11 @@ var _ = Mavo.UI.Bar = $.Class({
 			innerHTML: "<button>&nbsp;</button>"
 		});
 
-		this.order = this.mavo.element.getAttribute("mv-bar");
+		if (this.element.classList.contains("mv-compact")) {
+			this.noResize = true;
+		}
+
+		this.order = this.mavo.element.getAttribute("mv-bar") || this.element.getAttribute("mv-bar");
 
 		if (this.order) {
 			this.order = this.order == "none"? [] : this.order.split(/\s+/);
@@ -1519,7 +1554,7 @@ var _ = Mavo.UI.Bar = $.Class({
 			}
 		}
 
-		if (this.order.length && !this.element.classList.contains("mv-compact")) {
+		if (this.order.length && !this.noResize) {
 			this.resize();
 
 			if (self.ResizeObserver) {
@@ -1576,6 +1611,10 @@ var _ = Mavo.UI.Bar = $.Class({
 		}
 
 		Mavo.revocably.add(this[id], this.element);
+
+		if (!this.resizeObserver && !this.noResize) {
+			requestAnimationFrame(() => this.resize());
+		}
 	},
 
 	remove: function(id) {
@@ -1585,6 +1624,10 @@ var _ = Mavo.UI.Bar = $.Class({
 
 		if (o.cleanup) {
 			o.cleanup.call(this.mavo);
+		}
+
+		if (!this.resizeObserver && !this.noResize) {
+			requestAnimationFrame(() => this.resize());
 		}
 	},
 
@@ -2003,7 +2046,7 @@ _.register(["add", "delete"], function(can) {
 var _ = Mavo.Backend = $.Class({
 	constructor: function(url, o = {}) {
 		this.source = url;
-		this.url = new URL(this.source, location);
+		this.url = new URL(this.source, Mavo.base);
 		this.mavo = o.mavo;
 		this.format = Mavo.Formats.create(o.format, this);
 
@@ -2077,7 +2120,7 @@ var _ = Mavo.Backend = $.Class({
 			req.headers["Authorization"] = req.headers["Authorization"] || `Bearer ${this.accessToken}`;
 		}
 
-		if (typeof req.data === "object") {
+		if ($.type(req.data) === "object") {
 			if (req.method == "GET") {
 				req.data = Object.keys(req.data).map(p => p + "=" + encodeURIComponent(req.data[p])).join("&");
 			}
@@ -3323,7 +3366,7 @@ var _ = Mavo.Primitive = $.Class({
 		}, this);
 
 		if (this.attribute || this.config.popup) {
-			this.popup = new _.Popup(this);
+			this.popup = new Mavo.UI.Popup(this);
 		}
 
 		if (!this.popup) {
@@ -3355,10 +3398,8 @@ var _ = Mavo.Primitive = $.Class({
 
 			var timer;
 
-			$.events(this.element, {
-				"click.mavo:preedit": resolve,
-				"focus.mavo:preedit": resolve
-			});
+			var events = "click focus dragover dragenter".split(" ").map(e => e + ".mavo:preedit").join(" ");
+			$.events(this.element, events, resolve);
 
 			if (!this.attribute) {
 				// Hovering over the element for over 150ms will trigger edit
@@ -3653,7 +3694,7 @@ var _ = Mavo.Primitive = $.Class({
 			return value;
 		},
 
-		getValue: function (element, { config, attribute, datatype }) {
+		getValue: function (element, {config, attribute, datatype} = {}) {
 			if (!config) {
 				config = _.getConfig(element, attribute);
 			}
@@ -3700,7 +3741,7 @@ var _ = Mavo.Primitive = $.Class({
 			return config;
 		},
 
-		setValue: function (element, value, {config, attribute, datatype}) {
+		setValue: function (element, value, {config, attribute, datatype} = {}) {
 			if ($.type(value) == "object" && "value" in value) {
 				var presentational = value.presentational;
 				value = value.value;
@@ -3793,17 +3834,45 @@ var _ = Mavo.Primitive = $.Class({
 	}
 });
 
-_.Popup = $.Class({
+})(Bliss, Bliss.$);
+
+(function($, $$) {
+
+var _ = Mavo.UI.Popup = $.Class({
 	constructor: function(primitive) {
 		this.primitive = primitive;
+
+		// Need to be defined here so that this is what expected
+		this.position = evt => {
+			var bounds = this.element.getBoundingClientRect();
+			var x = bounds.left;
+			var y = bounds.bottom;
+
+			if (this.popup.offsetHeight) {
+				// Is in the DOM, check if it fits
+				var popupBounds = this.popup.getBoundingClientRect();
+
+				if (popupBounds.height + y > innerHeight) {
+					y = innerHeight - popupBounds.height - 20;
+				}
+			}
+
+			$.style(this.popup, { top:  `${y}px`, left: `${x}px` });
+		};
 
 		this.popup = $.create("div", {
 			className: "mv-popup",
 			hidden: true,
-			contents: [
-				this.primitive.label + ":",
-				this.editor
-			],
+			contents: {
+				tag: "fieldset",
+				contents: [
+					{
+						tag: "legend",
+						textContent: this.primitive.label + ":"
+					},
+					this.editor
+				]
+			},
 			events: {
 				keyup: evt => {
 					if (evt.keyCode == 13 || evt.keyCode == 27) {
@@ -3814,7 +3883,8 @@ _.Popup = $.Class({
 						evt.stopPropagation();
 						this.hide();
 					}
-				}
+				},
+				transitionend: this.position
 			}
 		});
 
@@ -3833,15 +3903,6 @@ _.Popup = $.Class({
 			if (!this.popup.contains(evt.target) && !this.element.contains(evt.target)) {
 				this.hide();
 			}
-		};
-
-		this.position = evt => {
-			var bounds = this.element.getBoundingClientRect();
-			var x = bounds.left;
-			var y = bounds.bottom;
-
-			 // TODO what if it doesn’t fit?
-			$.style(this.popup, { top:  `${y}px`, left: `${x}px` });
 		};
 
 		this.position();
@@ -4021,10 +4082,91 @@ _.register({
 		default: true,
 		selector: "img, video, audio",
 		attribute: "src",
-		editor: {
-			"tag": "input",
-			"type": "url",
-			"placeholder": "http://example.com"
+		editor: function() {
+			var uploadBackend = this.mavo.storage && this.mavo.storage.upload? this.mavo.storage : this.uploadBackend;
+
+			var mainInput = $.create("input", {
+				"type": "url",
+				"placeholder": "http://example.com/image.png",
+				"className": "mv-output",
+				"aria-label": "URL to image"
+			});
+
+			if (uploadBackend && self.FileReader) {
+				var popup;
+				var type = this.element.nodeName.toLowerCase();
+				type = type == "img"? "image" : type;
+				var path = this.element.getAttribute("mv-uploads") || type + "s";
+
+				var upload = (file, name = file.name) => {
+					if (file && file.type.indexOf(type + "/") === 0) {
+						this.mavo.upload(file, path + "/" + name).then(url => {
+							mainInput.value = url;
+							$.fire(mainInput, "input");
+						});
+					}
+				};
+
+				var uploadEvents = {
+					"paste": evt => {
+						var item = evt.clipboardData.items[0];
+
+						if (item.kind == "file" && item.type.indexOf(type + "/") === 0) {
+							// Is a file of the correct type, upload!
+							var name = `pasted-${type}-${Date.now()}.${item.type.slice(6)}`; // image, video, audio are all 5 chars
+							upload(item.getAsFile(), name);
+							evt.preventDefault();
+						}
+					},
+					"drag dragstart dragend dragover dragenter dragleave drop": evt => {
+						evt.preventDefault();
+						evt.stopPropagation();
+					},
+					"dragover dragenter": evt => {
+						popup.classList.add("mv-dragover");
+						this.element.classList.add("mv-dragover");
+					},
+					"dragleave dragend drop": evt => {
+						popup.classList.remove("mv-dragover");
+						this.element.classList.remove("mv-dragover");
+					},
+					"drop": evt => {
+						upload(evt.dataTransfer.files[0]);
+					}
+				};
+
+				$.events(this.element, uploadEvents);
+
+				return popup = $.create({
+					className: "mv-upload-popup",
+					contents: [
+						mainInput, {
+							tag: "input",
+							type: "file",
+							"aria-label": "Upload image",
+							accept: type + "/*",
+							events: {
+								change: evt => {
+									var file = evt.target.files[0];
+
+									if (!file) {
+										return;
+									}
+
+									upload(file);
+								}
+							}
+						}, {
+							className: "mv-tip",
+							innerHTML: "<strong>Tip:</strong> You can also drag & drop or paste!"
+						}
+					],
+					events: uploadEvents
+				});
+			}
+			else {
+				return mainInput;
+			}
 		}
 	},
 
@@ -4542,77 +4684,10 @@ var _ = Mavo.Collection = $.Class({
 
 	editItem: function(item) {
 		if (!item.itemControls) {
-			item.itemControls = $$(".mv-item-controls", item.element)
-								   .filter(el => {
-									   // Remove item controls meant for other collections
-									   return el.closest(Mavo.selectors.multiple) == item.element && !Mavo.data(el, "item");
-								   })[0];
-
-			item.itemControls = item.itemControls || $.create({
-				className: "mv-item-controls mv-ui"
-			});
-
-			Mavo.data(item.itemControls, "item", item);
-
-			$.set(item.itemControls, {
-				contents: [
-					{
-						tag: "button",
-						title: "Delete this " + item.name,
-						className: "mv-delete",
-						events: {
-							"click": evt => item.collection.delete(item)
-						}
-					}, {
-						tag: "button",
-						title: `Add new ${item.name.replace(/s$/i, "")} ${this.bottomUp? "after" : "before"}`,
-						className: "mv-add",
-						events: {
-							"click": evt => {
-								var newItem = this.add(null, item.index);
-
-								if (evt[Mavo.superKey]) {
-									newItem.render(item.data);
-								}
-
-								Mavo.scrollIntoViewIfNeeded(newItem.element);
-
-								return this.editItem(newItem);
-							}
-						}
-					}, {
-						tag: "button",
-						title: "Drag to reorder " + item.name,
-						className: "mv-drag-handle",
-						events: {
-							click: evt => evt.target.focus(),
-							keydown: evt => {
-								if (evt.keyCode >= 37 && evt.keyCode <= 40) {
-									// Arrow keys
-									this.move(item, evt.keyCode <= 38? -1 : 1);
-
-									evt.stopPropagation();
-									evt.preventDefault();
-									evt.target.focus();
-								}
-							}
-						}
-					}
-				]
-			});
+			item.itemControls = new Mavo.UI.Itembar(item);
 		}
 
-		if (!item.itemControls.parentNode) {
-			if (!Mavo.revocably.add(item.itemControls)) {
-				if (item instanceof Mavo.Primitive && !item.attribute) {
-					item.itemControls.classList.add("mv-adjacent");
-					$.after(item.itemControls, item.element);
-				}
-				else {
-					item.element.appendChild(item.itemControls);
-				}
-			}
-		}
+		item.itemControls.add();
 
 		item.edit();
 	},
@@ -4653,7 +4728,11 @@ var _ = Mavo.Collection = $.Class({
 				this.addButton.remove();
 			}
 
-			this.propagate(item => Mavo.revocably.remove(item.itemControls));
+			this.propagate(item => {
+				if (item.itemControls) {
+					item.itemControls.remove();
+				}
+			});
 		}
 	},
 
@@ -4938,6 +5017,105 @@ var _ = Mavo.Collection = $.Class({
 		lazy: {
 			dragula: () => $.include(self.dragula, "https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js")
 		}
+	}
+});
+
+})(Bliss, Bliss.$);
+
+(function($, $$) {
+
+var _ = Mavo.UI.Itembar = $.Class({
+	constructor: function(item) {
+		this.item = item;
+
+		this.element = $$(".mv-item-controls", this.item.element).filter(el => {
+								   // Remove item controls meant for other collections
+								   return el.closest(Mavo.selectors.multiple) == this.item.element && !Mavo.data(el, "item");
+							   })[0];
+
+		this.element = this.element || $.create({
+			className: "mv-item-controls mv-ui"
+		});
+
+		Mavo.data(this.element, "item", this.item);
+
+		$.set(this.element, {
+			contents: [
+				{
+					tag: "button",
+					title: "Delete this " + this.item.name,
+					className: "mv-delete",
+					events: {
+						"click": evt => this.item.collection.delete(item)
+					}
+				}, {
+					tag: "button",
+					title: `Add new ${this.item.name.replace(/s$/i, "")} ${this.collection.bottomUp? "after" : "before"}`,
+					className: "mv-add",
+					events: {
+						"click": evt => {
+							var newItem = this.collection.add(null, this.item.index);
+
+							if (evt[Mavo.superKey]) {
+								newItem.render(this.item.data);
+							}
+
+							Mavo.scrollIntoViewIfNeeded(newItem.element);
+
+							return this.collection.editItem(newItem);
+						}
+					}
+				}, {
+					tag: "button",
+					title: "Drag to reorder " + this.item.name,
+					className: "mv-drag-handle",
+					events: {
+						click: evt => evt.target.focus(),
+						keydown: evt => {
+							if (evt.keyCode >= 37 && evt.keyCode <= 40) {
+								// Arrow keys
+								this.move(this.item, evt.keyCode <= 38? -1 : 1);
+
+								evt.stopPropagation();
+								evt.preventDefault();
+								evt.target.focus();
+							}
+						}
+					}
+				}
+			],
+			events: {
+				mouseenter: evt => {
+					this.item.element.classList.add("mv-highlight");
+				},
+				mouseleave: evt => {
+					this.item.element.classList.remove("mv-highlight");
+				}
+			}
+		});
+	},
+
+	add: function() {
+		if (!this.element.parentNode) {
+			if (!Mavo.revocably.add(this.element)) {
+				if (this.item instanceof Mavo.Primitive && !this.item.attribute) {
+					this.element.classList.add("mv-adjacent");
+					$.after(this.element, this.item.element);
+				}
+				else {
+					this.item.element.appendChild(this.element);
+				}
+			}
+		}
+	},
+
+	remove: function() {
+		 Mavo.revocably.remove(this.element);
+	},
+
+	proxy: {
+		collection: "item",
+		mavo: "item"
 	}
 });
 
@@ -5781,26 +5959,6 @@ var _ = Mavo.Functions = {
 		"=": "eq"
 	},
 
-	get $now() {
-		return new Date();
-	},
-
-	// Read-only syntactic sugar for URL stuff
-	$url: (function() {
-		var ret = {};
-		var url = new URL(location);
-
-		for (let pair of url.searchParams) {
-			ret[pair[0]] = pair[1];
-		}
-
-		Object.defineProperty(ret, "toString", {
-			value: () => new URL(location)
-		});
-
-		return ret;
-	})(),
-
 	/**
 	 * Get a property of an object. Used by the . operator to prevent TypeErrors
 	 */
@@ -5936,7 +6094,56 @@ var _ = Mavo.Functions = {
 
 	uppercase: str => (str + "").toUpperCase(),
 	lowercase: str => (str + "").toLowerCase(),
+
+	/*********************
+	 * Date functions
+	 *********************/
+
+	get $now() {
+		return new Date();
+	},
+
+	year: getDateComponent("year"),
+	month: getDateComponent("month"),
+	day: getDateComponent("day"),
+	weekday: getDateComponent("weekday"),
+	hour: getDateComponent("hour"),
+	hour12: getDateComponent("hour", "numeric", {hour12:true}),
+	minute: getDateComponent("minute"),
+	second: getDateComponent("second"),
+
+	date: date => {
+		return `${_.year(date)}-${_.month(date).twodigit}-${_.day(date).twodigit}`;
+	},
+	time: date => {
+		return `${_.hour(date).twodigit}:${_.minute(date).twodigit}:${_.second(date).twodigit}`;
+	},
+
+	minutes: seconds => Math.floor(Math.abs(seconds) / 60),
+	hours: seconds => Math.floor(Math.abs(seconds) / 3600),
+	days: seconds => Math.floor(Math.abs(seconds) / 86400),
+	weeks: seconds => Math.floor(Math.abs(seconds) / 604800),
+	months: seconds => Math.floor(Math.abs(seconds) / (30.4368 * 86400)),
+	years: seconds => Math.floor(Math.abs(seconds) / (30.4368 * 86400 * 12)),
+
+	localTimezone: -(new Date()).getTimezoneOffset()
 };
+
+// $url: Read-only syntactic sugar for URL stuff
+$.lazy(Mavo.Functions, "$url", function() {
+	var ret = {};
+	var url = new URL(location);
+
+	for (let pair of url.searchParams) {
+		ret[pair[0]] = pair[1];
+	}
+
+	Object.defineProperty(ret, "toString", {
+		value: () => new URL(location)
+	});
+
+	return ret;
+});
 
 Mavo.Script = {
 	addUnaryOperator: function(name, o) {
@@ -5988,18 +6195,11 @@ Mavo.Script = {
 						result = b.map(n => o.scalar(a, n));
 					}
 				}
+				else if (Array.isArray(a)) {
+					result = a.map(n => o.scalar(n, b));
+				}
 				else {
-					// Operand is scalar
-					if (typeof o.identity == "number") {
-						b = +b;
-					}
-
-					if (Array.isArray(a)) {
-						result = a.map(n => o.scalar(n, b));
-					}
-					else {
-						result = o.scalar(a, b);
-					}
+					result = o.scalar(a, b);
 				}
 
 				if (o.reduce) {
@@ -6052,11 +6252,25 @@ Mavo.Script = {
 			symbol: "+"
 		},
 		"subtract": {
-			scalar: (a, b) => a - b,
+			scalar: (a, b) => {
+				if (isNaN(a) || isNaN(b)) {
+					var dateA = toDate(a), dateB = toDate(b);
+
+					if (dateA && dateB) {
+						return (dateA - dateB)/1000;
+					}
+				}
+
+				return a - b;
+			},
 			symbol: "-"
 		},
 		"mod": {
-			scalar: (a, b) => a % b
+			scalar: (a, b) => {
+				var ret = a % b;
+				ret += ret < 0? b : 0;
+				return ret;
+			}
 		},
 		"lte": {
 			logical: true,
@@ -6132,9 +6346,9 @@ Mavo.Script = {
 	getNumericalOperands: function(a, b) {
 		if (isNaN(a) || isNaN(b)) {
 			// Try comparing as dates
-			var da = new Date(a), db = new Date(b);
+			var da = toDate(a), db = toDate(b);
 
-			if (!isNaN(da) && !isNaN(db)) {
+			if (da && db) {
 				// Both valid dates
 				return [da, db];
 			}
@@ -6210,6 +6424,96 @@ function numbers(array, args) {
 	return array.filter(number => !isNaN(number) && number !== "").map(n => +n);
 }
 
+var twodigits = new Intl.NumberFormat("en", {
+	minimumIntegerDigits: "2"
+});
+
+twodigits = twodigits.format.bind(twodigits);
+
+function toDate(date) {
+	if (!date) {
+		return null;
+	}
+
+	if ($.type(date) === "string") {
+		// Fix up time format
+
+		if (date.indexOf(":") === -1) {
+			// Add a time if one doesn't exist
+			date += "T00:00:00";
+		}
+		else {
+			// Make sure time starts with T, due to Safari bug
+			date = date.replace(/\-(\d{2})\s+(?=\d{2}:)/, "-$1T");
+		}
+
+		// Remove all whitespace
+		date = date.replace(/\s+/g, "");
+
+		// If no timezone, insert local
+		var timezone = (date.match(/[+-]\d{2}:?\d{2}|Z$/) || [])[0];
+
+		if (!timezone) {
+			var local = _.localTimezone;
+			var minutes = Math.abs(local % 60);
+			var hours = (Math.abs(local) - minutes) / 60;
+			var sign = local < 0? "-" : "+";
+			date += sign + twodigits(hours) + ":" + twodigits(minutes);
+		}
+	}
+
+	date = new Date(date);
+
+	if (isNaN(date)) {
+		return null;
+	}
+
+	return date;
+}
+
+function getDateComponent(component, option = "numeric", o) {
+	var locale = document.documentElement.lang || "en-GB";
+
+	return function(date, format = option) {
+		date = toDate(date);
+
+		if (!date) {
+			return "";
+		}
+
+		var options = $.extend({
+			[component]: format,
+			hour12: false
+		}, o);
+
+		if (component == "weekday" && format == "numeric") {
+			ret = date.getDay() || 7;
+		}
+		else {
+			var ret = date.toLocaleString(locale, options);
+		}
+
+		if (format == "numeric" && !isNaN(ret)) {
+			ret = new Number(ret);
+
+			if (component == "month" || component == "weekday") {
+				options[component] = "long";
+				ret.name = date.toLocaleString(locale, options);
+
+				options[component] = "short";
+				ret.shortname = date.toLocaleString(locale, options);
+			}
+
+			if (component != "weekday") {
+				options[component] = "2-digit";
+				ret.twodigit = date.toLocaleString(locale, options);
+			}
+		}
+
+		return ret;
+	};
+}
+
 })();
 
 (function($) {
@@ -6223,12 +6527,20 @@ var _ = Mavo.Backend.register($.Class({
 		this.key = this.mavo.element.getAttribute("mv-dropbox-key") || "2mx6061p054bpbp";
 
 		// Transform the dropbox shared URL into something raw and CORS-enabled
-		this.url = new URL(this.url, location);
-
-		this.url.hostname = "dl.dropboxusercontent.com";
-		this.url.search = this.url.search.replace(/\bdl=0|^$/, "raw=1");
+		this.url = _.fixShareURL(this.url);
 
 		this.login(true);
+	},
+
+	upload: function(file, path) {
+		path = this.path.replace(/[^/]+$/, "") + path;
+
+		return this.put(file, path).then(fileInfo => this.getURL(path));
+	},
+
+	getURL: function(path) {
+		return this.request("sharing/create_shared_link_with_settings", {path}, "POST")
+			.then(shareInfo => _.fixShareURL(shareInfo.url));
 	},
 
 	/**
@@ -6236,11 +6548,11 @@ var _ = Mavo.Backend.register($.Class({
 	 * @param {Object} file - An object with name & data keys
 	 * @return {Promise} A promise that resolves when the file is saved.
 	 */
-	put: function(serialized, path) {
+	put: function(serialized, path = this.path, o = {}) {
 		return this.request("https://content.dropboxapi.com/2/files/upload", serialized, "POST", {
 			headers: {
 				"Dropbox-API-Arg": JSON.stringify({
-					path: this.path,
+					path,
 					mode: "overwrite"
 				}),
 				"Content-Type": "application/octet-stream"
@@ -6293,8 +6605,15 @@ var _ = Mavo.Backend.register($.Class({
 		oAuth: "https://www.dropbox.com/oauth2/authorize",
 
 		test: function(url) {
-			url = new URL(url, location);
+			url = new URL(url, Mavo.base);
 			return /dropbox.com/.test(url.host);
+		},
+
+		fixShareURL: url => {
+			url = new URL(url, Mavo.base);
+			url.hostname = "dl.dropboxusercontent.com";
+			url.search = url.search.replace(/\bdl=0|^$/, "raw=1");
+			return url;
 		}
 	}
 }));
@@ -6332,13 +6651,25 @@ var _ = Mavo.Backend.register($.Class({
 		       .then(response => Promise.resolve(this.repo? _.atob(response.content) : response));
 	},
 
+	upload: function(file, path = this.path) {
+		return Mavo.readFile(file).then(dataURL => {
+				var base64 = dataURL.slice(5); // remove data:
+				var media = base64.match(/^\w+\/[\w+]+/)[0];
+				base64 = base64.replace(RegExp(`^${media}(;base64)?,`), "");
+				path = this.path.replace(/[^/]+$/, "") + path;
+
+				return this.put(base64, path, {isEncoded: true});
+			})
+			.then(fileInfo => this.getURL(path, fileInfo.commit.sha));
+	},
+
 	/**
 	 * Saves a file to the backend.
 	 * @param {String} serialized - Serialized data
 	 * @param {String} path - Optional file path
 	 * @return {Promise} A promise that resolves when the file is saved.
 	 */
-	put: function(serialized, path = this.path) {
+	put: function(serialized, path = this.path, o = {}) {
 		if (!path) {
 			// Raw API calls are read-only for now
 			return;
@@ -6349,6 +6680,8 @@ var _ = Mavo.Backend.register($.Class({
 
 		// Create repo if it doesn’t exist
 		var repoInfo = this.repoInfo || this.request("user/repos", {name: this.repo}, "POST").then(repoInfo => this.repoInfo = repoInfo);
+
+		serialized = o.isEncoded? serialized : _.btoa(serialized);
 
 		return Promise.resolve(repoInfo)
 			.then(repoInfo => {
@@ -6385,7 +6718,7 @@ var _ = Mavo.Backend.register($.Class({
 					ref: this.branch
 				}).then(fileInfo => this.request(fileCall, {
 					message: `Updated ${fileInfo.name || "file"}`,
-					content: _.btoa(serialized),
+					content: serialized,
 					branch: this.branch,
 					sha: fileInfo.sha
 				}, "PUT"), xhr => {
@@ -6393,7 +6726,7 @@ var _ = Mavo.Backend.register($.Class({
 						// File does not exist, create it
 						return this.request(fileCall, {
 							message: "Created file",
-							content: _.btoa(serialized),
+							content: serialized,
 							branch: this.branch
 						}, "PUT");
 					}
@@ -6411,6 +6744,8 @@ var _ = Mavo.Backend.register($.Class({
 						this.pullRequest(prs[0]);
 					});
 				}
+
+				return fileInfo;
 			});
 	},
 
@@ -6506,7 +6841,7 @@ Preview my changes here: ${previewURL}`,
 								if (this.branch === undefined) {
 									this.branch = repoInfo.default_branch;
 								}
-								
+
 								return this.repoInfo = repoInfo;
 							});
 					}
@@ -6550,12 +6885,33 @@ Preview my changes here: ${previewURL}`,
 		});
 	},
 
+	getURL: function(path = this.path, sha) {
+		var repo = `${this.username}/${this.repo}`;
+		path = path.replace(/ /g, "%20");
+
+		return this.request(`repos/${repo}/pages`, {}, "GET", {
+			headers: {
+				"Accept": "application/vnd.github.mister-fantastic-preview+json"
+			}
+		})
+		.then(pagesInfo => pagesInfo.html_url + path)
+		.catch(xhr => {
+			// No Github Pages, return rawgit URL
+			if (sha) {
+				return `https://cdn.rawgit.com/${repo}/${sha}/${path}`;
+			}
+			else {
+				return `https://rawgit.com/${repo}/${this.branch}/${path}`;
+			}
+		});
+	},
+
 	static: {
 		apiDomain: "https://api.github.com/",
 		oAuth: "https://github.com/login/oauth/authorize",
 
 		test: function(url) {
-			url = new URL(url, location);
+			url = new URL(url, Mavo.base);
 			return /\bgithub.com|raw.githubusercontent.com/.test(url.host);
 		},
 
@@ -6565,7 +6921,7 @@ Preview my changes here: ${previewURL}`,
 		parseURL: function(url) {
 			var ret = {};
 
-			url = new URL(url, location);
+			url = new URL(url, Mavo.base);
 
 			var path = url.pathname.slice(1).split("/");
 
