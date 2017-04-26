@@ -17,16 +17,6 @@
 			"author": "leaverou"
 		},
 		{
-			"name": "Mavo Firebase",
-			"id": "firebase",
-			"description": "Store your data in Google Firebase",
-			"tag": [
-				"backend"
-			],
-			"repo": "lizziew/mavo-firebase",
-			"author": "lizziew"
-		},
-		{
 			"id": "markdown",
 			"name": "Markdown",
 			"description": "Edit properties in Markdown and display them with HTML. Uses the popular [Showdown](http://showdownjs.github.io/demo/) library.",
@@ -35,6 +25,25 @@
 			],
 			"github": "https://github.com/mavoweb/plugins/markdown",
 			"author": "leaverou"
+		},
+		{
+			"name": "Yaml",
+			"id": "yaml",
+			"description": "Store and/or read data in Yaml instead of JSON. Uses the popular [JS-Yaml](http://nodeca.github.io/js-yaml/) library.",
+			"tag": [
+				"Format"
+			],
+			"author": "leaverou"
+		},
+		{
+			"name": "Mavo Firebase",
+			"id": "firebase",
+			"description": "Store your data in Google Firebase",
+			"tag": [
+				"backend"
+			],
+			"repo": "lizziew/mavo-firebase",
+			"author": "lizziew"
 		}
 	]
 }
