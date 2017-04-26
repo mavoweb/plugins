@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Yaml tests</title>
+	<link rel="stylesheet" href="https://test.mavo.io/style.css" />
+	<link rel="stylesheet" href="/mavo/mavo.css" />
+	<script src="/mavo/mavo.js"></script>
+</head>
+<body>
+
+<h1>Yaml tests</h1>
+
+<section>
+	<h1>JSON to Yaml</h1>
+
+	<p>Press Save in both Mavos.</p>
+
+	<table class="reftest">
+		<tr class="interactive">
+			<td>
+				<pre id="json-dest"></pre>
+			</td>
+			<td>
+				<pre id="json-source">{
+	"group": {
+		"primitives": [
+			"foo",
+			"bar",
+			"3",
+			"true"
+		]
+	},
+	"objects": [
+		{
+			"number": 1,
+			"bool": true
+		},
+		{
+			"number": 2,
+			"bool": false
+		}
+	]
+}</pre>
+			</td>
+		</tr>
+		<tr class="interactive">
+			<td>
+				<pre id="yaml-dest"></pre>
+			</td>
+			<td>
+				<pre id="yaml-source">group:
+  primitives:
+    - foo
+    - bar
+    - '3'
+    - 'true'
+objects:
+  - number: 1
+    bool: true
+  - number: 2
+    bool: false</pre>
+			</td>
+		</tr>
+		<tr title="JSON to Yaml">
+			<td mv-app="yaml" mv-source="#json-source" mv-storage="#yaml-dest" mv-storage-format="yaml">
+				<div property="group">
+					<div property="primitives" mv-multiple></div>
+				</div>
+				<div property="objects" mv-multiple>
+					<div property="number"></div>
+					<div property="bool"></div>
+				</div>
+			</td>
+			<td style="white-space: pre-line">
+				foo<br>bar<br>3<br>true
+				1
+				true
+				2
+			</td>
+		</tr>
+		<tr title="Yaml to JSON">
+			<td mv-app="yaml" mv-source="#yaml-source" mv-source-format="yaml" mv-storage="#json-dest">
+				<div property="group">
+					<div property="primitives" mv-multiple></div>
+				</div>
+				<div property="objects" mv-multiple>
+					<div property="number"></div>
+					<div property="bool"></div>
+				</div>
+			</td>
+			<td style="white-space: pre-line">
+				foo<br>bar<br>3<br>true
+				1
+				true
+				2
+			</td>
+		</tr>
+	</table>
+</section>
+
+<script src="mavo-yaml.js"></script>
+
+<script src="https://test.mavo.io/test.js"></script>
+
+</body>
+</html>

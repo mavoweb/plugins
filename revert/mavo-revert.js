@@ -1,7 +1,6 @@
 (function ($, $$) {
 
-Mavo.Plugins.register({
-	name: "revert",
+Mavo.Plugins.register("revert", {
 	dependencies: [
 		"mavo-revert.css"
 	],

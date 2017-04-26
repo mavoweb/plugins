@@ -1,7 +1,6 @@
 (function($, $$) {
 
-Mavo.Plugins.register({
-	name: "markdown",
+Mavo.Plugins.register("markdown", {
 	ready: $.include(self.showdown, "https://cdnjs.cloudflare.com/ajax/libs/showdown/1.6.4/showdown.min.js"),
 	init: function() {
 		showdown.setFlavor("github");

@@ -1,7 +1,6 @@
 (function($) {
 
-Mavo.Plugins.register({
-	name: "tinymce",
+Mavo.Plugins.register("tinymce", {
 	ready: $.include(self.tinymce, "https://cdn.tinymce.com/4/tinymce.min.js")
 });
 

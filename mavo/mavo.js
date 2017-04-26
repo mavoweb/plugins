@@ -1,6 +1,6 @@
 !function(){"use strict";function t(e,r,s){return r=void 0===r?1:r,s=s||r+1,1>=s-r?function(){if(arguments.length<=r||"string"===n.type(arguments[r]))return e.apply(this,arguments);var t,s=arguments[r];for(var i in s){var o=Array.from(arguments);o.splice(r,1,i,s[i]),t=e.apply(this,o)}return t}:t(t(e,r+1,s),r,s-1)}function e(t,n,s){var i=r(s);if("string"===i){var o=Object.getOwnPropertyDescriptor(n,s);!o||o.writable&&o.configurable&&o.enumerable&&!o.get&&!o.set?t[s]=n[s]:(delete t[s],Object.defineProperty(t,s,o))}else if("array"===i)s.forEach(function(r){r in n&&e(t,n,r)});else for(var a in n)s&&("regexp"===i&&!s.test(a)||"function"===i&&!s.call(n,a))||e(t,n,a);return t}function r(t){if(null===t)return"null";if(void 0===t)return"undefined";var e=(Object.prototype.toString.call(t).match(/^\[object\s+(.*?)\]$/)[1]||"").toLowerCase();return"number"==e&&isNaN(t)?"nan":e}var n=self.Bliss=e(function(t,e){return 2==arguments.length&&!e||!t?null:"string"===n.type(t)?(e||document).querySelector(t):t||null},self.Bliss);e(n,{extend:e,overload:t,type:r,property:n.property||"_",sources:{},noop:function(){},$:function(t,e){return t instanceof Node||t instanceof Window?[t]:2!=arguments.length||e?Array.from("string"==typeof t?(e||document).querySelectorAll(t):t||[]):[]},defined:function(){for(var t=0;t<arguments.length;t++)if(void 0!==arguments[t])return arguments[t]},create:function(t,e){return t instanceof Node?n.set(t,e):(1===arguments.length&&("string"===n.type(t)?e={}:(e=t,t=e.tag,e=n.extend({},e,function(t){return"tag"!==t}))),n.set(document.createElement(t||"div"),e))},each:function(t,e,r){r=r||{};for(var n in t)r[n]=e.call(t,n,t[n]);return r},ready:function(t){return t=t||document,new Promise(function(e,r){"loading"!==t.readyState?e():t.addEventListener("DOMContentLoaded",function(){e()})})},Class:function(t){var e,r=["constructor","extends","abstract","static"].concat(Object.keys(n.classProps)),s=t.hasOwnProperty("constructor")?t.constructor:n.noop;2==arguments.length?(e=arguments[0],t=arguments[1]):(e=function(){if(this.constructor.__abstract&&this.constructor===e)throw new Error("Abstract classes cannot be directly instantiated.");e["super"]&&e["super"].apply(this,arguments),s.apply(this,arguments)},e["super"]=t["extends"]||null,e.prototype=n.extend(Object.create(e["super"]?e["super"].prototype:Object),{constructor:e}),e.prototype["super"]=e["super"]?e["super"].prototype:null,e.__abstract=!!t["abstract"]);var i=function(t){return this.hasOwnProperty(t)&&-1===r.indexOf(t)};if(t["static"]){n.extend(e,t["static"],i);for(var o in n.classProps)o in t["static"]&&n.classProps[o](e,t["static"][o])}n.extend(e.prototype,t,i);for(var o in n.classProps)o in t&&n.classProps[o](e.prototype,t[o]);return e},classProps:{lazy:t(function(t,e,r){return Object.defineProperty(t,e,{get:function(){var t=r.call(this);return Object.defineProperty(this,e,{value:t,configurable:!0,enumerable:!0,writable:!0}),t},set:function(t){Object.defineProperty(this,e,{value:t,configurable:!0,enumerable:!0,writable:!0})},configurable:!0,enumerable:!0}),t}),live:t(function(t,e,r){return"function"===n.type(r)&&(r={set:r}),Object.defineProperty(t,e,{get:function(){var t=this["_"+e],n=r.get&&r.get.call(this,t);return void 0!==n?n:t},set:function(t){var n=this["_"+e],s=r.set&&r.set.call(this,t,n);this["_"+e]=void 0!==s?s:t},configurable:r.configurable,enumerable:r.enumerable}),t})},include:function(){var t=arguments[arguments.length-1],e=2===arguments.length?arguments[0]:!1,r=document.createElement("script");return e?Promise.resolve():new Promise(function(e,s){n.set(r,{async:!0,onload:function(){e(),n.remove(r)},onerror:function(){s()},src:t,inside:document.head})})},fetch:function(t,r){if(!t)throw new TypeError("URL parameter is mandatory and cannot be "+t);var s=e({url:new URL(t,location),data:"",method:"GET",headers:{},xhr:new XMLHttpRequest},r);s.method=s.method.toUpperCase(),n.hooks.run("fetch-args",s),"GET"===s.method&&s.data&&(s.url.search+=s.data),document.body.setAttribute("data-loading",s.url),s.xhr.open(s.method,s.url.href,s.async!==!1,s.user,s.password);for(var i in r)if(i in s.xhr)try{s.xhr[i]=r[i]}catch(o){self.console&&console.error(o)}"GET"===s.method||s.headers["Content-type"]||s.headers["Content-Type"]||s.xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");for(var a in s.headers)s.xhr.setRequestHeader(a,s.headers[a]);return new Promise(function(t,e){s.xhr.onload=function(){document.body.removeAttribute("data-loading"),0===s.xhr.status||s.xhr.status>=200&&s.xhr.status<300||304===s.xhr.status?t(s.xhr):e(n.extend(Error(s.xhr.statusText),{xhr:s.xhr,get status(){return this.xhr.status}}))},s.xhr.onerror=function(){document.body.removeAttribute("data-loading"),e(n.extend(Error("Network Error"),{xhr:s.xhr}))},s.xhr.ontimeout=function(){document.body.removeAttribute("data-loading"),e(n.extend(Error("Network Timeout"),{xhr:s.xhr}))},s.xhr.send("GET"===s.method?null:s.data)})},value:function(t){var e="string"!==n.type(t);return n.$(arguments).slice(+e).reduce(function(t,e){return t&&t[e]},e?t:self)}}),n.Hooks=new n.Class({add:function(t,e,r){if("string"==typeof arguments[0])(Array.isArray(t)?t:[t]).forEach(function(t){this[t]=this[t]||[],e&&this[t][r?"unshift":"push"](e)},this);else for(var t in arguments[0])this.add(t,arguments[0][t],arguments[1])},run:function(t,e){this[t]=this[t]||[],this[t].forEach(function(t){t.call(e&&e.context?e.context:e,e)})}}),n.hooks=new n.Hooks;var s=n.property;n.Element=function(t){this.subject=t,this.data={},this.bliss={}},n.Element.prototype={set:t(function(t,e){t in n.setProps?n.setProps[t].call(this,e):t in this?this[t]=e:this.setAttribute(t,e)},0),transition:function(t,e){return e=+e||400,new Promise(function(r,s){if("transition"in this.style){var i=n.extend({},this.style,/^transition(Duration|Property)$/);n.style(this,{transitionDuration:(e||400)+"ms",transitionProperty:Object.keys(t).join(", ")}),n.once(this,"transitionend",function(){clearTimeout(o),n.style(this,i),r(this)});var o=setTimeout(r,e+50,this);n.style(this,t)}else n.style(this,t),r(this)}.bind(this))},fire:function(t,e){var r=document.createEvent("HTMLEvents");return r.initEvent(t,!0,!0),this.dispatchEvent(n.extend(r,e))},unbind:t(function(t,e){(t||"").split(/\s+/).forEach(function(t){if(s in this&&(t.indexOf(".")>-1||!e)){t=(t||"").split(".");var r=t[1];t=t[0];var n=this[s].bliss.listeners=this[s].bliss.listeners||{};for(var i in n)if(!t||i===t)for(var o,a=0;o=n[i][a];a++)r&&r!==o.className||e&&e!==o.callback||(this.removeEventListener(i,o.callback,o.capture),a--)}else this.removeEventListener(t,e)},this)},0)},n.setProps={style:function(t){for(var e in t)e in this.style?this.style[e]=t[e]:this.style.setProperty(e,t[e])},attributes:function(t){for(var e in t)this.setAttribute(e,t[e])},properties:function(t){n.extend(this,t)},events:function(t){if(t&&t.addEventListener){var e=this;if(t[s]&&t[s].bliss){var r=t[s].bliss.listeners;for(var i in r)r[i].forEach(function(t){e.addEventListener(i,t.callback,t.capture)})}for(var o in t)0===o.indexOf("on")&&(this[o]=t[o])}else if(arguments.length>1&&"string"===n.type(t)){var a=arguments[1],u=arguments[2];t.split(/\s+/).forEach(function(t){this.addEventListener(t,a,u)},this)}else for(var c in t)n.events(this,c,t[c])},once:t(function(t,e){t=t.split(/\s+/);var r=this,n=function(){return t.forEach(function(t){r.removeEventListener(t,n)}),e.apply(r,arguments)};t.forEach(function(t){r.addEventListener(t,n)})},0),delegate:t(function(t,e,r){this.addEventListener(t,function(t){t.target.closest(e)&&r.call(this,t)})},0,2),contents:function(t){(t||0===t)&&(Array.isArray(t)?t:[t]).forEach(function(t){var e=n.type(t);/^(string|number)$/.test(e)?t=document.createTextNode(t+""):"object"===e&&(t=n.create(t)),t instanceof Node&&this.appendChild(t)},this)},inside:function(t){t.appendChild(this)},before:function(t){t.parentNode.insertBefore(this,t)},after:function(t){t.parentNode.insertBefore(this,t.nextSibling)},start:function(t){t.insertBefore(this,t.firstChild)},around:function(t){t.parentNode&&n.before(this,t),(/^template$/i.test(this.nodeName)?this.content||this:this).appendChild(t)}},n.Array=function(t){this.subject=t},n.Array.prototype={all:function(t){var e=$$(arguments).slice(1);return this[t].apply(this,e)}},n.add=t(function(t,e,r,s){r=n.extend({$:!0,element:!0,array:!0},r),"function"==n.type(e)&&(!r.element||t in n.Element.prototype&&s||(n.Element.prototype[t]=function(){return this.subject&&n.defined(e.apply(this.subject,arguments),this.subject)}),!r.array||t in n.Array.prototype&&s||(n.Array.prototype[t]=function(){var t=arguments;return this.subject.map(function(r){return r&&n.defined(e.apply(r,t),r)})}),r.$&&(n.sources[t]=n[t]=e,(r.array||r.element)&&(n[t]=function(){var e=[].slice.apply(arguments),s=e.shift(),i=r.array&&Array.isArray(s)?"Array":"Element";return n[i].prototype[t].apply({subject:s},e)})))},0),n.add(n.Array.prototype,{element:!1}),n.add(n.Element.prototype),n.add(n.setProps),n.add(n.classProps,{element:!1,array:!1});var i=document.createElement("_");n.add(n.extend({},HTMLElement.prototype,function(t){return"function"===n.type(i[t])}),null,!0)}(),function(t){"use strict";if(Bliss&&!Bliss.shy){var e=Bliss.property;if(t.add({clone:function(){var e=this.cloneNode(!0),r=t.$("*",e).concat(e);return t.$("*",this).concat(this).forEach(function(e,n,s){t.events(r[n],e),r[n]._.data=t.extend({},e._.data)}),e}},{array:!1}),Object.defineProperty(Node.prototype,e,{get:function o(){return Object.defineProperty(Node.prototype,e,{get:void 0}),Object.defineProperty(this,e,{value:new t.Element(this)}),Object.defineProperty(Node.prototype,e,{get:o}),this[e]},configurable:!0}),Object.defineProperty(Array.prototype,e,{get:function(){return Object.defineProperty(this,e,{value:new t.Array(this)}),this[e]},configurable:!0}),self.EventTarget&&"addEventListener"in EventTarget.prototype){var r=EventTarget.prototype.addEventListener,n=EventTarget.prototype.removeEventListener,s=function(t,e,r){return r.callback===t&&r.capture==e},i=function(){return!s.apply(this,arguments)};EventTarget.prototype.addEventListener=function(t,n,i){if(this&&this[e]&&this[e].bliss&&n){var o=this[e].bliss.listeners=this[e].bliss.listeners||{};if(t.indexOf(".")>-1){t=t.split(".");var a=t[1];t=t[0]}o[t]=o[t]||[],0===o[t].filter(s.bind(null,n,i)).length&&o[t].push({callback:n,capture:i,className:a})}return r.call(this,t,n,i)},EventTarget.prototype.removeEventListener=function(t,r,s){if(this&&this[e]&&this[e].bliss&&r){var o=this[e].bliss.listeners=this[e].bliss.listeners||{};o[t]&&(o[t]=o[t].filter(i.bind(null,r,s)))}return n.call(this,t,r,s)}}self.$=self.$||t,self.$$=self.$$||t.$}}(Bliss);
 /* jsep v0.3.1 (http://jsep.from.so/) */
-!function(a){"use strict";var b="Compound",c="Identifier",d="MemberExpression",e="Literal",f="ThisExpression",g="CallExpression",h="UnaryExpression",i="BinaryExpression",j="LogicalExpression",k="ConditionalExpression",l="ArrayExpression",m=46,n=44,o=39,p=34,q=40,r=41,s=91,t=93,u=63,v=59,w=58,x=function(a,b){var c=new Error(a+" at character "+b);throw c.index=b,c.description=a,c},y=!0,z={"-":y,"!":y,"~":y,"+":y},A={"||":1,"&&":2,"|":3,"^":4,"&":5,"==":6,"!=":6,"===":6,"!==":6,"<":7,">":7,"<=":7,">=":7,"<<":8,">>":8,">>>":8,"+":9,"-":9,"*":10,"/":10,"%":10},B=function(a){var b,c=0;for(var d in a)(b=d.length)>c&&a.hasOwnProperty(d)&&(c=b);return c},C=B(z),D=B(A),E={"true":!0,"false":!1,"null":null},F="this",G=function(a){return A[a]||0},H=function(a,b,c){var d="||"===a||"&&"===a?j:i;return{type:d,operator:a,left:b,right:c}},I=function(a){return a>=48&&a<=57},J=function(a){return 36===a||95===a||a>=65&&a<=90||a>=97&&a<=122||a>=128&&!A[String.fromCharCode(a)]},K=function(a){return 36===a||95===a||a>=65&&a<=90||a>=97&&a<=122||a>=48&&a<=57||a>=128&&!A[String.fromCharCode(a)]},L=function(a){for(var i,j,y=0,B=a.charAt,L=a.charCodeAt,M=function(b){return B.call(a,b)},N=function(b){return L.call(a,b)},O=a.length,P=function(){for(var a=N(y);32===a||9===a;)a=N(++y)},Q=function(){var a,b,c=S();return P(),N(y)!==u?c:(y++,a=Q(),a||x("Expected expression",y),P(),N(y)===w?(y++,b=Q(),b||x("Expected expression",y),{type:k,test:c,consequent:a,alternate:b}):void x("Expected :",y))},R=function(){P();for(var b=a.substr(y,D),c=b.length;c>0;){if(A.hasOwnProperty(b))return y+=c,b;b=b.substr(0,--c)}return!1},S=function(){var a,b,c,d,e,f,g,h;if(f=T(),b=R(),!b)return f;for(e={value:b,prec:G(b)},g=T(),g||x("Expected expression after "+b,y),d=[f,e,g];(b=R())&&(c=G(b),0!==c);){for(e={value:b,prec:c};d.length>2&&c<=d[d.length-2].prec;)g=d.pop(),b=d.pop().value,f=d.pop(),a=H(b,f,g),d.push(a);a=T(),a||x("Expected expression after "+b,y),d.push(e,a)}for(h=d.length-1,a=d[h];h>1;)a=H(d[h-1].value,d[h-2],a),h-=2;return a},T=function(){var b,c,d;if(P(),b=N(y),I(b)||b===m)return U();if(b===o||b===p)return V();if(J(b)||b===q)return Y();if(b===s)return $();for(c=a.substr(y,C),d=c.length;d>0;){if(z.hasOwnProperty(c))return y+=d,{type:h,operator:c,argument:T(),prefix:!0};c=c.substr(0,--d)}return!1},U=function(){for(var a,b,c="";I(N(y));)c+=M(y++);if(N(y)===m)for(c+=M(y++);I(N(y));)c+=M(y++);if(a=M(y),"e"===a||"E"===a){for(c+=M(y++),a=M(y),"+"!==a&&"-"!==a||(c+=M(y++));I(N(y));)c+=M(y++);I(N(y-1))||x("Expected exponent ("+c+M(y)+")",y)}return b=N(y),J(b)?x("Variable names cannot start with a number ("+c+M(y)+")",y):b===m&&x("Unexpected period",y),{type:e,value:parseFloat(c),raw:c}},V=function(){for(var a,b="",c=M(y++),d=!1;y<O;){if(a=M(y++),a===c){d=!0;break}if("\\"===a)switch(a=M(y++)){case"n":b+="\n";break;case"r":b+="\r";break;case"t":b+="\t";break;case"b":b+="\b";break;case"f":b+="\f";break;case"v":b+="\x0B";break;default:b+="\\"+a}else b+=a}return d||x('Unclosed quote after "'+b+'"',y),{type:e,value:b,raw:c+b+c}},W=function(){var b,d=N(y),g=y;for(J(d)?y++:x("Unexpected "+M(y),y);y<O&&(d=N(y),K(d));)y++;return b=a.slice(g,y),E.hasOwnProperty(b)?{type:e,value:E[b],raw:b}:b===F?{type:f}:{type:c,name:b}},X=function(a){for(var c,d,e=[],f=!1;y<O;){if(P(),c=N(y),c===a){f=!0,y++;break}c===n?y++:(d=Q(),d&&d.type!==b||x("Expected comma",y),e.push(d))}return f||x("Expected "+String.fromCharCode(a),y),e},Y=function(){var a,b;for(a=N(y),b=a===q?Z():W(),P(),a=N(y);a===m||a===s||a===q;)y++,a===m?(P(),b={type:d,computed:!1,object:b,property:W()}):a===s?(b={type:d,computed:!0,object:b,property:Q()},P(),a=N(y),a!==t&&x("Unclosed [",y),y++):a===q&&(b={type:g,arguments:X(r),callee:b}),P(),a=N(y);return b},Z=function(){y++;var a=Q();return P(),N(y)===r?(y++,a):void x("Unclosed (",y)},$=function(){return y++,{type:l,elements:X(t)}},_=[];y<O;)i=N(y),i===v||i===n?y++:(j=Q())?_.push(j):y<O&&x('Unexpected "'+M(y)+'"',y);return 1===_.length?_[0]:{type:b,body:_}};if(L.version="0.3.1",L.toString=function(){return"JavaScript Expression Parser (JSEP) v"+L.version},L.addUnaryOp=function(a){return C=Math.max(a.length,C),z[a]=y,this},L.addBinaryOp=function(a,b){return D=Math.max(a.length,D),A[a]=b,this},L.addLiteral=function(a,b){return E[a]=b,this},L.removeUnaryOp=function(a){return delete z[a],a.length===C&&(C=B(z)),this},L.removeBinaryOp=function(a){return delete A[a],a.length===D&&(D=B(A)),this},L.removeLiteral=function(a){return delete E[a],this},"undefined"==typeof exports){var M=a.jsep;a.jsep=L,L.noConflict=function(){return a.jsep===L&&(a.jsep=M),L}}else"undefined"!=typeof module&&module.exports?exports=module.exports=L:exports.parse=L}(this);
+!function(a){"use strict";var b="Compound",c="Identifier",d="MemberExpression",e="Literal",f="ThisExpression",g="CallExpression",h="UnaryExpression",i="BinaryExpression",j="LogicalExpression",k="ConditionalExpression",l="ArrayExpression",m=46,n=44,o=39,p=34,q=40,r=41,s=91,t=93,u=63,v=59,w=58,x=function(a,b){var c=new Error(a+" at character "+b);throw c.index=b,c.description=a,c},y=!0,z={"-":y,"!":y,"~":y,"+":y},A={"||":1,"&&":2,"|":3,"^":4,"&":5,"==":6,"!=":6,"===":6,"!==":6,"<":7,">":7,"<=":7,">=":7,"<<":8,">>":8,">>>":8,"+":9,"-":9,"*":10,"/":10,"%":10},B=function(a){var b,c=0;for(var d in a)(b=d.length)>c&&a.hasOwnProperty(d)&&(c=b);return c},C=B(z),D=B(A),E={"true":!0,"false":!1,"null":null},F="this",G=function(a){return A[a]||0},H=function(a,b,c){var d="||"===a||"&&"===a?j:i;return{type:d,operator:a,left:b,right:c}},I=function(a){return a>=48&&a<=57},J=function(a){return 36===a||95===a||a>=65&&a<=90||a>=97&&a<=122||a>=128&&!A[String.fromCharCode(a)]},K=function(a){return 36===a||95===a||a>=65&&a<=90||a>=97&&a<=122||a>=48&&a<=57||a>=128&&!A[String.fromCharCode(a)]},L=function(a){for(var i,j,y=0,B=a.charAt,L=a.charCodeAt,M=function(b){return B.call(a,b)},N=function(b){return L.call(a,b)},O=a.length,P=function(){for(var a=N(y);32===a||9===a||10===a||13===a;)a=N(++y)},Q=function(){var a,b,c=S();return P(),N(y)!==u?c:(y++,a=Q(),a||x("Expected expression",y),P(),N(y)===w?(y++,b=Q(),b||x("Expected expression",y),{type:k,test:c,consequent:a,alternate:b}):void x("Expected :",y))},R=function(){P();for(var b=a.substr(y,D),c=b.length;c>0;){if(A.hasOwnProperty(b))return y+=c,b;b=b.substr(0,--c)}return!1},S=function(){var a,b,c,d,e,f,g,h;if(f=T(),b=R(),!b)return f;for(e={value:b,prec:G(b)},g=T(),g||x("Expected expression after "+b,y),d=[f,e,g];(b=R())&&(c=G(b),0!==c);){for(e={value:b,prec:c};d.length>2&&c<=d[d.length-2].prec;)g=d.pop(),b=d.pop().value,f=d.pop(),a=H(b,f,g),d.push(a);a=T(),a||x("Expected expression after "+b,y),d.push(e,a)}for(h=d.length-1,a=d[h];h>1;)a=H(d[h-1].value,d[h-2],a),h-=2;return a},T=function(){var b,c,d;if(P(),b=N(y),I(b)||b===m)return U();if(b===o||b===p)return V();if(J(b)||b===q)return Y();if(b===s)return $();for(c=a.substr(y,C),d=c.length;d>0;){if(z.hasOwnProperty(c))return y+=d,{type:h,operator:c,argument:T(),prefix:!0};c=c.substr(0,--d)}return!1},U=function(){for(var a,b,c="";I(N(y));)c+=M(y++);if(N(y)===m)for(c+=M(y++);I(N(y));)c+=M(y++);if(a=M(y),"e"===a||"E"===a){for(c+=M(y++),a=M(y),"+"!==a&&"-"!==a||(c+=M(y++));I(N(y));)c+=M(y++);I(N(y-1))||x("Expected exponent ("+c+M(y)+")",y)}return b=N(y),J(b)?x("Variable names cannot start with a number ("+c+M(y)+")",y):b===m&&x("Unexpected period",y),{type:e,value:parseFloat(c),raw:c}},V=function(){for(var a,b="",c=M(y++),d=!1;y<O;){if(a=M(y++),a===c){d=!0;break}if("\\"===a)switch(a=M(y++)){case"n":b+="\n";break;case"r":b+="\r";break;case"t":b+="\t";break;case"b":b+="\b";break;case"f":b+="\f";break;case"v":b+="\x0B";break;default:b+="\\"+a}else b+=a}return d||x('Unclosed quote after "'+b+'"',y),{type:e,value:b,raw:c+b+c}},W=function(){var b,d=N(y),g=y;for(J(d)?y++:x("Unexpected "+M(y),y);y<O&&(d=N(y),K(d));)y++;return b=a.slice(g,y),E.hasOwnProperty(b)?{type:e,value:E[b],raw:b}:b===F?{type:f}:{type:c,name:b}},X=function(a){for(var c,d,e=[],f=!1;y<O;){if(P(),c=N(y),c===a){f=!0,y++;break}c===n?y++:(d=Q(),d&&d.type!==b||x("Expected comma",y),e.push(d))}return f||x("Expected "+String.fromCharCode(a),y),e},Y=function(){var a,b;for(a=N(y),b=a===q?Z():W(),P(),a=N(y);a===m||a===s||a===q;)y++,a===m?(P(),b={type:d,computed:!1,object:b,property:W()}):a===s?(b={type:d,computed:!0,object:b,property:Q()},P(),a=N(y),a!==t&&x("Unclosed [",y),y++):a===q&&(b={type:g,arguments:X(r),callee:b}),P(),a=N(y);return b},Z=function(){y++;var a=Q();return P(),N(y)===r?(y++,a):void x("Unclosed (",y)},$=function(){return y++,{type:l,elements:X(t)}},_=[];y<O;)i=N(y),i===v||i===n?y++:(j=Q())?_.push(j):y<O&&x('Unexpected "'+M(y)+'"',y);return 1===_.length?_[0]:{type:b,body:_}};if(L.version="0.3.1",L.toString=function(){return"JavaScript Expression Parser (JSEP) v"+L.version},L.addUnaryOp=function(a){return C=Math.max(a.length,C),z[a]=y,this},L.addBinaryOp=function(a,b){return D=Math.max(a.length,D),A[a]=b,this},L.addLiteral=function(a,b){return E[a]=b,this},L.removeUnaryOp=function(a){return delete z[a],a.length===C&&(C=B(z)),this},L.removeBinaryOp=function(a){return delete A[a],a.length===D&&(D=B(A)),this},L.removeLiteral=function(a){return delete E[a],this},"undefined"==typeof exports){var M=a.jsep;a.jsep=L,L.noConflict=function(){return a.jsep===L&&(a.jsep=M),L}}else"undefined"!=typeof module&&module.exports?exports=module.exports=L:exports.parse=L}(this);
 //# sourceMappingURL=jsep.min.js.map
 /*
  * Stretchy: Form element autosizing, the way it should be.
@@ -422,16 +422,16 @@ var _ = self.Mavo = $.Class({
 					});
 				});
 			}
-		}, () => {
-			this.element.removeEventListener(".mavo:autosave");
-		});
 
-		// Ctrl + S or Cmd + S to save
-		this.element.addEventListener("keydown", evt => {
-			if (evt.keyCode == 83 && evt[_.superKey]) {
-				evt.preventDefault();
-				this.save();
-			}
+			// Ctrl + S or Cmd + S to save
+			this.element.addEventListener("keydown.mavo:save", evt => {
+				if (evt.keyCode == 83 && evt[_.superKey]) {
+					evt.preventDefault();
+					this.save();
+				}
+			});
+		}, () => {
+			$.unbind(this.element, ".mavo:save .mavo:autosave");
 		});
 
 		Mavo.hooks.run("init-end", this);
@@ -478,7 +478,7 @@ var _ = self.Mavo = $.Class({
 		this.unsavedChanges = false;
 
 		this.expressions.active = true;
-		this.expressions.update();
+		requestAnimationFrame(() => this.expressions.update());
 
 		_.hooks.run("render-end", env);
 	},
@@ -568,7 +568,7 @@ var _ = self.Mavo = $.Class({
 			// We have a string, convert to a backend object if different than existing
 			this[role] = backend = _.Backend.create(backend, {
 				mavo: this,
-				format: this.element.getAttribute("mv-format-" + role) || this.element.getAttribute("mv-format")
+				format: this.element.getAttribute(`mv-${role}-format`) || this.element.getAttribute("mv-format")
 			});
 		}
 		else if (!backend) {
@@ -811,7 +811,8 @@ var _ = self.Mavo = $.Class({
 
 		attributes: [
 			"mv-app", "mv-storage", "mv-source", "mv-init", "mv-path", "mv-format",
-			"mv-attribute", "mv-default", "mv-mode", "mv-edit", "mv-permisssions"
+			"mv-attribute", "mv-default", "mv-mode", "mv-edit", "mv-permisssions",
+			"mv-rel"
 		]
 	}
 });
@@ -850,6 +851,7 @@ let andNot = s.andNot = (selector1, selector2) => and(selector1, not(selector2))
 $.extend(_.selectors, {
 	primitive: andNot(s.property, s.group),
 	rootGroup: andNot(s.group, s.property),
+	item: or(s.multiple, s.group),
 	output: or(s.specificProperty("output"), ".mv-output")
 });
 
@@ -928,6 +930,27 @@ var _ = $.extend(Mavo, {
 	},
 
 	/**
+	 * toJSON without cycles
+	 */
+	safeToJSON: function(o) {
+		var cache = new WeakSet();
+
+		return JSON.stringify(o, (key, value) => {
+			if (typeof value === "object" && value !== null) {
+				// No circular reference found
+
+				if (cache.has(value)) {
+					return; // Circular reference found!
+				}
+
+				cache.add(value);
+			}
+
+			return value;
+		});
+	},
+
+	/**
 	 * Array utlities
 	 */
 
@@ -943,12 +966,6 @@ var _ = $.extend(Mavo, {
 			arr.splice(index, 1);
 		}
 	},
-
-	/**
-	 * Do two arrays have a non-empty intersection?
-	 * @return {Boolean}
-	 */
-	hasIntersection: (arr1, arr2) => arr1 && arr2 && !arr1.every(el => arr2.indexOf(el) == -1),
 
 	// Recursively flatten a multi-dimensional array
 	flatten: arr => {
@@ -1119,29 +1136,8 @@ var _ = $.extend(Mavo, {
 		}
 	},
 
-	/**
-	 * Deep clone an object. Only supports object literals, arrays, and primitives
-	 */
 	clone: function(o) {
-		if (typeof o !== "object" || o === null) {
-			// Primitive
-			return o;
-		}
-
-		if (Array.isArray(o)) {
-			return o.slice().map(_.clone);
-		}
-
-		// Object
-		var clone = {};
-
-		for (let property in o) {
-			if (o.hasOwnProperty(property)) {
-				clone[property] = _.clone(o[property]);
-			}
-		}
-
-		return clone;
+		return JSON.parse(_.safeToJSON(o));
 	},
 
 	// Credit: https://remysharp.com/2010/07/21/throttling-function-calls
@@ -1425,8 +1421,8 @@ var _ = Mavo.Plugins = {
 		});
 	},
 
-	register: function(o) {
-		if (o.name && _.loaded[o.name]) {
+	register: function(name, o = {}) {
+		if (_.loaded[name]) {
 			// Do not register same plugin twice
 			return;
 		}
@@ -1460,9 +1456,7 @@ var _ = Mavo.Plugins = {
 			Mavo.dependencies.push(...ready);
 		}
 
-		if (o.name) {
-			_.loaded[o.name] = o;
-		}
+		_.loaded[name] = o;
 
 		if (o.init) {
 			Promise.all(ready).then(() => o.init());
@@ -2054,11 +2048,10 @@ var _ = Mavo.Backend = $.Class({
 		this.permissions = new Mavo.Permissions();
 	},
 
-	get: function() {
-		var url = new URL(this.url);
+	get: function(url = new URL(this.url)) {
 		url.searchParams.set("timestamp", Date.now()); // ensure fresh copy
 
-		return $.fetch(this.url.href).then(xhr => Promise.resolve(xhr.responseText), () => Promise.resolve(null));
+		return $.fetch(url.href).then(xhr => Promise.resolve(xhr.responseText), () => Promise.resolve(null));
 	},
 
 	load: function() {
@@ -2404,7 +2397,7 @@ var csv = _.CSV = $.Class({
 			};
 		}),
 
-		stringify: (serialized, me) => csv.ready().then(() => {
+		stringify: (data, me) => csv.ready().then(() => {
 			var property = me? me.property : "content";
 			var options = me? me.options : csv.defaultOptions;
 			return Papa.unparse(data[property], options);
@@ -2472,23 +2465,23 @@ var _ = Mavo.Node = $.Class({
 
 		_.all.set(element, [...(_.all.get(this.element) || []), this]);
 
+		this.mavo = mavo;
+		this.group = this.parentGroup = env.options.group;
+
 		this.template = env.options.template;
 
 		if (this.template) {
-			// TODO remove if this is deleted
 			this.template.copies.push(this);
 		}
 		else {
+			// First (or only) of its kind
 			this.copies = [];
 		}
-
-		this.mavo = mavo;
-		this.group = this.parentGroup = env.options.group;
 
 		if (!this.fromTemplate("property", "type")) {
 			this.property = _.getProperty(element);
 			this.type = Mavo.Group.normalize(element);
-			this.store = this.element.getAttribute("mv-storage"); // TODO rename to storage
+			this.storage = this.element.getAttribute("mv-storage"); // TODO rename to storage
 		}
 
 		this.modes = this.element.getAttribute("mv-mode");
@@ -2532,7 +2525,7 @@ var _ = Mavo.Node = $.Class({
 	},
 
 	get saved() {
-		return this.store !== "none";
+		return this.storage !== "none";
 	},
 
 	get path() {
@@ -2551,7 +2544,9 @@ var _ = Mavo.Node = $.Class({
 	},
 
 	destroy: function() {
-
+		if (this.template) {
+			Mavo.delete(this.template.copies, this);
+		}
 	},
 
 	getData: function(o = {}) {
@@ -2564,7 +2559,7 @@ var _ = Mavo.Node = $.Class({
 		var env = {
 			context: this,
 			options: o,
-			result: this.deleted || !this.saved && (o.store != "*")
+			result: this.deleted || !this.saved && !o.live
 		};
 
 		Mavo.hooks.run("unit-isdatanull", env);
@@ -2619,8 +2614,6 @@ var _ = Mavo.Node = $.Class({
 		if (this.mode != "edit") {
 			return false;
 		}
-
-		this.propagate("edit");
 
 		Mavo.hooks.run("node-edit-end", this);
 	},
@@ -2722,9 +2715,15 @@ var _ = Mavo.Node = $.Class({
 	},
 
 	getClosestCollection: function() {
-		return this.collection ||
-			   this.group.collection ||
-			   (this.parentGroup? this.parentGroup.closestCollection : null);
+		if (this.collection && this.collection.mutable) {
+			return this.collection;
+		}
+
+		if (this.group.collection && this.group.collection.mutable) {
+			return this.group.collection;
+		}
+
+		return this.parentGroup? this.parentGroup.closestCollection : null;
 	},
 
 	/**
@@ -2738,6 +2737,85 @@ var _ = Mavo.Node = $.Class({
 		}
 
 		return !!this.parentGroup && this.parentGroup.isDeleted();
+	},
+
+	relativizeData: function(data, options = {live: true}) {
+		return new Proxy(data, {
+			get: (data, property, proxy) => {
+				// Checking if property is in proxy might add it to the data
+				if (property in data || (property in proxy && property in data)) {
+					var ret = data[property];
+
+					return ret;
+				}
+			},
+
+			has: (data, property) => {
+				if (property in data) {
+					return true;
+				}
+
+				// Property does not exist, look for it elsewhere
+
+				// Special values
+				switch (property) {
+					case "$index":
+						data[property] = this.index || 0;
+						return true; // if index is 0 it's falsy and has would return false!
+					case "$next":
+					case "$previous":
+						if (this.closestCollection) {
+							data[property] = this.closestCollection.getData(options)[this.index + (property == "$next"? 1 : -1)];
+							return true;
+						}
+
+						data[property] = null;
+						return false;
+				}
+
+				if (this instanceof Mavo.Group && property == this.property && this.collection) {
+					data[property] = data;
+					return true;
+				}
+
+				// First look in ancestors
+				var ret = this.walkUp(group => {
+					if (property in group.children) {
+						return group.children[property];
+					};
+				});
+
+				if (ret === undefined) {
+					// Still not found, look in descendants
+					ret = this.find(property);
+				}
+
+				if (ret !== undefined) {
+					if (Array.isArray(ret)) {
+						ret = ret.map(item => item.getData(options))
+								 .filter(item => item !== null);
+					}
+					else if (ret instanceof Mavo.Node) {
+						ret = ret.getData(options);
+					}
+
+					data[property] = ret;
+
+					return true;
+				}
+
+				// Does it reference another Mavo?
+				if (property in Mavo.all && Mavo.all[property].root) {
+					return data[property] = Mavo.all[property].root.getData(options);
+				}
+
+				return false;
+			},
+
+			set: function(data, property, value) {
+				throw Error("You can’t set data via expressions.");
+			}
+		});
 	},
 
 	lazy: {
@@ -2938,36 +3016,30 @@ var _ = Mavo.Group = $.Class({
 
 		// Create Mavo objects for all properties in this group (primitives or groups),
 		// but not properties in descendant groups (they will be handled by their group)
-		$$(Mavo.selectors.property, this.element).forEach(element => {
-			var property = Mavo.Node.getProperty(element);
+		var properties = $$(Mavo.selectors.property, this.element).filter(element => {
+			return this.element === element.parentNode.closest(Mavo.selectors.group);
+		});
 
-			if (this.contains(element)) {
-				var existing = this.children[property];
-				var template = this.template? this.template.children[property] : null;
-				var constructorOptions = {template, group: this};
+		var propertyNames = properties.map(element => Mavo.Node.getProperty(element));
 
-				if (existing) {
-					// Twogroups with the same property, convert to static collection
-					var collection = existing;
+		properties.forEach((element, i) => {
+			var property = propertyNames[i];
+			var template = this.template? this.template.children[property] : null;
+			var options = {template, group: this};
 
-					if (!(existing instanceof Mavo.Collection)) {
-						collection = new Mavo.Collection(existing.element, this.mavo, constructorOptions);
-						this.children[property] = existing.collection = collection;
-						collection.add(existing);
-					}
-
-					if (!collection.mutable && Mavo.is("multiple", element)) {
-						collection.mutable = true;
-					}
-
-					collection.add(element);
-				}
-				else {
-					// No existing properties with this id, normal case
-					var obj = Mavo.Node.create(element, this.mavo, constructorOptions);
-
-					this.children[property] = obj;
-				}
+			if (this.children[property]) {
+				// Already exists, must be a collection
+				var collection = this.children[property];
+				collection.add(element);
+				collection.mutable = collection.mutable || Mavo.is("multiple", element);
+			}
+			else if (propertyNames.indexOf(property) != propertyNames.lastIndexOf(property)) {
+				// There are duplicates, so this should be a collection.
+				this.children[property] = new Mavo.Collection(element, this.mavo, options);
+			}
+			else {
+				// Normal case
+				this.children[property] = Mavo.Node.create(element, this.mavo, options);
 			}
 		});
 
@@ -3001,11 +3073,11 @@ var _ = Mavo.Group = $.Class({
 
 		env.data = this.data? Mavo.clone(Mavo.subset(this.data, this.inPath)) : {};
 
-		for (let property in this.children) {
-			let obj = this.children[property];
+		for (var property in this.children) {
+			var obj = this.children[property];
 
 			if (obj.saved || env.options.live) {
-				let data = obj.getData(o);
+				var data = obj.getData(o);
 
 				if (data !== null || env.options.live) {
 					env.data[obj.property] = data;
@@ -3013,18 +3085,33 @@ var _ = Mavo.Group = $.Class({
 			}
 		}
 
-		if (!env.options.live) {
-			// Add JSON-LD stuff to stored data
-			if (this.type && this.type != _.DEFAULT_TYPE) {
-				env.data["@type"] = this.type;
-			}
-
-			if (this.vocab) {
-				env.data["@context"] = this.vocab;
-			}
-
+		if (!env.options.live) { // Stored data
 			// If storing, use the rendered data too
 			env.data = Mavo.subset(this.data, this.inPath, env.data);
+		}
+
+		// {foo: {foo: 5}} should become {foo: 5}
+		var properties = Object.keys(env.data);
+
+		if (properties.length == 1 && properties[0] == this.property) {
+			env.data = env.data[this.property];
+		}
+
+		if (!env.options.live) { // Stored data again
+			if (!properties.length && !this.isRoot) {
+				// Avoid {} in the data
+				env.data = null;
+			}
+			else if (env.data && typeof env.data === "object") {
+				// Add JSON-LD stuff
+				if (this.type && this.type != _.DEFAULT_TYPE) {
+					env.data["@type"] = this.type;
+				}
+
+				if (this.vocab) {
+					env.data["@context"] = this.vocab;
+				}
+			}
 		}
 
 		Mavo.hooks.run("node-getdata-end", env);
@@ -3065,6 +3152,14 @@ var _ = Mavo.Group = $.Class({
 		}
 	},
 
+	edit: function() {
+		if (this.super.edit.call(this) === false) {
+			return false;
+		}
+
+		this.propagate("edit");
+	},
+
 	save: function() {
 		this.unsavedChanges = false;
 	},
@@ -3077,35 +3172,50 @@ var _ = Mavo.Group = $.Class({
 			return;
 		}
 
-		// TODO what if it was a primitive and now it's a group?
-		// In that case, render the this.children[this.property] with it
+		// What if data is not an object?
+		if (typeof data !== "object") {
+			// Data is a primitive, render it on this.property or failing that, any writable property
+			if (this.property in this.children) {
+				var property = this.property;
+			}
+			else {
+				var type = $.type(data);
+				var score = prop => (this.children[prop] instanceof Mavo.Primitive) + (this.children[prop].datatype == type);
 
-		this.propagate(obj => {
-			obj.render(data[obj.property]);
-		});
+				var property = Object.keys(this.children)
+					.filter(p => !this.children[p].expressionText)
+					.sort((prop1, prop2) => score(prop1) - score(prop2))
+					.reverse()[0];
 
-		// Fire datachange events for properties not in the template,
-		// since nothing else will and they can still be referenced in expressions
-		var oldData = Mavo.subset(this.oldData, this.inPath);
+			}
 
-		for (let property in data) {
-			if (!(property in this.children)) {
-				let value = data[property];
+			data = {[property]: data};
 
-				if (typeof value != "object" && (!oldData || oldData[property] != value)) {
-					this.dataChanged("propertychange", {property});
+			this.data = Mavo.subset(this.data, this.inPath, data);
+
+			this.propagate(obj => {
+				obj.render(data[obj.property]);
+			});
+		}
+		else {
+			this.propagate(obj => {
+				obj.render(data[obj.property]);
+			});
+
+			// Fire datachange events for properties not in the template,
+			// since nothing else will and they can still be referenced in expressions
+			var oldData = Mavo.subset(this.oldData, this.inPath);
+
+			for (var property in data) {
+				if (!(property in this.children)) {
+					var value = data[property];
+
+					if (typeof value != "object" && (!oldData || oldData[property] != value)) {
+						this.dataChanged("propertychange", {property});
+					}
 				}
 			}
 		}
-	},
-
-	// Check if this group contains a property
-	contains: function(property) {
-		if (property instanceof Mavo.Node) {
-			return property.parentGroup === this;
-		}
-
-		return property.parentNode && (this.element === property.parentNode.closest(Mavo.selectors.group));
 	},
 
 	static: {
@@ -3181,6 +3291,28 @@ var _ = Mavo.Primitive = $.Class({
 		 * Set up input widget
 		 */
 
+		 // Linked widgets
+		if (!this.editor && this.element.hasAttribute("mv-edit")) {
+			var original = $(this.element.getAttribute("mv-edit"));
+
+			if (original) {
+				this.editor = original.cloneNode(true);
+
+				// Update editor if original mutates
+				// This means that expressions on mv-edit for individual collection items will not be picked up
+				if (!this.template) {
+					new Mavo.Observer(original, "all", records => {
+						var all = this.copies.concat(this);
+
+						for (let primitive of all) {
+							primitive.editor = original.cloneNode(true);
+							primitive.setValue(primitive.value, {force: true, silent: true});
+						}
+					});
+				}
+			}
+		}
+
 		// Nested widgets
 		if (!this.editor && !this.attribute) {
 			this.editor = $$(this.element.children).filter(function (el) {
@@ -3190,25 +3322,6 @@ var _ = Mavo.Primitive = $.Class({
 			if (this.editor) {
 				this.element.textContent = this.editorValue;
 				$.remove(this.editor);
-			}
-		}
-
-		// Linked widgets
-		if (!this.editor && this.element.hasAttribute("mv-edit")) {
-			var original = $(this.element.getAttribute("mv-edit"));
-
-			if (original && Mavo.is("formControl", original)) {
-				this.editor = original.cloneNode(true);
-
-				// Update editor if original mutates
-				if (!this.template) {
-					new Mavo.Observer(original, "all", records => {
-						for (let primitive of this.copies) {
-							primitive.editor = original.cloneNode(true);
-							primitive.setValue(primitive.value, {force: true, silent: true});
-						}
-					});
-				}
 			}
 		}
 
@@ -3228,7 +3341,16 @@ var _ = Mavo.Primitive = $.Class({
 			});
 		}
 
-		this.initialValue = (!this.template && this.default === undefined? this.templateValue : this.default) || this.emptyValue;
+		if (this.default === undefined && (!this.template || !this.closestCollection)) {
+			this.initialValue = this.templateValue;
+		}
+		else {
+			this.initialValue = this.default;
+		}
+
+		if (this.initialValue === undefined) {
+			this.initialValue = this.emptyValue;
+		}
 
 		this.setValue(this.initialValue, {silent: true});
 
@@ -3393,7 +3515,7 @@ var _ = Mavo.Primitive = $.Class({
 			// Empty properties should become editable immediately
 			// otherwise they could be invisible!
 			if (this.empty && !this.attribute) {
-				return resolve();
+				return requestAnimationFrame(resolve);
 			}
 
 			var timer;
@@ -3640,7 +3762,7 @@ var _ = Mavo.Primitive = $.Class({
 		getValueAttribute: function (element, config = Mavo.Elements.search(element)) {
 			var ret = element.getAttribute("mv-attribute") || config.attribute;
 
-			if (!ret || ret === "null") {
+			if (!ret || ret === "null" || ret === "none") {
 				ret = null;
 			}
 
@@ -3723,7 +3845,7 @@ var _ = Mavo.Primitive = $.Class({
 			return _.safeCast(ret, datatype);
 		},
 
-		getConfig: function(element, attribute) {
+		getConfig: function(element, attribute, datatype) {
 			if (attribute === undefined) {
 				attribute = element.getAttribute("mv-attribute") || undefined;
 			}
@@ -3732,10 +3854,16 @@ var _ = Mavo.Primitive = $.Class({
 				attribute = null;
 			}
 
-			var config = Mavo.Elements.search(element, attribute);
+			datatype = element.getAttribute("datatype") || undefined;
+
+			var config = Mavo.Elements.search(element, attribute, datatype);
 
 			if (config.attribute === undefined) {
 				config.attribute = attribute || null;
+			}
+
+			if (config.datatype === undefined) {
+				config.datatype = datatype;
 			}
 
 			return config;
@@ -4002,8 +4130,9 @@ Object.defineProperties(_, {
 	},
 	"search": {
 		value: function(element, attribute, datatype) {
-			var matches = _.matches(element, attribute, datatype);
 
+			var matches = _.matches(element, attribute, datatype);
+			
 			return matches[matches.length - 1] || { attribute };
 		}
 	},
@@ -4418,6 +4547,21 @@ _.register({
 	"text": {
 		default: true,
 		popup: true
+	},
+
+	"[role=checkbox]": {
+		default: true,
+		attribute: "aria-checked",
+		datatype: "boolean",
+		edit: function() {
+			this.element.addEventListener("click.mavo:edit", evt => {
+				this.value = !this.value;
+				evt.preventDefault();
+			});
+		},
+		done: function() {
+			$.unbind(this.element, ".mavo:edit");
+		}
 	}
 });
 
@@ -4449,11 +4593,9 @@ var _ = Mavo.Collection = $.Class({
 			this.templateElement = this.templateElement.cloneNode(true);
 		}
 
-		if (this.mutable) {
-			var item = this.createItem(this.element);
-			this.add(item);
-			this.itemTemplate = item.template || item;
-		}
+		var item = this.createItem(this.element);
+		this.add(item, undefined, {silent: true});
+		this.itemTemplate = item.template || item;
 
 		this.postInit();
 
@@ -4562,18 +4704,18 @@ var _ = Mavo.Collection = $.Class({
 			add: env.item
 		});
 
-		if (!o.silent) {
-			env.changed.forEach(i => {
-				i.dataChanged(i == env.item && env.previousIndex === undefined? "add" : "move");
-				i.unsavedChanges = true;
-			});
+		if (this.mavo.expressions.active && !o.silent) {
+			requestAnimationFrame(() => {
+				env.changed.forEach(i => {
+					i.dataChanged(i == env.item && env.previousIndex === undefined? "add" : "move");
+					i.unsavedChanges = true;
+				});
 
-			this.unsavedChanges = this.mavo.unsavedChanges = true;
+				this.unsavedChanges = this.mavo.unsavedChanges = true;
+			});
 		}
 
 		Mavo.hooks.run("collection-add-end", env);
-
-		this.mavo.treeBuilt.then(() => this.mavo.expressions.update(env.item.element));
 
 		return env.item;
 	},
@@ -4683,11 +4825,13 @@ var _ = Mavo.Collection = $.Class({
 	},
 
 	editItem: function(item) {
-		if (!item.itemControls) {
-			item.itemControls = new Mavo.UI.Itembar(item);
-		}
+		if (this.mutable) {
+			if (!item.itemControls) {
+				item.itemControls = new Mavo.UI.Itembar(item);
+			}
 
-		item.itemControls.add();
+			item.itemControls.add();
+		}
 
 		item.edit();
 	},
@@ -4706,16 +4850,16 @@ var _ = Mavo.Collection = $.Class({
 				$[this.bottomUp? "before" : "after"](this.addButton, rel);
 			}
 
-			// Insert item controls
-			this.propagate(item => {
-				this.editItem(item);
-			});
-
 			// Set up drag & drop
 			_.dragula.then(() => {
 				this.getDragula();
 			});
 		}
+
+		// Edit items, maybe insert item bar
+		this.propagate(item => {
+			this.editItem(item);
+		});
 	},
 
 	done: function() {
@@ -4789,6 +4933,7 @@ var _ = Mavo.Collection = $.Class({
 					this.children[i].render(data[i]);
 				}
 				else {
+					this.children[i].dataChanged("delete");
 					this.delete(this.children[i], true);
 				}
 			}
@@ -4810,8 +4955,6 @@ var _ = Mavo.Collection = $.Class({
 
 					var env = {context: this, item};
 					Mavo.hooks.run("collection-add-end", env);
-
-					this.mavo.treeBuilt.then(() => this.mavo.expressions.update(env.item.element));
 				}
 
 				if (this.bottomUp) {
@@ -4819,6 +4962,10 @@ var _ = Mavo.Collection = $.Class({
 				}
 				else {
 					$.before(fragment, this.marker);
+				}
+
+				for (var j = i; j < this.children.length; j++) {
+					this.children[j].dataChanged("add");
 				}
 			}
 		}
@@ -4855,7 +5002,10 @@ var _ = Mavo.Collection = $.Class({
 				// Keep position of the template in the DOM, since we might remove it
 				this.marker = document.createComment("mv-marker");
 				Mavo.data(this.marker, "collection", this);
-				$.after(this.marker, this.templateElement);
+
+				var ref = this.templateElement.parentNode? this.templateElement : this.children[this.length - 1].element;
+
+				$.after(this.marker, ref);
 			}
 		}
 	},
@@ -5028,18 +5178,19 @@ var _ = Mavo.UI.Itembar = $.Class({
 	constructor: function(item) {
 		this.item = item;
 
-		this.element = $$(".mv-item-controls", this.item.element).filter(el => {
-								   // Remove item controls meant for other collections
-								   return el.closest(Mavo.selectors.multiple) == this.item.element && !Mavo.data(el, "item");
-							   })[0];
+		this.element = $$(`.mv-item-bar:not([mv-rel]), .mv-item-bar[mv-rel="${this.item.property}"]`, this.item.element).filter(el => {
+				// Remove item controls meant for other collections
+				return el.closest(Mavo.selectors.multiple) == this.item.element && !Mavo.data(el, "item");
+			})[0];
 
 		this.element = this.element || $.create({
-			className: "mv-item-controls mv-ui"
+			className: "mv-item-bar mv-ui"
 		});
 
 		Mavo.data(this.element, "item", this.item);
 
 		$.set(this.element, {
+			"mv-rel": this.item.property,
 			contents: [
 				{
 					tag: "button",
@@ -5145,6 +5296,7 @@ var _ = Mavo.Expression = $.Class({
 		}
 		catch (exception) {
 			console.info("%cExpression error!", "color: red; font-weight: bold", `${exception.message} in expression ${this.expression}`);
+
 			Mavo.hooks.run("expression-eval-error", {context: this, exception});
 
 			this.value = exception;
@@ -5170,18 +5322,18 @@ var _ = Mavo.Expression = $.Class({
 			return true;
 		}
 
-		if (Mavo.hasIntersection(evt.properties, this.identifiers)) {
+		if (Mavo.Functions.intersects(evt.properties, this.identifiers)) {
 			return true;
 		}
 
 		if (evt.action != "propertychange") {
-			if (Mavo.hasIntersection(["$index", "$all", "$previous", "$next"], this.identifiers)) {
+			if (Mavo.Functions.intersects(["$index", "$previous", "$next"], this.identifiers)) {
 				return true;
 			}
 
 			var collection = evt.node.collection || evt.node;
 
-			if (Mavo.hasIntersection(collection.properties, this.identifiers)) {
+			if (Mavo.Functions.intersects(collection.properties, this.identifiers)) {
 				return true;
 			}
 		}
@@ -5270,7 +5422,7 @@ var _ = Mavo.Expression = $.Class({
 			code = _.rewrite(code);
 
 			return new Function("data", `with(Mavo.Functions._Trap)
-					with(data) {
+					with (data || {}) {
 						return ${code};
 					}`);
 		},
@@ -5416,7 +5568,8 @@ var _ = Mavo.DOMExpression = $.Class({
 
 		this.mavo.treeBuilt.then(() => {
 			if (!this.template) {
-				this.item = Mavo.Node.get(this.element.closest(Mavo.selectors.multiple + ", " + Mavo.selectors.group));
+				// Only collection items and groups can have their own expressions arrays
+				this.item = Mavo.Node.get(this.element.closest(Mavo.selectors.item));
 				this.item.expressions = [...(this.item.expressions || []), this];
 			}
 
@@ -5435,6 +5588,7 @@ var _ = Mavo.DOMExpression = $.Class({
 	update: function(data = this.data, event) {
 		var env = {context: this, ret: {}, event};
 		var parentEnv = env;
+
 		this.data = data;
 
 		env.ret = {};
@@ -5591,26 +5745,49 @@ var _ = Mavo.Expressions = $.Class({
 	},
 
 	update: function(evt) {
-		var root, rootGroup;
-
-		if (evt instanceof Element) {
-			root = evt.closest(Mavo.selectors.group);
-			evt = null;
+		if (!this.active) {
+			return;
 		}
 
-		root = root || this.mavo.element;
-		rootGroup = Mavo.Node.get(root);
+		var root, rootObject;
 
-		var data = rootGroup.getData({live: true});
+		if (evt instanceof Mavo.Node) {
+			rootObject = evt;
+			evt = null;
+		}
+		else if (evt instanceof Element) {
+			root = evt.closest(Mavo.selectors.item);
+			rootObject = Mavo.Node.get(root);
+			evt = null;
+		}
+		else {
+			rootObject = this.mavo.root;
+		}
 
-		rootGroup.walk((obj, path) => {
+		var allData = rootObject.getData({live: true});
+
+		rootObject.walk((obj, path) => {
+			var data = $.value(allData, ...path);
+
 			if (obj.expressions && obj.expressions.length && !obj.isDeleted()) {
-				let env = { context: this, data: $.value(data, ...path) };
+				if (typeof data != "object" || data === null) {
+					// Turn primitives into objects, so we can have $index, their property
+					// name etc resolve relative to them, not their parent group
+					var parentData = $.value(allData, ...path.slice(0, -1));
 
-				Mavo.hooks.run("expressions-update-start", env);
+					data = {
+						[Symbol.toPrimitive]: () => data,
+						[obj.property]: data
+					};
+
+					if (self.Proxy) {
+						data = obj.relativizeData(data);
+					}
+				}
+
 				for (let et of obj.expressions) {
 					if (et.changedBy(evt)) {
-						et.update(env.data, evt);
+						et.update(data, evt);
 					}
 				}
 			}
@@ -5672,99 +5849,17 @@ var _ = Mavo.Expressions = $.Class({
 		directive: function(name, o) {
 			_.directives.push(name);
 			Mavo.attributes.push(name);
-			o.name = name;
-			Mavo.Plugins.register(o);
+			Mavo.Plugins.register(name, o);
 		}
 	}
 });
 
 if (self.Proxy) {
 	Mavo.hooks.add("node-getdata-end", function(env) {
-		if (env.options.live && (env.data && typeof env.data === "object" || this.collection)) {
+		if (env.options.live && (env.data || env.data === 0 || env.data === "") && (typeof env.data === "object")) {
 			var data = env.data;
 
-			if (this instanceof Mavo.Primitive) {
-				env.data = {
-					[Symbol.toPrimitive]: () => data,
-					[this.property]: data
-				};
-			}
-
-			env.data = new Proxy(env.data, {
-				get: (data, property, proxy) => {
-					// Checking if property is in proxy might add it to the data
-					if (property in data || (property in proxy && property in data)) {
-						return data[property];
-					}
-				},
-
-				has: (data, property) => {
-					if (property in data) {
-						return true;
-					}
-
-					// Property does not exist, look for it elsewhere
-
-					if (property == "$index") {
-						data[property] = this.index || 0;
-						return true; // if index is 0 it's falsy and has would return false!
-					}
-
-					if (property == "$all") {
-						return data[property] = this.closestCollection? this.closestCollection.getData(env.options) : [env.data];
-					}
-
-					if (property == "$next" || property == "$previous") {
-						if (this.closestCollection) {
-							return data[property] = this.closestCollection.getData(env.options)[this.index + (property == "$next"? 1 : -1)];
-						}
-
-						data[property] = null;
-						return null;
-					}
-
-					if (this instanceof Mavo.Group && property == this.property && this.collection) {
-						return data[property] = env.data;
-					}
-
-					// First look in ancestors
-					var ret = this.walkUp(group => {
-						if (property in group.children) {
-							return group.children[property];
-						};
-					});
-
-					if (ret === undefined) {
-						// Still not found, look in descendants
-						ret = this.find(property);
-					}
-
-					if (ret !== undefined) {
-						if (Array.isArray(ret)) {
-							ret = ret.map(item => item.getData(env.options))
-									 .filter(item => item !== null);
-						}
-						else if (ret instanceof Mavo.Node) {
-							ret = ret.getData(env.options);
-						}
-
-						data[property] = ret;
-
-						return true;
-					}
-
-					// Does it reference another Mavo?
-					if (property in Mavo.all) {
-						return data[property] = Mavo.all[property].root.getData(env.options);
-					}
-
-					return false;
-				},
-
-				set: function(data, property, value) {
-					throw Error("You can’t set data via expressions.");
-				}
-			});
+			env.data = this.relativizeData(data);
 		}
 	});
 }
@@ -5897,6 +5992,7 @@ Mavo.Expressions.directive("mv-value", {
 			}
 
 			et.mavoNode = this;
+			this.expressionText = et;
 			this.storage = this.storage || "none";
 			this.modes = "read";
 
@@ -5963,12 +6059,50 @@ var _ = Mavo.Functions = {
 	 * Get a property of an object. Used by the . operator to prevent TypeErrors
 	 */
 	get: function(obj, property) {
-		return obj && obj[property] !== undefined? obj[property] : null;
+		if (obj && obj[property] !== undefined) {
+			return obj[property];
+		}
+
+		if (Array.isArray(obj) && isNaN(property)) {
+			// Array and non-numerical property
+			for (var first of obj) {
+				if (first && typeof first === "object") {
+					break;
+				}
+			}
+
+			if (first) {
+				if ("id" in first) {
+					// Try by id?
+					for (var i=0; i<obj.length; i++) {
+						if (obj[i] && obj[i].id == property) {
+							return _.get(obj, i);
+						}
+					}
+				}
+
+				// Still here, get that property from the objects inside
+				return obj.map(e => _.get(e, property));
+			}
+		}
+
+		// Not found :(
+		return null;
 	},
 
 	unique: function(arr) {
+		if (!Array.isArray(arr)) {
+			return arr;
+		}
+
 		return [...new Set(arr)];
 	},
+
+	/**
+	 * Do two arrays have a non-empty intersection?
+	 * @return {Boolean}
+	 */
+	intersects: (arr1, arr2) => arr1 && arr2 && !arr1.every(el => arr2.indexOf(el) == -1),
 
 	/*********************
 	 * Number functions
@@ -6066,10 +6200,12 @@ var _ = Mavo.Functions = {
 	/**
 	 * Case insensitive search
 	 */
-	search: (haystack, needle) => haystack && needle? haystack.toLowerCase().indexOf(needle.toLowerCase()) : -1,
+	search: (haystack, needle) => haystack && needle? (haystack + "").toLowerCase().indexOf((needle + "").toLowerCase()) : -1,
 
-	starts: (haystack, needle) => _.search(haystack, needle) === 0,
+	starts: (haystack, needle) => _.search((haystack + ""), (needle + "")) === 0,
 	ends: function(haystack, needle) {
+		haystack += "";
+		needle += "";
 		var i = _.search(haystack, needle);
 		return  i > -1 && i === haystack.length - needle.length;
 	},
@@ -6078,10 +6214,12 @@ var _ = Mavo.Functions = {
 		return Mavo.toArray(array).join(glue);
 	},
 
-	idify: readable => ((readable || "") + "")
-		.replace(/\s+/g, "-") // Convert whitespace to hyphens
-		.replace(/[^\w-]/g, "") // Remove weird characters
-		.toLowerCase(),
+	idify: function(readable) {
+		return ((readable || "") + "")
+			.replace(/\s+/g, "-") // Convert whitespace to hyphens
+			.replace(/[^\w-]/g, "") // Remove weird characters
+			.toLowerCase();
+	},
 
 	// Convert an identifier to readable text that can be used as a label
 	readable: function (identifier) {
@@ -6126,7 +6264,13 @@ var _ = Mavo.Functions = {
 	months: seconds => Math.floor(Math.abs(seconds) / (30.4368 * 86400)),
 	years: seconds => Math.floor(Math.abs(seconds) / (30.4368 * 86400 * 12)),
 
-	localTimezone: -(new Date()).getTimezoneOffset()
+	localTimezone: -(new Date()).getTimezoneOffset(),
+
+	// Log to the console and return
+	log: (...args) => {
+		console.log(args);
+		return args[0];
+	}
 };
 
 // $url: Read-only syntactic sugar for URL stuff
@@ -6647,8 +6791,17 @@ var _ = Mavo.Backend.register($.Class({
 	},
 
 	get: function() {
-		return this.request(this.apiCall)
-		       .then(response => Promise.resolve(this.repo? _.atob(response.content) : response));
+		if (this.isAuthenticated() || !this.path) {
+			// Authenticated or raw API call
+			return this.request(this.apiCall)
+			       .then(response => Promise.resolve(this.repo? _.atob(response.content) : response));
+		}
+		else {
+			// Unauthenticated, use simple GET request to avoid rate limit
+			var url = new URL(`https://raw.githubusercontent.com/${this.username}/${this.repo}/${this.branch || "master"}/${this.path}`);
+
+			return this.super.get.call(this, url);
+		}
 	},
 
 	upload: function(file, path = this.path) {
@@ -6677,6 +6830,7 @@ var _ = Mavo.Backend.register($.Class({
 
 		var repoCall = `repos/${this.username}/${this.repo}`;
 		var fileCall = `${repoCall}/contents/${path}`;
+		var commitPrefix = this.mavo.element.getAttribute("mv-github-commit-prefix") || "";
 
 		// Create repo if it doesn’t exist
 		var repoInfo = this.repoInfo || this.request("user/repos", {name: this.repo}, "POST").then(repoInfo => this.repoInfo = repoInfo);
@@ -6717,7 +6871,7 @@ var _ = Mavo.Backend.register($.Class({
 				return this.request(fileCall, {
 					ref: this.branch
 				}).then(fileInfo => this.request(fileCall, {
-					message: `Updated ${fileInfo.name || "file"}`,
+					message: `${commitPrefix} Updated ${fileInfo.name || "file"}`,
 					content: serialized,
 					branch: this.branch,
 					sha: fileInfo.sha
@@ -6725,7 +6879,7 @@ var _ = Mavo.Backend.register($.Class({
 					if (xhr.status == 404) {
 						// File does not exist, create it
 						return this.request(fileCall, {
-							message: "Created file",
+							message: commitPrefix + "Created file",
 							content: serialized,
 							branch: this.branch
 						}, "PUT");

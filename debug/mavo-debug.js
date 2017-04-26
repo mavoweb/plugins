@@ -1,7 +1,6 @@
 (function($, $$) {
 
-Mavo.Plugins.register({
-	name: "debug",
+Mavo.Plugins.register("debug", {
 	dependencies: [
 		"prettyprint.js",
 		"mavo-debug.css"

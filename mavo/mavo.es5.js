@@ -200,7 +200,7 @@ if (self.MutationObserver) {
 })();
 
 /* jsep v0.3.1 (http://jsep.from.so/) */
-!function(a){"use strict";var b="Compound",c="Identifier",d="MemberExpression",e="Literal",f="ThisExpression",g="CallExpression",h="UnaryExpression",i="BinaryExpression",j="LogicalExpression",k="ConditionalExpression",l="ArrayExpression",m=46,n=44,o=39,p=34,q=40,r=41,s=91,t=93,u=63,v=59,w=58,x=function(a,b){var c=new Error(a+" at character "+b);throw c.index=b,c.description=a,c},y=!0,z={"-":y,"!":y,"~":y,"+":y},A={"||":1,"&&":2,"|":3,"^":4,"&":5,"==":6,"!=":6,"===":6,"!==":6,"<":7,">":7,"<=":7,">=":7,"<<":8,">>":8,">>>":8,"+":9,"-":9,"*":10,"/":10,"%":10},B=function(a){var b,c=0;for(var d in a)(b=d.length)>c&&a.hasOwnProperty(d)&&(c=b);return c},C=B(z),D=B(A),E={"true":!0,"false":!1,"null":null},F="this",G=function(a){return A[a]||0},H=function(a,b,c){var d="||"===a||"&&"===a?j:i;return{type:d,operator:a,left:b,right:c}},I=function(a){return a>=48&&a<=57},J=function(a){return 36===a||95===a||a>=65&&a<=90||a>=97&&a<=122||a>=128&&!A[String.fromCharCode(a)]},K=function(a){return 36===a||95===a||a>=65&&a<=90||a>=97&&a<=122||a>=48&&a<=57||a>=128&&!A[String.fromCharCode(a)]},L=function(a){for(var i,j,y=0,B=a.charAt,L=a.charCodeAt,M=function(b){return B.call(a,b)},N=function(b){return L.call(a,b)},O=a.length,P=function(){for(var a=N(y);32===a||9===a;)a=N(++y)},Q=function(){var a,b,c=S();return P(),N(y)!==u?c:(y++,a=Q(),a||x("Expected expression",y),P(),N(y)===w?(y++,b=Q(),b||x("Expected expression",y),{type:k,test:c,consequent:a,alternate:b}):void x("Expected :",y))},R=function(){P();for(var b=a.substr(y,D),c=b.length;c>0;){if(A.hasOwnProperty(b))return y+=c,b;b=b.substr(0,--c)}return!1},S=function(){var a,b,c,d,e,f,g,h;if(f=T(),b=R(),!b)return f;for(e={value:b,prec:G(b)},g=T(),g||x("Expected expression after "+b,y),d=[f,e,g];(b=R())&&(c=G(b),0!==c);){for(e={value:b,prec:c};d.length>2&&c<=d[d.length-2].prec;)g=d.pop(),b=d.pop().value,f=d.pop(),a=H(b,f,g),d.push(a);a=T(),a||x("Expected expression after "+b,y),d.push(e,a)}for(h=d.length-1,a=d[h];h>1;)a=H(d[h-1].value,d[h-2],a),h-=2;return a},T=function(){var b,c,d;if(P(),b=N(y),I(b)||b===m)return U();if(b===o||b===p)return V();if(J(b)||b===q)return Y();if(b===s)return $();for(c=a.substr(y,C),d=c.length;d>0;){if(z.hasOwnProperty(c))return y+=d,{type:h,operator:c,argument:T(),prefix:!0};c=c.substr(0,--d)}return!1},U=function(){for(var a,b,c="";I(N(y));)c+=M(y++);if(N(y)===m)for(c+=M(y++);I(N(y));)c+=M(y++);if(a=M(y),"e"===a||"E"===a){for(c+=M(y++),a=M(y),"+"!==a&&"-"!==a||(c+=M(y++));I(N(y));)c+=M(y++);I(N(y-1))||x("Expected exponent ("+c+M(y)+")",y)}return b=N(y),J(b)?x("Variable names cannot start with a number ("+c+M(y)+")",y):b===m&&x("Unexpected period",y),{type:e,value:parseFloat(c),raw:c}},V=function(){for(var a,b="",c=M(y++),d=!1;y<O;){if(a=M(y++),a===c){d=!0;break}if("\\"===a)switch(a=M(y++)){case"n":b+="\n";break;case"r":b+="\r";break;case"t":b+="\t";break;case"b":b+="\b";break;case"f":b+="\f";break;case"v":b+="\x0B";break;default:b+="\\"+a}else b+=a}return d||x('Unclosed quote after "'+b+'"',y),{type:e,value:b,raw:c+b+c}},W=function(){var b,d=N(y),g=y;for(J(d)?y++:x("Unexpected "+M(y),y);y<O&&(d=N(y),K(d));)y++;return b=a.slice(g,y),E.hasOwnProperty(b)?{type:e,value:E[b],raw:b}:b===F?{type:f}:{type:c,name:b}},X=function(a){for(var c,d,e=[],f=!1;y<O;){if(P(),c=N(y),c===a){f=!0,y++;break}c===n?y++:(d=Q(),d&&d.type!==b||x("Expected comma",y),e.push(d))}return f||x("Expected "+String.fromCharCode(a),y),e},Y=function(){var a,b;for(a=N(y),b=a===q?Z():W(),P(),a=N(y);a===m||a===s||a===q;)y++,a===m?(P(),b={type:d,computed:!1,object:b,property:W()}):a===s?(b={type:d,computed:!0,object:b,property:Q()},P(),a=N(y),a!==t&&x("Unclosed [",y),y++):a===q&&(b={type:g,arguments:X(r),callee:b}),P(),a=N(y);return b},Z=function(){y++;var a=Q();return P(),N(y)===r?(y++,a):void x("Unclosed (",y)},$=function(){return y++,{type:l,elements:X(t)}},_=[];y<O;)i=N(y),i===v||i===n?y++:(j=Q())?_.push(j):y<O&&x('Unexpected "'+M(y)+'"',y);return 1===_.length?_[0]:{type:b,body:_}};if(L.version="0.3.1",L.toString=function(){return"JavaScript Expression Parser (JSEP) v"+L.version},L.addUnaryOp=function(a){return C=Math.max(a.length,C),z[a]=y,this},L.addBinaryOp=function(a,b){return D=Math.max(a.length,D),A[a]=b,this},L.addLiteral=function(a,b){return E[a]=b,this},L.removeUnaryOp=function(a){return delete z[a],a.length===C&&(C=B(z)),this},L.removeBinaryOp=function(a){return delete A[a],a.length===D&&(D=B(A)),this},L.removeLiteral=function(a){return delete E[a],this},"undefined"==typeof exports){var M=a.jsep;a.jsep=L,L.noConflict=function(){return a.jsep===L&&(a.jsep=M),L}}else"undefined"!=typeof module&&module.exports?exports=module.exports=L:exports.parse=L}(this);
+!function(a){"use strict";var b="Compound",c="Identifier",d="MemberExpression",e="Literal",f="ThisExpression",g="CallExpression",h="UnaryExpression",i="BinaryExpression",j="LogicalExpression",k="ConditionalExpression",l="ArrayExpression",m=46,n=44,o=39,p=34,q=40,r=41,s=91,t=93,u=63,v=59,w=58,x=function(a,b){var c=new Error(a+" at character "+b);throw c.index=b,c.description=a,c},y=!0,z={"-":y,"!":y,"~":y,"+":y},A={"||":1,"&&":2,"|":3,"^":4,"&":5,"==":6,"!=":6,"===":6,"!==":6,"<":7,">":7,"<=":7,">=":7,"<<":8,">>":8,">>>":8,"+":9,"-":9,"*":10,"/":10,"%":10},B=function(a){var b,c=0;for(var d in a)(b=d.length)>c&&a.hasOwnProperty(d)&&(c=b);return c},C=B(z),D=B(A),E={"true":!0,"false":!1,"null":null},F="this",G=function(a){return A[a]||0},H=function(a,b,c){var d="||"===a||"&&"===a?j:i;return{type:d,operator:a,left:b,right:c}},I=function(a){return a>=48&&a<=57},J=function(a){return 36===a||95===a||a>=65&&a<=90||a>=97&&a<=122||a>=128&&!A[String.fromCharCode(a)]},K=function(a){return 36===a||95===a||a>=65&&a<=90||a>=97&&a<=122||a>=48&&a<=57||a>=128&&!A[String.fromCharCode(a)]},L=function(a){for(var i,j,y=0,B=a.charAt,L=a.charCodeAt,M=function(b){return B.call(a,b)},N=function(b){return L.call(a,b)},O=a.length,P=function(){for(var a=N(y);32===a||9===a||10===a||13===a;)a=N(++y)},Q=function(){var a,b,c=S();return P(),N(y)!==u?c:(y++,a=Q(),a||x("Expected expression",y),P(),N(y)===w?(y++,b=Q(),b||x("Expected expression",y),{type:k,test:c,consequent:a,alternate:b}):void x("Expected :",y))},R=function(){P();for(var b=a.substr(y,D),c=b.length;c>0;){if(A.hasOwnProperty(b))return y+=c,b;b=b.substr(0,--c)}return!1},S=function(){var a,b,c,d,e,f,g,h;if(f=T(),b=R(),!b)return f;for(e={value:b,prec:G(b)},g=T(),g||x("Expected expression after "+b,y),d=[f,e,g];(b=R())&&(c=G(b),0!==c);){for(e={value:b,prec:c};d.length>2&&c<=d[d.length-2].prec;)g=d.pop(),b=d.pop().value,f=d.pop(),a=H(b,f,g),d.push(a);a=T(),a||x("Expected expression after "+b,y),d.push(e,a)}for(h=d.length-1,a=d[h];h>1;)a=H(d[h-1].value,d[h-2],a),h-=2;return a},T=function(){var b,c,d;if(P(),b=N(y),I(b)||b===m)return U();if(b===o||b===p)return V();if(J(b)||b===q)return Y();if(b===s)return $();for(c=a.substr(y,C),d=c.length;d>0;){if(z.hasOwnProperty(c))return y+=d,{type:h,operator:c,argument:T(),prefix:!0};c=c.substr(0,--d)}return!1},U=function(){for(var a,b,c="";I(N(y));)c+=M(y++);if(N(y)===m)for(c+=M(y++);I(N(y));)c+=M(y++);if(a=M(y),"e"===a||"E"===a){for(c+=M(y++),a=M(y),"+"!==a&&"-"!==a||(c+=M(y++));I(N(y));)c+=M(y++);I(N(y-1))||x("Expected exponent ("+c+M(y)+")",y)}return b=N(y),J(b)?x("Variable names cannot start with a number ("+c+M(y)+")",y):b===m&&x("Unexpected period",y),{type:e,value:parseFloat(c),raw:c}},V=function(){for(var a,b="",c=M(y++),d=!1;y<O;){if(a=M(y++),a===c){d=!0;break}if("\\"===a)switch(a=M(y++)){case"n":b+="\n";break;case"r":b+="\r";break;case"t":b+="\t";break;case"b":b+="\b";break;case"f":b+="\f";break;case"v":b+="\x0B";break;default:b+="\\"+a}else b+=a}return d||x('Unclosed quote after "'+b+'"',y),{type:e,value:b,raw:c+b+c}},W=function(){var b,d=N(y),g=y;for(J(d)?y++:x("Unexpected "+M(y),y);y<O&&(d=N(y),K(d));)y++;return b=a.slice(g,y),E.hasOwnProperty(b)?{type:e,value:E[b],raw:b}:b===F?{type:f}:{type:c,name:b}},X=function(a){for(var c,d,e=[],f=!1;y<O;){if(P(),c=N(y),c===a){f=!0,y++;break}c===n?y++:(d=Q(),d&&d.type!==b||x("Expected comma",y),e.push(d))}return f||x("Expected "+String.fromCharCode(a),y),e},Y=function(){var a,b;for(a=N(y),b=a===q?Z():W(),P(),a=N(y);a===m||a===s||a===q;)y++,a===m?(P(),b={type:d,computed:!1,object:b,property:W()}):a===s?(b={type:d,computed:!0,object:b,property:Q()},P(),a=N(y),a!==t&&x("Unclosed [",y),y++):a===q&&(b={type:g,arguments:X(r),callee:b}),P(),a=N(y);return b},Z=function(){y++;var a=Q();return P(),N(y)===r?(y++,a):void x("Unclosed (",y)},$=function(){return y++,{type:l,elements:X(t)}},_=[];y<O;)i=N(y),i===v||i===n?y++:(j=Q())?_.push(j):y<O&&x('Unexpected "'+M(y)+'"',y);return 1===_.length?_[0]:{type:b,body:_}};if(L.version="0.3.1",L.toString=function(){return"JavaScript Expression Parser (JSEP) v"+L.version},L.addUnaryOp=function(a){return C=Math.max(a.length,C),z[a]=y,this},L.addBinaryOp=function(a,b){return D=Math.max(a.length,D),A[a]=b,this},L.addLiteral=function(a,b){return E[a]=b,this},L.removeUnaryOp=function(a){return delete z[a],a.length===C&&(C=B(z)),this},L.removeBinaryOp=function(a){return delete A[a],a.length===D&&(D=B(A)),this},L.removeLiteral=function(a){return delete E[a],this},"undefined"==typeof exports){var M=a.jsep;a.jsep=L,L.noConflict=function(){return a.jsep===L&&(a.jsep=M),L}}else"undefined"!=typeof module&&module.exports?exports=module.exports=L:exports.parse=L}(this);
 //# sourceMappingURL=jsep.min.js.map
 "use strict";
 
@@ -546,16 +546,16 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 						});
 					});
 				}
-			}, function () {
-				_this.element.removeEventListener(".mavo:autosave");
-			});
 
-			// Ctrl + S or Cmd + S to save
-			this.element.addEventListener("keydown", function (evt) {
-				if (evt.keyCode == 83 && evt[_.superKey]) {
-					evt.preventDefault();
-					_this.save();
-				}
+				// Ctrl + S or Cmd + S to save
+				_this.element.addEventListener("keydown.mavo:save", function (evt) {
+					if (evt.keyCode == 83 && evt[_.superKey]) {
+						evt.preventDefault();
+						_this.save();
+					}
+				});
+			}, function () {
+				$.unbind(_this.element, ".mavo:save .mavo:autosave");
 			});
 
 			Mavo.hooks.run("init-end", this);
@@ -597,6 +597,8 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		},
 
 		render: function render(data) {
+			var _this2 = this;
+
 			this.expressions.active = false;
 
 			var env = { context: this, data: data };
@@ -609,17 +611,19 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			this.unsavedChanges = false;
 
 			this.expressions.active = true;
-			this.expressions.update();
+			requestAnimationFrame(function () {
+				return _this2.expressions.update();
+			});
 
 			_.hooks.run("render-end", env);
 		},
 
 		clear: function clear() {
-			var _this2 = this;
+			var _this3 = this;
 
 			if (confirm("This will delete all your data. Are you sure?")) {
 				this.store(null).then(function () {
-					return _this2.root.clear();
+					return _this3.root.clear();
 				});
 			}
 		},
@@ -704,7 +708,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 				// We have a string, convert to a backend object if different than existing
 				this[role] = backend = _.Backend.create(backend, {
 					mavo: this,
-					format: this.element.getAttribute("mv-format-" + role) || this.element.getAttribute("mv-format")
+					format: this.element.getAttribute("mv-" + role + "-format") || this.element.getAttribute("mv-format")
 				});
 			} else if (!backend) {
 				// We had a backend and now we will un-have it
@@ -737,7 +741,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
    * @return {Promise}  A promise that resolves when the data is loaded.
    */
 		load: function load() {
-			var _this3 = this;
+			var _this4 = this;
 
 			var backend = this.source || this.storage;
 
@@ -751,10 +755,10 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 				return backend.load();
 			}).catch(function (err) {
 				// Try again with init
-				if (_this3.init && _this3.init != backend) {
-					backend = _this3.init;
-					return _this3.init.ready.then(function () {
-						return _this3.init.load();
+				if (_this4.init && _this4.init != backend) {
+					backend = _this4.init;
+					return _this4.init.ready.then(function () {
+						return _this4.init.load();
 					});
 				}
 
@@ -765,7 +769,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 					var xhr = err instanceof XMLHttpRequest ? err : err.xhr;
 
 					if (xhr && xhr.status == 404) {
-						_this3.render(null);
+						_this4.render(null);
 					} else {
 						var message = "Problem loading data";
 
@@ -773,20 +777,20 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 							message += xhr.status ? ": HTTP error " + err.status + ": " + err.statusText : ": Can’t connect to the Internet";
 						}
 
-						_this3.error(message, err);
+						_this4.error(message, err);
 					}
 				}
 				return null;
 			}).then(function (data) {
-				return _this3.render(data);
+				return _this4.render(data);
 			}).then(function () {
-				_this3.inProgress = false;
-				$.fire(_this3.element, "mavo:load");
+				_this4.inProgress = false;
+				$.fire(_this4.element, "mavo:load");
 			});
 		},
 
 		store: function store() {
-			var _this4 = this;
+			var _this5 = this;
 
 			if (!this.storage) {
 				return Promise.resolve();
@@ -795,7 +799,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			this.inProgress = "Saving";
 
 			return this.storage.login().then(function () {
-				return _this4.storage.store(_this4.getData());
+				return _this5.storage.store(_this5.getData());
 			}).catch(function (err) {
 				if (err) {
 					var message = "Problem saving data";
@@ -804,18 +808,18 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 						message += err.status ? ": HTTP error " + err.status + ": " + err.statusText : ": Can’t connect to the Internet";
 					}
 
-					_this4.error(message, err);
+					_this5.error(message, err);
 				}
 
 				return null;
 			}).then(function (saved) {
-				_this4.inProgress = false;
+				_this5.inProgress = false;
 				return saved;
 			});
 		},
 
 		upload: function upload(file) {
-			var _this5 = this;
+			var _this6 = this;
 
 			var path = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "images/" + file.name;
 
@@ -826,25 +830,25 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			this.inProgress = "Uploading";
 
 			return this.uploadBackend.upload(file, path).then(function (url) {
-				_this5.inProgress = false;
+				_this6.inProgress = false;
 				return url;
 			}).catch(function (err) {
-				_this5.error("Error uploading file", err);
-				_this5.inProgress = false;
+				_this6.error("Error uploading file", err);
+				_this6.inProgress = false;
 				return null;
 			});
 		},
 
 		save: function save() {
-			var _this6 = this;
+			var _this7 = this;
 
 			return this.store().then(function (saved) {
 				if (saved) {
-					$.fire(_this6.element, "mavo:save", saved);
+					$.fire(_this7.element, "mavo:save", saved);
 
-					_this6.lastSaved = Date.now();
-					_this6.root.save();
-					_this6.unsavedChanges = false;
+					_this7.lastSaved = Date.now();
+					_this7.root.save();
+					_this7.unsavedChanges = false;
 				}
 			});
 		},
@@ -956,7 +960,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 			hooks: new $.Hooks(),
 
-			attributes: ["mv-app", "mv-storage", "mv-source", "mv-init", "mv-path", "mv-format", "mv-attribute", "mv-default", "mv-mode", "mv-edit", "mv-permisssions"]
+			attributes: ["mv-app", "mv-storage", "mv-source", "mv-init", "mv-path", "mv-format", "mv-attribute", "mv-default", "mv-mode", "mv-edit", "mv-permisssions", "mv-rel"]
 		}
 	});
 
@@ -1009,6 +1013,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		$.extend(_.selectors, {
 			primitive: andNot(s.property, s.group),
 			rootGroup: andNot(s.group, s.property),
+			item: or(s.multiple, s.group),
 			output: or(s.specificProperty("output"), ".mv-output")
 		});
 	}
@@ -1094,6 +1099,27 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		},
 
 		/**
+   * toJSON without cycles
+   */
+		safeToJSON: function safeToJSON(o) {
+			var cache = new WeakSet();
+
+			return JSON.stringify(o, function (key, value) {
+				if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === "object" && value !== null) {
+					// No circular reference found
+
+					if (cache.has(value)) {
+						return; // Circular reference found!
+					}
+
+					cache.add(value);
+				}
+
+				return value;
+			});
+		},
+
+		/**
    * Array utlities
    */
 
@@ -1108,16 +1134,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			if (index > -1) {
 				arr.splice(index, 1);
 			}
-		},
-
-		/**
-   * Do two arrays have a non-empty intersection?
-   * @return {Boolean}
-   */
-		hasIntersection: function hasIntersection(arr1, arr2) {
-			return arr1 && arr2 && !arr1.every(function (el) {
-				return arr2.indexOf(el) == -1;
-			});
 		},
 
 		// Recursively flatten a multi-dimensional array
@@ -1318,29 +1334,8 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			}
 		},
 
-		/**
-   * Deep clone an object. Only supports object literals, arrays, and primitives
-   */
 		clone: function clone(o) {
-			if ((typeof o === "undefined" ? "undefined" : _typeof(o)) !== "object" || o === null) {
-				// Primitive
-				return o;
-			}
-
-			if (Array.isArray(o)) {
-				return o.slice().map(_.clone);
-			}
-
-			// Object
-			var clone = {};
-
-			for (var property in o) {
-				if (o.hasOwnProperty(property)) {
-					clone[property] = _.clone(o[property]);
-				}
-			}
-
-			return clone;
+			return JSON.parse(_.safeToJSON(o));
 		},
 
 		// Credit: https://remysharp.com/2010/07/21/throttling-function-calls
@@ -1698,8 +1693,10 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			});
 		},
 
-		register: function register(o) {
-			if (o.name && _.loaded[o.name]) {
+		register: function register(name) {
+			var o = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+			if (_.loaded[name]) {
 				// Do not register same plugin twice
 				return;
 			}
@@ -1736,9 +1733,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 				(_Mavo$dependencies = Mavo.dependencies).push.apply(_Mavo$dependencies, ready);
 			}
 
-			if (o.name) {
-				_.loaded[o.name] = o;
-			}
+			_.loaded[name] = o;
 
 			if (o.init) {
 				Promise.all(ready).then(function () {
@@ -2507,10 +2502,11 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		},
 
 		get: function get() {
-			var url = new URL(this.url);
+			var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new URL(this.url);
+
 			url.searchParams.set("timestamp", Date.now()); // ensure fresh copy
 
-			return $.fetch(this.url.href).then(function (xhr) {
+			return $.fetch(url.href).then(function (xhr) {
 				return Promise.resolve(xhr.responseText);
 			}, function () {
 				return Promise.resolve(null);
@@ -2909,7 +2905,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 				});
 			},
 
-			stringify: function stringify(serialized, me) {
+			stringify: function stringify(data, me) {
 				return csv.ready().then(function () {
 					var property = me ? me.property : "content";
 					var options = me ? me.options : csv.defaultOptions;
@@ -2987,22 +2983,22 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 			_.all.set(element, [].concat(_toConsumableArray(_.all.get(this.element) || []), [this]));
 
+			this.mavo = mavo;
+			this.group = this.parentGroup = env.options.group;
+
 			this.template = env.options.template;
 
 			if (this.template) {
-				// TODO remove if this is deleted
 				this.template.copies.push(this);
 			} else {
+				// First (or only) of its kind
 				this.copies = [];
 			}
-
-			this.mavo = mavo;
-			this.group = this.parentGroup = env.options.group;
 
 			if (!this.fromTemplate("property", "type")) {
 				this.property = _.getProperty(element);
 				this.type = Mavo.Group.normalize(element);
-				this.store = this.element.getAttribute("mv-storage"); // TODO rename to storage
+				this.storage = this.element.getAttribute("mv-storage"); // TODO rename to storage
 			}
 
 			this.modes = this.element.getAttribute("mv-mode");
@@ -3048,7 +3044,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		},
 
 		get saved() {
-			return this.store !== "none";
+			return this.storage !== "none";
 		},
 
 		get path() {
@@ -3066,7 +3062,11 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			}
 		},
 
-		destroy: function destroy() {},
+		destroy: function destroy() {
+			if (this.template) {
+				Mavo.delete(this.template.copies, this);
+			}
+		},
 
 		getData: function getData() {
 			var o = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -3080,7 +3080,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			var env = {
 				context: this,
 				options: o,
-				result: this.deleted || !this.saved && o.store != "*"
+				result: this.deleted || !this.saved && !o.live
 			};
 
 			Mavo.hooks.run("unit-isdatanull", env);
@@ -3137,8 +3137,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			if (this.mode != "edit") {
 				return false;
 			}
-
-			this.propagate("edit");
 
 			Mavo.hooks.run("node-edit-end", this);
 		},
@@ -3262,7 +3260,15 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		},
 
 		getClosestCollection: function getClosestCollection() {
-			return this.collection || this.group.collection || (this.parentGroup ? this.parentGroup.closestCollection : null);
+			if (this.collection && this.collection.mutable) {
+				return this.collection;
+			}
+
+			if (this.group.collection && this.group.collection.mutable) {
+				return this.group.collection;
+			}
+
+			return this.parentGroup ? this.parentGroup.closestCollection : null;
 		},
 
 		/**
@@ -3276,6 +3282,91 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			}
 
 			return !!this.parentGroup && this.parentGroup.isDeleted();
+		},
+
+		relativizeData: function relativizeData(data) {
+			var _this2 = this;
+
+			var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : { live: true };
+
+			return new Proxy(data, {
+				get: function get(data, property, proxy) {
+					// Checking if property is in proxy might add it to the data
+					if (property in data || property in proxy && property in data) {
+						var ret = data[property];
+
+						return ret;
+					}
+				},
+
+				has: function has(data, property) {
+					if (property in data) {
+						return true;
+					}
+
+					// Property does not exist, look for it elsewhere
+
+					// Special values
+					switch (property) {
+						case "$index":
+							data[property] = _this2.index || 0;
+							return true; // if index is 0 it's falsy and has would return false!
+						case "$next":
+						case "$previous":
+							if (_this2.closestCollection) {
+								data[property] = _this2.closestCollection.getData(options)[_this2.index + (property == "$next" ? 1 : -1)];
+								return true;
+							}
+
+							data[property] = null;
+							return false;
+					}
+
+					if (_this2 instanceof Mavo.Group && property == _this2.property && _this2.collection) {
+						data[property] = data;
+						return true;
+					}
+
+					// First look in ancestors
+					var ret = _this2.walkUp(function (group) {
+						if (property in group.children) {
+							return group.children[property];
+						};
+					});
+
+					if (ret === undefined) {
+						// Still not found, look in descendants
+						ret = _this2.find(property);
+					}
+
+					if (ret !== undefined) {
+						if (Array.isArray(ret)) {
+							ret = ret.map(function (item) {
+								return item.getData(options);
+							}).filter(function (item) {
+								return item !== null;
+							});
+						} else if (ret instanceof Mavo.Node) {
+							ret = ret.getData(options);
+						}
+
+						data[property] = ret;
+
+						return true;
+					}
+
+					// Does it reference another Mavo?
+					if (property in Mavo.all && Mavo.all[property].root) {
+						return data[property] = Mavo.all[property].root.getData(options);
+					}
+
+					return false;
+				},
+
+				set: function set(data, property, value) {
+					throw Error("You can’t set data via expressions.");
+				}
+			});
 		},
 
 		lazy: {
@@ -3311,7 +3402,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			},
 
 			mode: function mode(value) {
-				var _this2 = this;
+				var _this3 = this;
 
 				if (this._mode != value) {
 					// Is it allowed?
@@ -3327,7 +3418,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 						// If attribute is not one of the recognized values, leave it alone
 						var set = this.modes || value == "edit";
 						Mavo.Observer.sneak(this.mavo.modeObserver, function () {
-							$.toggleAttribute(_this2.element, "mv-mode", value, set);
+							$.toggleAttribute(_this3.element, "mv-mode", value, set);
 						});
 					}
 
@@ -3348,7 +3439,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			},
 
 			deleted: function deleted(value) {
-				var _this3 = this;
+				var _this4 = this;
 
 				this.element.classList.toggle("mv-deleted", value);
 
@@ -3357,7 +3448,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 					// and replace them with an undo prompt.
 					this.elementContents = document.createDocumentFragment();
 					$$(this.element.childNodes).forEach(function (node) {
-						_this3.elementContents.appendChild(node);
+						_this4.elementContents.appendChild(node);
 					});
 
 					$.contents(this.element, [{
@@ -3375,7 +3466,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 						textContent: "Undo",
 						events: {
 							"click": function click(evt) {
-								return _this3.deleted = false;
+								return _this4.deleted = false;
 							}
 						}
 					}]);
@@ -3470,6 +3561,8 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 (function ($, $$) {
@@ -3493,35 +3586,30 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 			// Create Mavo objects for all properties in this group (primitives or groups),
 			// but not properties in descendant groups (they will be handled by their group)
-			$$(Mavo.selectors.property, this.element).forEach(function (element) {
-				var property = Mavo.Node.getProperty(element);
+			var properties = $$(Mavo.selectors.property, this.element).filter(function (element) {
+				return _this.element === element.parentNode.closest(Mavo.selectors.group);
+			});
 
-				if (_this.contains(element)) {
-					var existing = _this.children[property];
-					var template = _this.template ? _this.template.children[property] : null;
-					var constructorOptions = { template: template, group: _this };
+			var propertyNames = properties.map(function (element) {
+				return Mavo.Node.getProperty(element);
+			});
 
-					if (existing) {
-						// Twogroups with the same property, convert to static collection
-						var collection = existing;
+			properties.forEach(function (element, i) {
+				var property = propertyNames[i];
+				var template = _this.template ? _this.template.children[property] : null;
+				var options = { template: template, group: _this };
 
-						if (!(existing instanceof Mavo.Collection)) {
-							collection = new Mavo.Collection(existing.element, _this.mavo, constructorOptions);
-							_this.children[property] = existing.collection = collection;
-							collection.add(existing);
-						}
-
-						if (!collection.mutable && Mavo.is("multiple", element)) {
-							collection.mutable = true;
-						}
-
-						collection.add(element);
-					} else {
-						// No existing properties with this id, normal case
-						var obj = Mavo.Node.create(element, _this.mavo, constructorOptions);
-
-						_this.children[property] = obj;
-					}
+				if (_this.children[property]) {
+					// Already exists, must be a collection
+					var collection = _this.children[property];
+					collection.add(element);
+					collection.mutable = collection.mutable || Mavo.is("multiple", element);
+				} else if (propertyNames.indexOf(property) != propertyNames.lastIndexOf(property)) {
+					// There are duplicates, so this should be a collection.
+					_this.children[property] = new Mavo.Collection(element, _this.mavo, options);
+				} else {
+					// Normal case
+					_this.children[property] = Mavo.Node.create(element, _this.mavo, options);
 				}
 			});
 
@@ -3576,17 +3664,33 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			}
 
 			if (!env.options.live) {
-				// Add JSON-LD stuff to stored data
-				if (this.type && this.type != _.DEFAULT_TYPE) {
-					env.data["@type"] = this.type;
-				}
-
-				if (this.vocab) {
-					env.data["@context"] = this.vocab;
-				}
-
+				// Stored data
 				// If storing, use the rendered data too
 				env.data = Mavo.subset(this.data, this.inPath, env.data);
+			}
+
+			// {foo: {foo: 5}} should become {foo: 5}
+			var properties = Object.keys(env.data);
+
+			if (properties.length == 1 && properties[0] == this.property) {
+				env.data = env.data[this.property];
+			}
+
+			if (!env.options.live) {
+				// Stored data again
+				if (!properties.length && !this.isRoot) {
+					// Avoid {} in the data
+					env.data = null;
+				} else if (env.data && _typeof(env.data) === "object") {
+					// Add JSON-LD stuff
+					if (this.type && this.type != _.DEFAULT_TYPE) {
+						env.data["@type"] = this.type;
+					}
+
+					if (this.vocab) {
+						env.data["@context"] = this.vocab;
+					}
+				}
 			}
 
 			Mavo.hooks.run("node-getdata-end", env);
@@ -3628,6 +3732,14 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			}
 		},
 
+		edit: function edit() {
+			if (this.super.edit.call(this) === false) {
+				return false;
+			}
+
+			this.propagate("edit");
+		},
+
 		save: function save() {
 			this.unsavedChanges = false;
 		},
@@ -3636,39 +3748,56 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 		// Do not call directly, call this.render() instead
 		dataRender: function dataRender(data) {
+			var _this3 = this;
+
 			if (!data) {
 				return;
 			}
 
-			// TODO what if it was a primitive and now it's a group?
-			// In that case, render the this.children[this.property] with it
+			// What if data is not an object?
+			if ((typeof data === "undefined" ? "undefined" : _typeof(data)) !== "object") {
+				// Data is a primitive, render it on this.property or failing that, any writable property
+				if (this.property in this.children) {
+					var property = this.property;
+				} else {
+					var type = $.type(data);
+					var score = function score(prop) {
+						return (_this3.children[prop] instanceof Mavo.Primitive) + (_this3.children[prop].datatype == type);
+					};
 
-			this.propagate(function (obj) {
-				obj.render(data[obj.property]);
-			});
+					var property = Object.keys(this.children).filter(function (p) {
+						return !_this3.children[p].expressionText;
+					}).sort(function (prop1, prop2) {
+						return score(prop1) - score(prop2);
+					}).reverse()[0];
+				}
 
-			// Fire datachange events for properties not in the template,
-			// since nothing else will and they can still be referenced in expressions
-			var oldData = Mavo.subset(this.oldData, this.inPath);
+				data = _defineProperty({}, property, data);
 
-			for (var property in data) {
-				if (!(property in this.children)) {
-					var value = data[property];
+				this.data = Mavo.subset(this.data, this.inPath, data);
 
-					if ((typeof value === "undefined" ? "undefined" : _typeof(value)) != "object" && (!oldData || oldData[property] != value)) {
-						this.dataChanged("propertychange", { property: property });
+				this.propagate(function (obj) {
+					obj.render(data[obj.property]);
+				});
+			} else {
+				this.propagate(function (obj) {
+					obj.render(data[obj.property]);
+				});
+
+				// Fire datachange events for properties not in the template,
+				// since nothing else will and they can still be referenced in expressions
+				var oldData = Mavo.subset(this.oldData, this.inPath);
+
+				for (var property in data) {
+					if (!(property in this.children)) {
+						var value = data[property];
+
+						if ((typeof value === "undefined" ? "undefined" : _typeof(value)) != "object" && (!oldData || oldData[property] != value)) {
+							this.dataChanged("propertychange", { property: property });
+						}
 					}
 				}
 			}
-		},
-
-		// Check if this group contains a property
-		contains: function contains(property) {
-			if (property instanceof Mavo.Node) {
-				return property.parentGroup === this;
-			}
-
-			return property.parentNode && this.element === property.parentNode.closest(Mavo.selectors.group);
 		},
 
 		static: {
@@ -3750,34 +3879,25 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     * Set up input widget
     */
 
-			// Nested widgets
-			if (!this.editor && !this.attribute) {
-				this.editor = $$(this.element.children).filter(function (el) {
-					return el.matches(Mavo.selectors.formControl) && !el.matches(Mavo.selectors.property);
-				})[0];
-
-				if (this.editor) {
-					this.element.textContent = this.editorValue;
-					$.remove(this.editor);
-				}
-			}
-
 			// Linked widgets
 			if (!this.editor && this.element.hasAttribute("mv-edit")) {
 				var original = $(this.element.getAttribute("mv-edit"));
 
-				if (original && Mavo.is("formControl", original)) {
+				if (original) {
 					this.editor = original.cloneNode(true);
 
 					// Update editor if original mutates
+					// This means that expressions on mv-edit for individual collection items will not be picked up
 					if (!this.template) {
 						new Mavo.Observer(original, "all", function (records) {
+							var all = _this.copies.concat(_this);
+
 							var _iteratorNormalCompletion = true;
 							var _didIteratorError = false;
 							var _iteratorError = undefined;
 
 							try {
-								for (var _iterator = _this.copies[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+								for (var _iterator = all[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 									var primitive = _step.value;
 
 									primitive.editor = original.cloneNode(true);
@@ -3802,6 +3922,18 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 				}
 			}
 
+			// Nested widgets
+			if (!this.editor && !this.attribute) {
+				this.editor = $$(this.element.children).filter(function (el) {
+					return el.matches(Mavo.selectors.formControl) && !el.matches(Mavo.selectors.property);
+				})[0];
+
+				if (this.editor) {
+					this.element.textContent = this.editorValue;
+					$.remove(this.editor);
+				}
+			}
+
 			this.templateValue = this.getValue();
 
 			this._default = this.element.getAttribute("mv-default");
@@ -3819,7 +3951,15 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 				});
 			}
 
-			this.initialValue = (!this.template && this.default === undefined ? this.templateValue : this.default) || this.emptyValue;
+			if (this.default === undefined && (!this.template || !this.closestCollection)) {
+				this.initialValue = this.templateValue;
+			} else {
+				this.initialValue = this.default;
+			}
+
+			if (this.initialValue === undefined) {
+				this.initialValue = this.emptyValue;
+			}
 
 			this.setValue(this.initialValue, { silent: true });
 
@@ -3991,7 +4131,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 				// Empty properties should become editable immediately
 				// otherwise they could be invisible!
 				if (_this3.empty && !_this3.attribute) {
-					return resolve();
+					return requestAnimationFrame(resolve);
 				}
 
 				var timer;
@@ -4251,7 +4391,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 				var ret = element.getAttribute("mv-attribute") || config.attribute;
 
-				if (!ret || ret === "null") {
+				if (!ret || ret === "null" || ret === "none") {
 					ret = null;
 				}
 
@@ -4340,7 +4480,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 				return _.safeCast(ret, datatype);
 			},
 
-			getConfig: function getConfig(element, attribute) {
+			getConfig: function getConfig(element, attribute, datatype) {
 				if (attribute === undefined) {
 					attribute = element.getAttribute("mv-attribute") || undefined;
 				}
@@ -4349,10 +4489,16 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 					attribute = null;
 				}
 
-				var config = Mavo.Elements.search(element, attribute);
+				datatype = element.getAttribute("datatype") || undefined;
+
+				var config = Mavo.Elements.search(element, attribute, datatype);
 
 				if (config.attribute === undefined) {
 					config.attribute = attribute || null;
+				}
+
+				if (config.datatype === undefined) {
+					config.datatype = datatype;
 				}
 
 				return config;
@@ -4672,6 +4818,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		},
 		"search": {
 			value: function value(element, attribute, datatype) {
+
 				var matches = _.matches(element, attribute, datatype);
 
 				return matches[matches.length - 1] || { attribute: attribute };
@@ -5122,6 +5269,23 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		"text": {
 			default: true,
 			popup: true
+		},
+
+		"[role=checkbox]": {
+			default: true,
+			attribute: "aria-checked",
+			datatype: "boolean",
+			edit: function edit() {
+				var _this5 = this;
+
+				this.element.addEventListener("click.mavo:edit", function (evt) {
+					_this5.value = !_this5.value;
+					evt.preventDefault();
+				});
+			},
+			done: function done() {
+				$.unbind(this.element, ".mavo:edit");
+			}
 		}
 	});
 })(Bliss, Bliss.$);
@@ -5155,11 +5319,9 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 				this.templateElement = this.templateElement.cloneNode(true);
 			}
 
-			if (this.mutable) {
-				var item = this.createItem(this.element);
-				this.add(item);
-				this.itemTemplate = item.template || item;
-			}
+			var item = this.createItem(this.element);
+			this.add(item, undefined, { silent: true });
+			this.itemTemplate = item.template || item;
 
 			this.postInit();
 
@@ -5294,20 +5456,18 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 				add: env.item
 			});
 
-			if (!o.silent) {
-				env.changed.forEach(function (i) {
-					i.dataChanged(i == env.item && env.previousIndex === undefined ? "add" : "move");
-					i.unsavedChanges = true;
-				});
+			if (this.mavo.expressions.active && !o.silent) {
+				requestAnimationFrame(function () {
+					env.changed.forEach(function (i) {
+						i.dataChanged(i == env.item && env.previousIndex === undefined ? "add" : "move");
+						i.unsavedChanges = true;
+					});
 
-				this.unsavedChanges = this.mavo.unsavedChanges = true;
+					_this.unsavedChanges = _this.mavo.unsavedChanges = true;
+				});
 			}
 
 			Mavo.hooks.run("collection-add-end", env);
-
-			this.mavo.treeBuilt.then(function () {
-				return _this.mavo.expressions.update(env.item.element);
-			});
 
 			return env.item;
 		},
@@ -5471,11 +5631,13 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		},
 
 		editItem: function editItem(item) {
-			if (!item.itemControls) {
-				item.itemControls = new Mavo.UI.Itembar(item);
-			}
+			if (this.mutable) {
+				if (!item.itemControls) {
+					item.itemControls = new Mavo.UI.Itembar(item);
+				}
 
-			item.itemControls.add();
+				item.itemControls.add();
+			}
 
 			item.edit();
 		},
@@ -5496,16 +5658,16 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 					$[this.bottomUp ? "before" : "after"](this.addButton, rel);
 				}
 
-				// Insert item controls
-				this.propagate(function (item) {
-					_this4.editItem(item);
-				});
-
 				// Set up drag & drop
 				_.dragula.then(function () {
 					_this4.getDragula();
 				});
 			}
+
+			// Edit items, maybe insert item bar
+			this.propagate(function (item) {
+				_this4.editItem(item);
+			});
 		},
 
 		done: function done() {
@@ -5585,8 +5747,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		propagated: ["save"],
 
 		dataRender: function dataRender(data) {
-			var _this5 = this;
-
 			if (!data) {
 				return;
 			}
@@ -5603,6 +5763,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 					if (i < data.length) {
 						this.children[i].render(data[i]);
 					} else {
+						this.children[i].dataChanged("delete");
 						this.delete(this.children[i], true);
 					}
 				}
@@ -5624,16 +5785,16 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 						var env = { context: this, item: item };
 						Mavo.hooks.run("collection-add-end", env);
-
-						this.mavo.treeBuilt.then(function () {
-							return _this5.mavo.expressions.update(env.item.element);
-						});
 					}
 
 					if (this.bottomUp) {
 						$.after(fragment, i > 0 ? this.children[i - 1].element : this.marker);
 					} else {
 						$.before(fragment, this.marker);
+					}
+
+					for (var j = i; j < this.children.length; j++) {
+						this.children[j].dataChanged("add");
 					}
 				}
 			}
@@ -5674,14 +5835,17 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 					// Keep position of the template in the DOM, since we might remove it
 					this.marker = document.createComment("mv-marker");
 					Mavo.data(this.marker, "collection", this);
-					$.after(this.marker, this.templateElement);
+
+					var ref = this.templateElement.parentNode ? this.templateElement : this.children[this.length - 1].element;
+
+					$.after(this.marker, ref);
 				}
 			}
 		},
 
 		// Make sure to only call after dragula has loaded
 		getDragula: function getDragula() {
-			var _this6 = this;
+			var _this5 = this;
 
 			if (this.dragula) {
 				return this.dragula;
@@ -5696,9 +5860,9 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			this.dragula = dragula({
 				containers: [this.marker.parentNode],
 				isContainer: function isContainer(el) {
-					if (_this6.accepts.length) {
-						return Mavo.flatten(_this6.accepts.map(function (property) {
-							return _this6.mavo.root.find(property, { collections: true });
+					if (_this5.accepts.length) {
+						return Mavo.flatten(_this5.accepts.map(function (property) {
+							return _this5.mavo.root.find(property, { collections: true });
 						})).filter(function (c) {
 							return c && c instanceof _;
 						}).map(function (c) {
@@ -5746,7 +5910,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 					var index = closestItem ? closestItem.index + (closestItem.element === previous) : collection.length;
 					collection.add(item, index);
 				} else {
-					return _this6.dragula.cancel(true);
+					return _this5.dragula.cancel(true);
 				}
 			});
 
@@ -5788,7 +5952,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			},
 
 			addButton: function addButton() {
-				var _this7 = this;
+				var _this6 = this;
 
 				// Find add button if provided, or generate one
 				var selector = "button.mv-add-" + this.property;
@@ -5796,7 +5960,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 				if (group) {
 					var button = $$(selector, group).filter(function (button) {
-						return !_this7.templateElement.contains(button);
+						return !_this6.templateElement.contains(button);
 					})[0];
 				}
 
@@ -5817,7 +5981,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 				button.addEventListener("click", function (evt) {
 					evt.preventDefault();
 
-					_this7.editItem(_this7.add());
+					_this6.editItem(_this6.add());
 				});
 
 				return button;
@@ -5858,18 +6022,19 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 			this.item = item;
 
-			this.element = $$(".mv-item-controls", this.item.element).filter(function (el) {
+			this.element = $$(".mv-item-bar:not([mv-rel]), .mv-item-bar[mv-rel=\"" + this.item.property + "\"]", this.item.element).filter(function (el) {
 				// Remove item controls meant for other collections
 				return el.closest(Mavo.selectors.multiple) == _this.item.element && !Mavo.data(el, "item");
 			})[0];
 
 			this.element = this.element || $.create({
-				className: "mv-item-controls mv-ui"
+				className: "mv-item-bar mv-ui"
 			});
 
 			Mavo.data(this.element, "item", this.item);
 
 			$.set(this.element, {
+				"mv-rel": this.item.property,
 				contents: [{
 					tag: "button",
 					title: "Delete this " + this.item.name,
@@ -5977,6 +6142,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 				this.value = this.function(data);
 			} catch (exception) {
 				console.info("%cExpression error!", "color: red; font-weight: bold", exception.message + " in expression " + this.expression);
+
 				Mavo.hooks.run("expression-eval-error", { context: this, exception: exception });
 
 				this.value = exception;
@@ -6003,18 +6169,18 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 				return true;
 			}
 
-			if (Mavo.hasIntersection(evt.properties, this.identifiers)) {
+			if (Mavo.Functions.intersects(evt.properties, this.identifiers)) {
 				return true;
 			}
 
 			if (evt.action != "propertychange") {
-				if (Mavo.hasIntersection(["$index", "$all", "$previous", "$next"], this.identifiers)) {
+				if (Mavo.Functions.intersects(["$index", "$previous", "$next"], this.identifiers)) {
 					return true;
 				}
 
 				var collection = evt.node.collection || evt.node;
 
-				if (Mavo.hasIntersection(collection.properties, this.identifiers)) {
+				if (Mavo.Functions.intersects(collection.properties, this.identifiers)) {
 					return true;
 				}
 			}
@@ -6121,7 +6287,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			compile: function compile(code) {
 				code = _.rewrite(code);
 
-				return new Function("data", "with(Mavo.Functions._Trap)\n\t\t\t\t\twith(data) {\n\t\t\t\t\t\treturn " + code + ";\n\t\t\t\t\t}");
+				return new Function("data", "with(Mavo.Functions._Trap)\n\t\t\t\t\twith (data || {}) {\n\t\t\t\t\t\treturn " + code + ";\n\t\t\t\t\t}");
 			},
 
 			parse: self.jsep
@@ -6277,7 +6443,8 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 			this.mavo.treeBuilt.then(function () {
 				if (!_this.template) {
-					_this.item = Mavo.Node.get(_this.element.closest(Mavo.selectors.multiple + ", " + Mavo.selectors.group));
+					// Only collection items and groups can have their own expressions arrays
+					_this.item = Mavo.Node.get(_this.element.closest(Mavo.selectors.item));
 					_this.item.expressions = [].concat(_toConsumableArray(_this.item.expressions || []), [_this]);
 				}
 
@@ -6303,6 +6470,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 			var env = { context: this, ret: {}, event: event };
 			var parentEnv = env;
+
 			this.data = data;
 
 			env.ret = {};
@@ -6467,25 +6635,45 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		},
 
 		update: function update(evt) {
-			var _this2 = this;
-
-			var root, rootGroup;
-
-			if (evt instanceof Element) {
-				root = evt.closest(Mavo.selectors.group);
-				evt = null;
+			if (!this.active) {
+				return;
 			}
 
-			root = root || this.mavo.element;
-			rootGroup = Mavo.Node.get(root);
+			var root, rootObject;
 
-			var data = rootGroup.getData({ live: true });
+			if (evt instanceof Mavo.Node) {
+				rootObject = evt;
+				evt = null;
+			} else if (evt instanceof Element) {
+				root = evt.closest(Mavo.selectors.item);
+				rootObject = Mavo.Node.get(root);
+				evt = null;
+			} else {
+				rootObject = this.mavo.root;
+			}
 
-			rootGroup.walk(function (obj, path) {
+			var allData = rootObject.getData({ live: true });
+
+			rootObject.walk(function (obj, path) {
+				var data = $.value.apply($, [allData].concat(_toConsumableArray(path)));
+
 				if (obj.expressions && obj.expressions.length && !obj.isDeleted()) {
-					var env = { context: _this2, data: $.value.apply($, [data].concat(_toConsumableArray(path))) };
+					if ((typeof data === "undefined" ? "undefined" : _typeof(data)) != "object" || data === null) {
+						var _data;
 
-					Mavo.hooks.run("expressions-update-start", env);
+						// Turn primitives into objects, so we can have $index, their property
+						// name etc resolve relative to them, not their parent group
+						var parentData = $.value.apply($, [allData].concat(_toConsumableArray(path.slice(0, -1))));
+
+						data = (_data = {}, _defineProperty(_data, Symbol.toPrimitive, function () {
+							return data;
+						}), _defineProperty(_data, obj.property, data), _data);
+
+						if (self.Proxy) {
+							data = obj.relativizeData(data);
+						}
+					}
+
 					var _iteratorNormalCompletion = true;
 					var _didIteratorError = false;
 					var _iteratorError = undefined;
@@ -6495,7 +6683,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 							var et = _step.value;
 
 							if (et.changedBy(evt)) {
-								et.update(env.data, evt);
+								et.update(data, evt);
 							}
 						}
 					} catch (err) {
@@ -6535,7 +6723,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 		// Traverse an element, including attribute nodes, text nodes and all descendants
 		traverse: function traverse(node) {
-			var _this3 = this;
+			var _this2 = this;
 
 			var path = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
 			var syntax = arguments[2];
@@ -6564,10 +6752,10 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 				}
 
 				$$(node.attributes).forEach(function (attribute) {
-					return _this3.extract(node, attribute, path, syntax);
+					return _this2.extract(node, attribute, path, syntax);
 				});
 				$$(node.childNodes).forEach(function (child, i) {
-					return _this3.traverse(child, path + "/" + i, syntax);
+					return _this2.traverse(child, path + "/" + i, syntax);
 				});
 			}
 		},
@@ -6580,104 +6768,17 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			directive: function directive(name, o) {
 				_.directives.push(name);
 				Mavo.attributes.push(name);
-				o.name = name;
-				Mavo.Plugins.register(o);
+				Mavo.Plugins.register(name, o);
 			}
 		}
 	});
 
 	if (self.Proxy) {
 		Mavo.hooks.add("node-getdata-end", function (env) {
-			var _this4 = this;
-
-			if (env.options.live && (env.data && _typeof(env.data) === "object" || this.collection)) {
+			if (env.options.live && (env.data || env.data === 0 || env.data === "") && _typeof(env.data) === "object") {
 				var data = env.data;
 
-				if (this instanceof Mavo.Primitive) {
-					var _env$data;
-
-					env.data = (_env$data = {}, _defineProperty(_env$data, Symbol.toPrimitive, function () {
-						return data;
-					}), _defineProperty(_env$data, this.property, data), _env$data);
-				}
-
-				env.data = new Proxy(env.data, {
-					get: function get(data, property, proxy) {
-						// Checking if property is in proxy might add it to the data
-						if (property in data || property in proxy && property in data) {
-							return data[property];
-						}
-					},
-
-					has: function has(data, property) {
-						if (property in data) {
-							return true;
-						}
-
-						// Property does not exist, look for it elsewhere
-
-						if (property == "$index") {
-							data[property] = _this4.index || 0;
-							return true; // if index is 0 it's falsy and has would return false!
-						}
-
-						if (property == "$all") {
-							return data[property] = _this4.closestCollection ? _this4.closestCollection.getData(env.options) : [env.data];
-						}
-
-						if (property == "$next" || property == "$previous") {
-							if (_this4.closestCollection) {
-								return data[property] = _this4.closestCollection.getData(env.options)[_this4.index + (property == "$next" ? 1 : -1)];
-							}
-
-							data[property] = null;
-							return null;
-						}
-
-						if (_this4 instanceof Mavo.Group && property == _this4.property && _this4.collection) {
-							return data[property] = env.data;
-						}
-
-						// First look in ancestors
-						var ret = _this4.walkUp(function (group) {
-							if (property in group.children) {
-								return group.children[property];
-							};
-						});
-
-						if (ret === undefined) {
-							// Still not found, look in descendants
-							ret = _this4.find(property);
-						}
-
-						if (ret !== undefined) {
-							if (Array.isArray(ret)) {
-								ret = ret.map(function (item) {
-									return item.getData(env.options);
-								}).filter(function (item) {
-									return item !== null;
-								});
-							} else if (ret instanceof Mavo.Node) {
-								ret = ret.getData(env.options);
-							}
-
-							data[property] = ret;
-
-							return true;
-						}
-
-						// Does it reference another Mavo?
-						if (property in Mavo.all) {
-							return data[property] = Mavo.all[property].root.getData(env.options);
-						}
-
-						return false;
-					},
-
-					set: function set(data, property, value) {
-						throw Error("You can’t set data via expressions.");
-					}
-				});
+				env.data = this.relativizeData(data);
 			}
 		});
 	}
@@ -6863,6 +6964,7 @@ Mavo.Expressions.directive("mv-value", {
 			}
 
 			et.mavoNode = this;
+			this.expressionText = et;
 			this.storage = this.storage || "none";
 			this.modes = "read";
 
@@ -6917,6 +7019,8 @@ Mavo.Expressions.directive("mv-value", {
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -6936,11 +7040,76 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
    * Get a property of an object. Used by the . operator to prevent TypeErrors
    */
 		get: function get(obj, property) {
-			return obj && obj[property] !== undefined ? obj[property] : null;
+			if (obj && obj[property] !== undefined) {
+				return obj[property];
+			}
+
+			if (Array.isArray(obj) && isNaN(property)) {
+				// Array and non-numerical property
+				var _iteratorNormalCompletion = true;
+				var _didIteratorError = false;
+				var _iteratorError = undefined;
+
+				try {
+					for (var _iterator = obj[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+						var first = _step.value;
+
+						if (first && (typeof first === "undefined" ? "undefined" : _typeof(first)) === "object") {
+							break;
+						}
+					}
+				} catch (err) {
+					_didIteratorError = true;
+					_iteratorError = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion && _iterator.return) {
+							_iterator.return();
+						}
+					} finally {
+						if (_didIteratorError) {
+							throw _iteratorError;
+						}
+					}
+				}
+
+				if (first) {
+					if ("id" in first) {
+						// Try by id?
+						for (var i = 0; i < obj.length; i++) {
+							if (obj[i] && obj[i].id == property) {
+								return _.get(obj, i);
+							}
+						}
+					}
+
+					// Still here, get that property from the objects inside
+					return obj.map(function (e) {
+						return _.get(e, property);
+					});
+				}
+			}
+
+			// Not found :(
+			return null;
 		},
 
 		unique: function unique(arr) {
+			if (!Array.isArray(arr)) {
+				return arr;
+			}
+
 			return [].concat(_toConsumableArray(new Set(arr)));
+		},
+
+		/**
+   * Do two arrays have a non-empty intersection?
+   * @return {Boolean}
+   */
+		intersects: function intersects(arr1, arr2) {
+			return arr1 && arr2 && !arr1.every(function (el) {
+				return arr2.indexOf(el) == -1;
+			});
 		},
 
 		/*********************
@@ -7052,13 +7221,15 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
    * Case insensitive search
    */
 		search: function search(haystack, needle) {
-			return haystack && needle ? haystack.toLowerCase().indexOf(needle.toLowerCase()) : -1;
+			return haystack && needle ? (haystack + "").toLowerCase().indexOf((needle + "").toLowerCase()) : -1;
 		},
 
 		starts: function starts(haystack, needle) {
-			return _.search(haystack, needle) === 0;
+			return _.search(haystack + "", needle + "") === 0;
 		},
 		ends: function ends(haystack, needle) {
+			haystack += "";
+			needle += "";
 			var i = _.search(haystack, needle);
 			return i > -1 && i === haystack.length - needle.length;
 		},
@@ -7137,7 +7308,17 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			return Math.floor(Math.abs(seconds) / (30.4368 * 86400 * 12));
 		},
 
-		localTimezone: -new Date().getTimezoneOffset()
+		localTimezone: -new Date().getTimezoneOffset(),
+
+		// Log to the console and return
+		log: function log() {
+			for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+				args[_key] = arguments[_key];
+			}
+
+			console.log(args);
+			return args[0];
+		}
 	};
 
 	// $url: Read-only syntactic sugar for URL stuff
@@ -7145,27 +7326,27 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		var ret = {};
 		var url = new URL(location);
 
-		var _iteratorNormalCompletion = true;
-		var _didIteratorError = false;
-		var _iteratorError = undefined;
+		var _iteratorNormalCompletion2 = true;
+		var _didIteratorError2 = false;
+		var _iteratorError2 = undefined;
 
 		try {
-			for (var _iterator = url.searchParams[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-				var pair = _step.value;
+			for (var _iterator2 = url.searchParams[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+				var pair = _step2.value;
 
 				ret[pair[0]] = pair[1];
 			}
 		} catch (err) {
-			_didIteratorError = true;
-			_iteratorError = err;
+			_didIteratorError2 = true;
+			_iteratorError2 = err;
 		} finally {
 			try {
-				if (!_iteratorNormalCompletion && _iterator.return) {
-					_iterator.return();
+				if (!_iteratorNormalCompletion2 && _iterator2.return) {
+					_iterator2.return();
 				}
 			} finally {
-				if (_didIteratorError) {
-					throw _iteratorError;
+				if (_didIteratorError2) {
+					throw _iteratorError2;
 				}
 			}
 		}
@@ -7195,27 +7376,27 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		addBinaryOperator: function addBinaryOperator(name, o) {
 			if (o.symbol) {
 				// Build map of symbols to function names for easy rewriting
-				var _iteratorNormalCompletion2 = true;
-				var _didIteratorError2 = false;
-				var _iteratorError2 = undefined;
+				var _iteratorNormalCompletion3 = true;
+				var _didIteratorError3 = false;
+				var _iteratorError3 = undefined;
 
 				try {
-					for (var _iterator2 = Mavo.toArray(o.symbol)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-						var symbol = _step2.value;
+					for (var _iterator3 = Mavo.toArray(o.symbol)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+						var symbol = _step3.value;
 
 						Mavo.Script.symbols[symbol] = name;
 					}
 				} catch (err) {
-					_didIteratorError2 = true;
-					_iteratorError2 = err;
+					_didIteratorError3 = true;
+					_iteratorError3 = err;
 				} finally {
 					try {
-						if (!_iteratorNormalCompletion2 && _iterator2.return) {
-							_iterator2.return();
+						if (!_iteratorNormalCompletion3 && _iterator3.return) {
+							_iterator3.return();
 						}
 					} finally {
-						if (_didIteratorError2) {
-							throw _iteratorError2;
+						if (_didIteratorError3) {
+							throw _iteratorError3;
 						}
 					}
 				}
@@ -7224,8 +7405,8 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			o.identity = o.identity === undefined ? 0 : o.identity;
 
 			return _[name] = o.code || function () {
-				for (var _len = arguments.length, operands = Array(_len), _key = 0; _key < _len; _key++) {
-					operands[_key] = arguments[_key];
+				for (var _len2 = arguments.length, operands = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+					operands[_key2] = arguments[_key2];
 				}
 
 				if (operands.length === 1) {
@@ -7791,9 +7972,17 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		get: function get() {
 			var _this = this;
 
-			return this.request(this.apiCall).then(function (response) {
-				return Promise.resolve(_this.repo ? _.atob(response.content) : response);
-			});
+			if (this.isAuthenticated() || !this.path) {
+				// Authenticated or raw API call
+				return this.request(this.apiCall).then(function (response) {
+					return Promise.resolve(_this.repo ? _.atob(response.content) : response);
+				});
+			} else {
+				// Unauthenticated, use simple GET request to avoid rate limit
+				var url = new URL("https://raw.githubusercontent.com/" + this.username + "/" + this.repo + "/" + (this.branch || "master") + "/" + this.path);
+
+				return this.super.get.call(this, url);
+			}
 		},
 
 		upload: function upload(file) {
@@ -7832,6 +8021,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 			var repoCall = "repos/" + this.username + "/" + this.repo;
 			var fileCall = repoCall + "/contents/" + path;
+			var commitPrefix = this.mavo.element.getAttribute("mv-github-commit-prefix") || "";
 
 			// Create repo if it doesn’t exist
 			var repoInfo = this.repoInfo || this.request("user/repos", { name: this.repo }, "POST").then(function (repoInfo) {
@@ -7869,7 +8059,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 					ref: _this3.branch
 				}).then(function (fileInfo) {
 					return _this3.request(fileCall, {
-						message: "Updated " + (fileInfo.name || "file"),
+						message: commitPrefix + " Updated " + (fileInfo.name || "file"),
 						content: serialized,
 						branch: _this3.branch,
 						sha: fileInfo.sha
@@ -7878,7 +8068,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 					if (xhr.status == 404) {
 						// File does not exist, create it
 						return _this3.request(fileCall, {
-							message: "Created file",
+							message: commitPrefix + "Created file",
 							content: serialized,
 							branch: _this3.branch
 						}, "PUT");
