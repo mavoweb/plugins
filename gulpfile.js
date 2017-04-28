@@ -54,7 +54,7 @@ gulp.task("html", function() {
 		.pipe(fileinclude({
 			basepath: "../mavo.io/templates/",
 			context: {
-				webRoot: "http://mavo.io"
+				webRoot: "//mavo.io"
 			}
 		}).on("error", function(error) {
 			console.error(error);
