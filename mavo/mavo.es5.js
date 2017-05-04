@@ -1212,6 +1212,32 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			}
 		},
 
+		elementPath: function elementPath(ancestor, element, elementsOnly) {
+			if (Array.isArray(element)) {
+				// Get element by path
+				var path = element;
+				return path.reduce(function (acc, cur) {
+					return acc[elementsOnly ? "children" : "childNodes"][cur];
+				}, ancestor);
+			} else {
+				// Get path
+				var path = [];
+
+				for (var parent = element; parent && parent != ancestor; parent = parent.parentNode) {
+					var index = 0;
+					var element = parent;
+
+					while (element = element["previous" + (elementsOnly ? "Element" : "") + "Sibling"]) {
+						index++;
+					}
+
+					path.unshift(index);
+				}
+
+				return parent ? path : null;
+			}
+		},
+
 		/**
    * Revocably add/remove elements from the DOM
    */
@@ -4763,7 +4789,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 				try {
 					for (var _iterator = all[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-						config = _step.value;
+						var config = _step.value;
 
 						config.attribute = Mavo.toArray(config.attribute || null);
 
@@ -4773,7 +4799,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 						try {
 							for (var _iterator2 = config.attribute[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-								attribute = _step2.value;
+								var attribute = _step2.value;
 
 								var _o = $.extend({}, config);
 								_o.attribute = attribute;
@@ -4818,7 +4844,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		},
 		"search": {
 			value: function value(element, attribute, datatype) {
-
 				var matches = _.matches(element, attribute, datatype);
 
 				return matches[matches.length - 1] || { attribute: attribute };
@@ -5216,31 +5241,60 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		"time": {
 			attribute: "datetime",
 			default: true,
-			editor: function editor() {
-				var types = {
-					"date": /^[Y\d]{4}-[M\d]{2}-[D\d]{2}$/i,
-					"month": /^[Y\d]{4}-[M\d]{2}$/i,
-					"time": /^[H\d]{2}:[M\d]{2}/i,
-					"week": /[Y\d]{4}-W[W\d]{2}$/i,
-					"datetime-local": /^[Y\d]{4}-[M\d]{2}-[D\d]{2} [H\d]{2}:[M\d]{2}/i
-				};
+			init: function init() {
+				this.element.setAttribute("mv-label", this.label);
 
-				var datetime = this.element.getAttribute("datetime") || "YYYY-MM-DD";
+				if (!this.fromTemplate("dateType")) {
+					var dateFormat = Mavo.DOMExpression.search(this.element, null);
 
-				for (var type in types) {
-					if (types[type].test(datetime)) {
-						break;
+					var datetime = this.element.getAttribute("datetime") || "YYYY-MM-DD";
+
+					for (var type in this.config.dateTypes) {
+						if (this.config.dateTypes[type].test(datetime)) {
+							break;
+						}
+					}
+
+					this.dateType = type;
+
+					if (!dateFormat) {
+						// TODO what about mv-expressions?
+						this.element.textContent = this.config.defaultFormats[this.dateType](this.property);
+						this.mavo.expressions.extract(this.element, null);
 					}
 				}
-
-				return { tag: "input", type: type };
+			},
+			dateTypes: {
+				"date": /^[Y\d]{4}-[M\d]{2}-[D\d]{2}$/i,
+				"month": /^[Y\d]{4}-[M\d]{2}$/i,
+				"time": /^[H\d]{2}:[M\d]{2}/i,
+				"datetime-local": /^[Y\d]{4}-[M\d]{2}-[D\d]{2} [H\d]{2}:[M\d]{2}/i
+			},
+			defaultFormats: {
+				"date": function date(property) {
+					return "[day(" + property + ")] [month(" + property + ").name] [year(" + property + ")]";
+				},
+				"month": function month(property) {
+					return "[month(" + property + ").name] [year(" + property + ")]";
+				},
+				"time": function time(property) {
+					return "[hour(" + property + ")]:[minute(" + property + ")]";
+				},
+				"datetime-local": function datetimeLocal(property) {
+					return "[day(" + property + ")] [month(" + property + ").name] [year(" + property + ")]";
+				}
+			},
+			editor: function editor() {
+				return { tag: "input", type: this.dateType };
 			},
 			humanReadable: function humanReadable(value) {
 				var date = new Date(value);
 
 				if (!value || isNaN(date)) {
-					return "(No " + this.label + ")";
+					return "";
 				}
+
+				return undefined;
 
 				// TODO do this properly (account for other datetime datatypes and different formats)
 				var options = {
@@ -5347,7 +5401,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 			try {
 				for (var _iterator = this.children[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-					item = _step.value;
+					var item = _step.value;
 
 					if (!item.deleted || env.options.live) {
 						var itemData = item.getData(env.options);
@@ -5551,11 +5605,11 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			var changed = [];
 
 			for (var i = 0; i < this.length; i++) {
-				var _item = this.children[i];
+				var item = this.children[i];
 
-				if (_item && _item.index !== i) {
-					_item.index = i;
-					changed.push(_item);
+				if (item && item.index !== i) {
+					item.index = i;
+					changed.push(item);
 				}
 			}
 
@@ -5720,12 +5774,12 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 			try {
 				for (var _iterator4 = this.children[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-					var _item2 = _step4.value;
+					var item = _step4.value;
 
-					if (_item2.deleted) {
-						this.delete(_item2, true);
+					if (item.deleted) {
+						this.delete(item, true);
 					} else {
-						_item2.unsavedChanges = false;
+						item.unsavedChanges = false;
 					}
 				}
 			} catch (err) {
@@ -6535,7 +6589,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			}
 
 			if (env.ret.presentational === env.ret.value) {
-				ret = env.ret.value;
+				env.ret = env.ret.value;
 			}
 
 			this.output(env.ret);
@@ -6704,17 +6758,26 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			});
 		},
 
-		extract: function extract(node, attribute, path, syntax) {
+		extract: function extract(node, attribute, path) {
+			var syntax = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : Mavo.Expression.Syntax.default;
+
 			if (attribute && attribute.name == "mv-expressions") {
 				return;
 			}
 
+			if (path === undefined) {
+				path = Mavo.elementPath(node.closest(Mavo.selectors.item), node);
+			} else if (path && typeof path === "string") {
+				path = path.slice(1).split("/").map(function (i) {
+					return +i;
+				});
+			} else {
+				path = [];
+			}
+
 			if (attribute && _.directives.indexOf(attribute.name) > -1 || syntax.test(attribute ? attribute.value : node.textContent)) {
 				this.expressions.push(new Mavo.DOMExpression({
-					node: node, syntax: syntax,
-					path: path ? path.slice(1).split("/").map(function (i) {
-						return +i;
-					}) : [],
+					node: node, syntax: syntax, path: path,
 					attribute: attribute && attribute.name,
 					mavo: this.mavo
 				}));
@@ -7163,6 +7226,12 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 				useGrouping: false,
 				maximumFractionDigits: decimals
 			});
+		},
+
+		ordinal: function ordinal(num) {
+			var ord = num == 1 ? "st" : num == 2 ? "nd" : num == 3 ? "rd" : "th";
+
+			return num + ord;
 		},
 
 		iff: function iff(condition, iftrue) {
@@ -7689,18 +7758,26 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 	// Make function names case insensitive
 	Mavo.Functions._Trap = self.Proxy ? new Proxy(_, {
 		get: function get(functions, property) {
+			var ret;
+
 			if (property in functions) {
-				return functions[property];
+				ret = functions[property];
+			} else {
+				var propertyL = property.toLowerCase && property.toLowerCase();
+
+				if (propertyL && functions.hasOwnProperty(propertyL)) {
+					ret = functions[propertyL];
+				} else if (property in Math || propertyL in Math) {
+					ret = Math[property] || Math[propertyL];
+				}
 			}
 
-			var propertyL = property.toLowerCase && property.toLowerCase();
-
-			if (propertyL && functions.hasOwnProperty(propertyL)) {
-				return functions[propertyL];
-			}
-
-			if (property in Math || propertyL in Math) {
-				return Math[property] || Math[propertyL];
+			if (ret) {
+				// For when function names are used as unquoted strings, see #160
+				ret.toString = function () {
+					return property;
+				};
+				return ret;
 			}
 
 			if (property in self) {

@@ -1015,6 +1015,31 @@ var _ = $.extend(Mavo, {
 		}
 	},
 
+	elementPath: function (ancestor, element, elementsOnly) {
+		if (Array.isArray(element)) {
+			// Get element by path
+			var path = element;
+			return path.reduce((acc, cur) => acc[elementsOnly? "children" : "childNodes"][cur], ancestor);
+		}
+		else {
+			// Get path
+			var path = [];
+
+			for (var parent = element; parent && parent != ancestor; parent = parent.parentNode) {
+				var index = 0;
+				var element = parent;
+
+				while (element = element[`previous${elementsOnly? "Element" : ""}Sibling`]) {
+					index++;
+				}
+
+				path.unshift(index);
+			}
+
+			return parent? path : null;
+		}
+	},
+
 	/**
 	 * Revocably add/remove elements from the DOM
 	 */
@@ -4111,10 +4136,10 @@ Object.defineProperties(_, {
 
 			var all = Mavo.toArray(arguments[1]);
 
-			for (config of all) {
+			for (var config of all) {
 				config.attribute = Mavo.toArray(config.attribute || null);
 
-				for (attribute of config.attribute) {
+				for (var attribute of config.attribute) {
 					let o = $.extend({}, config);
 					o.attribute = attribute;
 					o.selector = o.selector || id;
@@ -4130,9 +4155,8 @@ Object.defineProperties(_, {
 	},
 	"search": {
 		value: function(element, attribute, datatype) {
-
 			var matches = _.matches(element, attribute, datatype);
-			
+
 			return matches[matches.length - 1] || { attribute };
 		}
 	},
@@ -4492,31 +4516,52 @@ _.register({
 	"time": {
 		attribute: "datetime",
 		default: true,
-		editor: function() {
-			var types = {
-				"date": /^[Y\d]{4}-[M\d]{2}-[D\d]{2}$/i,
-				"month": /^[Y\d]{4}-[M\d]{2}$/i,
-				"time": /^[H\d]{2}:[M\d]{2}/i,
-				"week": /[Y\d]{4}-W[W\d]{2}$/i,
-				"datetime-local": /^[Y\d]{4}-[M\d]{2}-[D\d]{2} [H\d]{2}:[M\d]{2}/i
-			};
+		init: function() {
+			this.element.setAttribute("mv-label", this.label);
 
-			var datetime = this.element.getAttribute("datetime") || "YYYY-MM-DD";
+			if (!this.fromTemplate("dateType")) {
+				var dateFormat = Mavo.DOMExpression.search(this.element, null);
 
-			for (var type in types) {
-				if (types[type].test(datetime)) {
-					break;
+				var datetime = this.element.getAttribute("datetime") || "YYYY-MM-DD";
+
+				for (var type in this.config.dateTypes) {
+					if (this.config.dateTypes[type].test(datetime)) {
+						break;
+					}
+				}
+
+				this.dateType = type;
+
+				if (!dateFormat) {
+					// TODO what about mv-expressions?
+					this.element.textContent = this.config.defaultFormats[this.dateType](this.property);
+					this.mavo.expressions.extract(this.element, null);
 				}
 			}
-
-			return {tag: "input", type};
+		},
+		dateTypes: {
+			"date": /^[Y\d]{4}-[M\d]{2}-[D\d]{2}$/i,
+			"month": /^[Y\d]{4}-[M\d]{2}$/i,
+			"time": /^[H\d]{2}:[M\d]{2}/i,
+			"datetime-local": /^[Y\d]{4}-[M\d]{2}-[D\d]{2} [H\d]{2}:[M\d]{2}/i
+		},
+		defaultFormats: {
+			"date": property => `[day(${property})] [month(${property}).name] [year(${property})]`,
+			"month": property => `[month(${property}).name] [year(${property})]`,
+			"time": property => `[hour(${property})]:[minute(${property})]`,
+			"datetime-local": property => `[day(${property})] [month(${property}).name] [year(${property})]`
+		},
+		editor: function() {
+			return {tag: "input", type: this.dateType};
 		},
 		humanReadable: function (value) {
 			var date = new Date(value);
 
 			if (!value || isNaN(date)) {
-				return "(No " + this.label + ")";
+				return "";
 			}
+
+			return undefined;
 
 			// TODO do this properly (account for other datetime datatypes and different formats)
 			var options = {
@@ -4613,7 +4658,7 @@ var _ = Mavo.Collection = $.Class({
 			data: []
 		};
 
-		for (item of this.children) {
+		for (var item of this.children) {
 			if (!item.deleted || env.options.live) {
 				let itemData = item.getData(env.options);
 
@@ -5655,7 +5700,7 @@ var _ = Mavo.DOMExpression = $.Class({
 		}
 
 		if (env.ret.presentational === env.ret.value) {
-			ret = env.ret.value;
+			env.ret = env.ret.value;
 		}
 
 		this.output(env.ret);
@@ -5794,17 +5839,26 @@ var _ = Mavo.Expressions = $.Class({
 		});
 	},
 
-	extract: function(node, attribute, path, syntax) {
+	extract: function(node, attribute, path, syntax = Mavo.Expression.Syntax.default) {
 		if (attribute && attribute.name == "mv-expressions") {
 			return;
+		}
+
+		if (path === undefined) {
+			path = Mavo.elementPath(node.closest(Mavo.selectors.item), node);
+		}
+		else if (path && typeof path === "string") {
+			path = path.slice(1).split("/").map(i => +i);
+		}
+		else {
+			path = [];
 		}
 
 		if ((attribute && _.directives.indexOf(attribute.name) > -1) ||
 		    syntax.test(attribute? attribute.value : node.textContent)
 		) {
 			this.expressions.push(new Mavo.DOMExpression({
-				node, syntax,
-				path: path? path.slice(1).split("/").map(i => +i) : [],
+				node, syntax, path,
 				attribute: attribute && attribute.name,
 				mavo: this.mavo
 			}));
@@ -6153,6 +6207,12 @@ var _ = Mavo.Functions = {
 			useGrouping: false,
 			maximumFractionDigits: decimals
 		});
+	},
+
+	ordinal: function(num) {
+		var ord = num == 1? "st" : num == 2? "nd" : num == 3? "rd" : "th";
+
+		return num + ord;
 	},
 
 	iff: function(condition, iftrue, iffalse="") {
@@ -6531,18 +6591,26 @@ for (let name in aliases) {
 // Make function names case insensitive
 Mavo.Functions._Trap = self.Proxy? new Proxy(_, {
 	get: (functions, property) => {
+		var ret;
+
 		if (property in functions) {
-			return functions[property];
+			ret = functions[property];
+		}
+		else {
+			var propertyL = property.toLowerCase && property.toLowerCase();
+
+			if (propertyL && functions.hasOwnProperty(propertyL)) {
+				ret = functions[propertyL];
+			}
+			else if (property in Math || propertyL in Math) {
+				ret = Math[property] || Math[propertyL];
+			}
 		}
 
-		var propertyL = property.toLowerCase && property.toLowerCase();
-
-		if (propertyL && functions.hasOwnProperty(propertyL)) {
-			return functions[propertyL];
-		}
-
-		if (property in Math || propertyL in Math) {
-			return Math[property] || Math[propertyL];
+		if (ret) {
+			// For when function names are used as unquoted strings, see #160
+			ret.toString = () => property;
+			return ret;
 		}
 
 		if (property in self) {
