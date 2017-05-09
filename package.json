@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/LeaVerou/mavo-plugins/issues"
   },
-  "homepage": "http://mavo.io",
+  "homepage": "http://plugins.mavo.io",
   "devDependencies": {
     "babel-eslint": "^5.0.0",
     "gulp": "^3.9.0",

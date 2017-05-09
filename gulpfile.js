@@ -40,12 +40,6 @@ gulp.task("sass", function() {
 });
 
 gulp.task("update", function() {
-	gulp.src(["../mavo/dist/**/*"])
-		.pipe(gulp.dest("mavo"))
-		.pipe(notify({
-			message: "Plugin Mavo updated!",
-			onLast: true
-		}));
 	gulp.src(["../mavo/.eslintrc.json"]).pipe(gulp.dest("."));
 });
 
@@ -69,9 +63,9 @@ gulp.task("html", function() {
 });
 
 gulp.task("watch", function() {
-	gulp.watch(["../mavo/dist/*"], ["update"]);
+	gulp.watch(["../mavo/.eslintrc.json"], ["update"]);
 	gulp.watch(["**/*.scss"], ["sass"]);
 	gulp.watch(["**/*.tpl.html", "../mavo.io/templates/*.html"], ["html"]);
 });
 
-gulp.task("default", ["sass", "update"]);
+gulp.task("default", ["sass"]);
