@@ -119,7 +119,7 @@ section[mv-app="plugins"] {
 		}
 	}
 
-	&[mv-app] { // View page
+	&[mv-app] > :not(.mv-ui) { // View page
 		font-size: 140%;
 	}
 }

@@ -92,7 +92,7 @@ section[mv-app="plugins"] > div {
     .plugin footer a {
       font-weight: bold;
       color: var(--color-magenta); }
-  .plugin[mv-app] {
+  .plugin[mv-app] > :not(.mv-ui) {
     font-size: 140%; }
 
 a.author img {
