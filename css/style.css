@@ -92,8 +92,10 @@ section[mv-app="plugins"] > div {
     .plugin footer a {
       font-weight: bold;
       color: var(--color-magenta); }
-  .plugin[mv-app] > :not(.mv-ui) {
+  .plugin[mv-app] {
     font-size: 140%; }
+    .plugin[mv-app][mv-progress]::after {
+      font-size: calc(100% / 1.4); }
 
 a.author img {
   display: inline-block;

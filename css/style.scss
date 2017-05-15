@@ -119,8 +119,12 @@ section[mv-app="plugins"] {
 		}
 	}
 
-	&[mv-app] > :not(.mv-ui) { // View page
+	&[mv-app] { // View page
 		font-size: 140%;
+
+		&[mv-progress]::after {
+			font-size: calc(100% / 1.4);
+		}
 	}
 }
 
