@@ -22,8 +22,8 @@ section[mv-app="plugins"] > div {
   justify-content: space-between; }
 
 [property="plugin"] {
-  width: 45%;
-  margin: 1rem 0; }
+  width: 46%;
+  margin: .5rem 0; }
 
 .plugin {
   display: -ms-flexbox;
