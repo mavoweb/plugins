@@ -30,8 +30,12 @@ section[mv-app="plugins"] {
 }
 
 [property="plugin"] { // Plugin listing
-	width: 46%;
+	width: 100%;
 	margin: .5rem 0;
+
+	@media (min-width: 950px) {
+		width: 46%;
+	}
 }
 
 .plugin {
