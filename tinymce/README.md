@@ -1,1 +1,1 @@
-To use TinyMCE, follow the installation instructions below. Then add class="tinymce" to the element where you want the TinyMCE to appear.
+To use TinyMCE, follow the installation instructions below. Then add `class="tinymce"` to the property that you want to be edited via TinyMCE.
