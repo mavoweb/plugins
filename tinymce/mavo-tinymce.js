@@ -1,7 +1,12 @@
 (function($) {
 
+var parser, serializer;
+
 Mavo.Plugins.register("tinymce", {
-	ready: $.include(self.tinymce, "https://cdn.tinymce.com/4/tinymce.min.js")
+	ready: $.include(self.tinymce, "https://cdn.tinymce.com/4/tinymce.min.js").then(() => {
+		parser = new tinymce.html.DomParser();
+		serializer = new tinymce.html.Serializer();
+	})
 });
 
 Mavo.Elements.register(".tinymce", {
@@ -37,7 +42,7 @@ Mavo.Elements.register(".tinymce", {
 		}
 	},
 	getValue: element => element.innerHTML,
-	setValue: (element, value) => element.innerHTML = value
+	setValue: (element, value) => element.innerHTML = serializer.serialize(parser.parse(value))
 });
 
 })(Bliss);

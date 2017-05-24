@@ -22,6 +22,30 @@
 	</div>
 </section>
 
+<script>
+	localStorage.tinymcexss = `{
+	"richtext": "<img src=\\"//test.mavo.io/image.png\\" onload=\\"alert('If you can see this, the test failed')\\"> Foo bar <script>alert('If you can see this, the test failed')</sc${""}ript>"
+}`;
+</script>
+<section mv-app="tinymcexss" mv-storage="local">
+	<h1>XSS</h1>
+	<table class="reftest">
+		<tr>
+			<td>
+				<div class="tinymce" property="richtext">
+					XSS
+				</div>
+			</td>
+			<td>
+				<div>
+					<img src="//test.mavo.io/image.png" /> Foo bar
+				</div>
+			</td>
+		</tr>
+	</table>
+
+</section>
+
 <script src="https://get.mavo.io/mavo.js"></script>
 <script src="mavo-tinymce.js"></script>
 
