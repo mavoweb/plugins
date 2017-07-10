@@ -44,6 +44,16 @@
 			],
 			"repo": "lizziew/mavo-firebase",
 			"author": "lizziew"
+		},
+		{
+			"name": "PHP Backend",
+			"id": "php",
+			"description": "Use your own PHP-enabled server with Mavo",
+			"tag": [
+				"backend"
+			],
+			"repo": "falafel65/mavo-php",
+			"author": "falafel65"
 		}
 	]
 }
