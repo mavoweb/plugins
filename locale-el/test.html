@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+	<meta charset="UTF-8">
+	<title>Greek locale tests</title>
+	<link rel="stylesheet" href="https://test.mavo.io/style.css" />
+	<link rel="stylesheet" href="https://get.mavo.io/mavo.css" />
+	<script src="https://get.mavo.io/mavo.js"></script>
+</head>
+<body style="max-width: 70em">
+
+<h1>Greek locale tests</h1>
+
+<section mv-app="githubtest" mv-storage="https://github.com/mavoweb/test/blob/master/data/countries.json">
+	<h1>Mavo with Github storage</h1>
+
+	<table class="reftest">
+		<tr>
+			<td>
+				<ul>
+					<li property="country" mv-multiple>
+						<span property="code">Code</span>
+						<span property="name">Name</span>
+					</li>
+				</ul>
+			</td>
+			<td>
+				<ul>
+					<li>Online</li>
+					<li>us United States</li>
+					<li>gb United Kingdom</li>
+				</ul>
+			</td>
+		</tr>
+	</table>
+
+	<button onclick="var m = Mavo.get(this.parentNode); m.inProgress = m.inProgress? false : this.textContent;">Loading</button>
+	<button onclick="var m = Mavo.get(this.parentNode); m.inProgress = m.inProgress? false : this.textContent;">Uploading</button>
+	<button onclick="var m = Mavo.get(this.parentNode); m.inProgress = m.inProgress? false : this.textContent;">Saving</button>
+</section>
+
+<script src="mavo-locale-el.js"></script>
+<script src="//test.mavo.io/test.js"></script>
+<script src="../sitewide.js"></script>
+
+</body>
+</html>
