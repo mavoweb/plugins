@@ -36,6 +36,15 @@
 			"author": "leaverou"
 		},
 		{
+			"name": "Greek Locale",
+			"id": "locale-el",
+			"description": "Translates all Mavo UI to Greek",
+			"tag": [
+				"Locale"
+			],
+			"author": "leaverou"
+		},
+		{
 			"name": "Mavo Firebase",
 			"id": "firebase",
 			"description": "Store your data in Google Firebase. A work in progress.",
