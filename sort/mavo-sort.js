@@ -31,11 +31,11 @@ Mavo.Plugins.register("sort", {
 					// This should work for numbers and strings, but what to do if
 					// unexpected type?
 					if ((prev < next && order === "+") ||
-							(prev > next && order === "-")) {
+					    (prev > next && order === "-")) {
 						return -1;
 					}
 					if ((prev > next && order === "+") ||
-							(prev < next && order === "-")) {
+					    (prev < next && order === "-")) {
 						return 1;
 					}
 					// If neither checks work, we have a tie, attempt again with
