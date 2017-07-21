@@ -49,7 +49,7 @@ Mavo.Elements.register(".tinymce", {
 		if (!this.tinymce) {
 			element.innerHTML = content;
 		}
-		else {
+		else if (this.tinymce.isHidden()) {
 			this.tinymce.setContent(content);
 		}
 	}
