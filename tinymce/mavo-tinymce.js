@@ -41,8 +41,18 @@ Mavo.Elements.register(".tinymce", {
 			tinymce.EditorManager.execCommand("mceRemoveEditor", true, this.tinymce.id);
 		}
 	},
-	getValue: element => element.innerHTML,
-	setValue: (element, value) => element.innerHTML = serializer.serialize(parser.parse(value))
+	getValue: function (element) {
+		return this.tinymce ? this.tinymce.getContent() : element.innerHTML;
+	},
+	setValue: function (element, value) {
+		const content = serializer.serialize(parser.parse(value));
+		if (!this.tinymce) {
+			element.innerHTML = content;
+		}
+		else if (this.tinymce.isHidden()) {
+			this.tinymce.setContent(content);
+		}
+	}
 });
 
 })(Bliss);
