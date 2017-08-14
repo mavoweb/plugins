@@ -14,9 +14,9 @@ Mavo.Elements.register(".tinymce", {
 	default: true,
 	edit: function() {
 		this.preEdit.then(evt => {
-			if (this.tinymce) {
+			if (this.element.tinymce) {
 				// Previously edited, we already have an editor
-				tinymce.EditorManager.execCommand("mceAddEditor", true, this.tinymce.id);
+				tinymce.EditorManager.execCommand("mceAddEditor", true, this.element.tinymce.id);
 				return;
 			}
 
@@ -28,9 +28,9 @@ Mavo.Elements.register(".tinymce", {
 				toolbar: "styleselect | bold italic | image link | table | bullist numlist",
 				plugins: "image code link table lists media tabfocus"
 			}).then(editors => {
-				this.tinymce = editors[0];
+				this.element.tinymce = editors[0];
 
-				this.tinymce.on("change", evt => {
+				this.element.tinymce.on("change", evt => {
 					this.value = this.getValue();
 				});
 			});
@@ -41,16 +41,16 @@ Mavo.Elements.register(".tinymce", {
 			tinymce.EditorManager.execCommand("mceRemoveEditor", true, this.tinymce.id);
 		}
 	},
-	getValue: function (element) {
-		return this.tinymce ? this.tinymce.getContent() : element.innerHTML;
+	getValue: (element) => {
+		return element.tinymce ? element.tinymce.getContent() : element.innerHTML;
 	},
-	setValue: function (element, value) {
+	setValue: (element, value) => {
 		const content = serializer.serialize(parser.parse(value));
-		if (!this.tinymce) {
+		if (!element.tinymce) {
 			element.innerHTML = content;
 		}
-		else if (this.tinymce.isHidden()) {
-			this.tinymce.setContent(content);
+		else if (element.tinymce.isHidden()) {
+			element.tinymce.setContent(content);
 		}
 	}
 });
