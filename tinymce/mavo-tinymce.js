@@ -30,7 +30,7 @@ Mavo.Elements.register(".tinymce", {
 			}).then(editors => {
 				this.element.tinymce = editors[0];
 
-				this.element.tinymce.on("change", evt => {
+				this.element.tinymce.on("change keyup paste cut", evt => {
 					this.value = this.getValue();
 				});
 			});
