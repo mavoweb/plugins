@@ -7,7 +7,7 @@ body > header {
 		&::after {
 			content: "+";
 			display: inline-block;
-			vertical-align: .09em;
+			vertical-align: .25em;
 			color: hsla(0,0%,100%, .6);
 		}
 	}

@@ -4,7 +4,7 @@ body > header .logo a img {
 body > header .logo a::after {
   content: "+";
   display: inline-block;
-  vertical-align: .09em;
+  vertical-align: .25em;
   color: rgba(255, 255, 255, 0.6); }
 
 body > header + h2 {
