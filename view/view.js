@@ -9,7 +9,13 @@ $.events(readme, "mavo:datachange", function(evt) {
 });
 
 $.events($('[mv-app="plugin"]'), "mavo:load", function(evt) {
-	$.include("https://buttons.github.io/buttons.js");
+	$$(".github-buttons > a").forEach(function(a) {
+		a.classList.add("github-button");
+	});
+
+	requestAnimationFrame(function() {
+		$.include("https://buttons.github.io/buttons.js");
+	});
 });
 
 })();
