@@ -98,7 +98,7 @@ section[mv-app="plugins"] {
 			flex: 1;
 		}
 
-		.button, .github-button {
+		.button, .github-button, .github-buttons > a {
 			padding: .35em .8em;
 			border-radius: .3em;
 			border: 1px solid rgba(0,0,0,.15);
@@ -113,7 +113,10 @@ section[mv-app="plugins"] {
 			}
 		}
 
-		.button, .github-button, iframe {
+		.button,
+		.github-button,
+		.github-buttons > a,
+		iframe {
 			margin: 0 .1em;
 		}
 
