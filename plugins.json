@@ -63,6 +63,16 @@
 			],
 			"repo": "falafel65/mavo-php",
 			"author": "falafel65"
+		},
+		{
+			"name": "French Locale",
+			"id": "locale-fr",
+			"description": "Translates all Mavo UI to French",
+			"tag": [
+				"locale"
+			],
+			"repo": "falafel65/mavo-locale-fr",
+			"author": "falafel65"
 		}
 	]
 }
