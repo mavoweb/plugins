@@ -73,6 +73,16 @@
 			],
 			"repo": "falafel65/mavo-locale-fr",
 			"author": "falafel65"
+		},
+		{
+			"name": "Portuguese Brazil Locale",
+			"id": "locale-pt-br",
+			"description": "Translates all Mavo UI to Portuguese Brazil",
+			"tag": [
+				"LOCALE"
+			],
+			"repo": "/mavo-locale-pt-br",
+			"author": "dioney"
 		}
 	]
 }
