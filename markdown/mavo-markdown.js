@@ -22,7 +22,10 @@ Mavo.Elements.register("markdown", {
 	selector: ".markdown",
 	init: function() {
 		this.element.setAttribute("mv-expressions", "none");
-		requestAnimationFrame(() => this.done());
+
+		requestAnimationFrame(function() {
+			this.done();
+		}.bind(this));
 	},
 	editor: function() {
 		var editor = $.create("textarea");
