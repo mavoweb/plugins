@@ -10,7 +10,7 @@ Mavo.Plugins.register("markdown", {
 		"init-start": function() {
 			// Disable expressions on Markdown properties, before expressions are parsed
 			var selector = Mavo.selectors.and(Mavo.selectors.primitive, ".markdown");
-			for (let element of $$(selector, this.element)) {
+			for (var element of $$(selector, this.element)) {
 				element.setAttribute("mv-expressions", element.getAttribute("mv-expressions") || "none");
 			}
 		}
