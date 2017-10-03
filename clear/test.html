@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Clear tests</title>
+	<link rel="stylesheet" href="https://test.mavo.io/style.css" />
+	<link rel="stylesheet" href="https://dev.mavo.io/dist/mavo.css" />
+	<script src="https://dev.mavo.io/dist/mavo.js"></script>
+</head>
+<body>
+
+<h1>Clear tests</h1>
+
+<section mv-app mv-storage="#data" mv-bar="yes-clear">
+	<h1>Basic</h1>
+
+	<p>Press Clear and Save</p>
+	<table class="reftest">
+		<tr title="Does save work? Interactive" class="interactive" data-test="contents" mv-expressions="none">
+			<td>
+				<pre id="data">{
+	"prop1": 5,
+	"collection": [
+		{
+			"prop2": 6,
+			"prop3": 7
+		},
+		{
+			"prop2": 8,
+			"prop3": 9
+		}
+	],
+	"primitives": [
+		10,
+		11
+	]
+}</pre>
+			</td>
+			<td>
+				<pre>{
+	"prop1": 1,
+	"collection": [
+		{
+			"prop2": 2,
+			"prop3": 3
+		}
+	],
+	"primitives": [
+		4
+	]
+}</pre>
+			</td>
+		</tr>
+		<tr data-test="selector">
+			<td>
+				<div class="mv-bar mv-ui"></div>
+			</td>
+			<td>.mv-bar .mv-clear</td>
+		</tr>
+		<tr>
+			<td>
+				<span property="prop1">1</span>
+				<span mv-multiple>
+					<span property="prop2">2</span>
+					<span property="prop3">3</span>
+				</span>
+				<span mv-multiple="primitives">4</span>
+			</td>
+			<td>
+				1 2 3 4
+			</td>
+		</tr>
+	</table>
+</section>
+
+<script src="mavo-clear.js"></script>
+
+<script src="//test.mavo.io/test.js"></script>
+
+</body>
+</html>

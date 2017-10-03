@@ -1,0 +1,12 @@
+.mv-clear::before {
+	content: var(--mv-rubbish-bin);
+	width: 1em;
+	height: 1em;
+	vertical-align: -.25em;
+	width: .9em;
+	filter: saturate(0) brightness(600%);
+}
+
+.mv-clear:enabled:hover {
+	background: #b00;
+}
