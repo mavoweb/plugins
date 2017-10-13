@@ -62,7 +62,7 @@
 			"id": "locale-fr",
 			"description": "Translates all Mavo UI to French",
 			"tag": [
-				"locale"
+				"LOCALE"
 			],
 			"repo": "falafel65/mavo-locale-fr",
 			"author": "falafel65"
