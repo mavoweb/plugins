@@ -94,16 +94,6 @@
 			"author": "Dsan10s"
 		},
 		{
-			"name": "Mavo Firebase",
-			"id": "firebase",
-			"description": "Google Firebase backend",
-			"tag": [
-				"backend"
-			],
-			"repo": "valterkraemer/mavo-firebase",
-			"author": "valterkraemer"
-		},
-		{
 			"name": "Firebase",
 			"id": "firebase",
 			"description": "Google Firebase backend",
@@ -126,7 +116,7 @@
 		{
 			"name": "Offline interceptor",
 			"id": "offline-interceptor",
-			"description": "Caches backend data and allows 4-way data-binding with backends that supports it.",
+			"description": "Caches data and allows updates in real-time with backends that supports it.",
 			"tag": [
 				"backend-interceptor"
 			],
