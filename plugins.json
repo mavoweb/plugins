@@ -92,6 +92,46 @@
 			],
 			"repo": "mavoweb/sort",
 			"author": "Dsan10s"
+		},
+		{
+			"name": "Mavo Firebase",
+			"id": "firebase",
+			"description": "Google Firebase backend",
+			"tag": [
+				"backend"
+			],
+			"repo": "valterkraemer/mavo-firebase",
+			"author": "valterkraemer"
+		},
+		{
+			"name": "Firebase",
+			"id": "firebase",
+			"description": "Google Firebase backend",
+			"tag": [
+				"backend"
+			],
+			"repo": "valterkraemer/mavo-firebase",
+			"author": "valterkraemer"
+		},
+		{
+			"name": "PouchDB/CouchDB",
+			"id": "pouchdb",
+			"description": "PouchDB/CouchDB backend",
+			"tag": [
+				"backend"
+			],
+			"repo": "valterkraemer/mavo-pouchdb",
+			"author": "valterkraemer"
+		},
+		{
+			"name": "Offline interceptor",
+			"id": "offline-interceptor",
+			"description": "Caches backend data and allows 4-way data-binding with backends that supports it.",
+			"tag": [
+				"backend-interceptor"
+			],
+			"repo": "valterkraemer/mavo-offline-interceptor",
+			"author": "valterkraemer"
 		}
 	]
 }
