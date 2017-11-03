@@ -49,7 +49,7 @@
 		},
 		{
 			"name": "Mavo Firebase",
-			"id": "firebase",
+			"id": "firebase2",
 			"description": "Store your data in Google Firebase. A work in progress.",
 			"tag": [
 				"backend"
