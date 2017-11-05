@@ -49,7 +49,7 @@
 		},
 		{
 			"name": "Mavo Firebase",
-			"id": "firebase",
+			"id": "firebase0",
 			"description": "Store your data in Google Firebase. A work in progress.",
 			"tag": [
 				"backend"
@@ -92,6 +92,36 @@
 			],
 			"repo": "mavoweb/sort",
 			"author": "Dsan10s"
+		},
+		{
+			"name": "Firebase",
+			"id": "firebase",
+			"description": "Google Firebase backend",
+			"tag": [
+				"backend"
+			],
+			"repo": "valterkraemer/mavo-firebase",
+			"author": "valterkraemer"
+		},
+		{
+			"name": "PouchDB/CouchDB",
+			"id": "pouchdb",
+			"description": "PouchDB/CouchDB backend",
+			"tag": [
+				"backend"
+			],
+			"repo": "valterkraemer/mavo-pouchdb",
+			"author": "valterkraemer"
+		},
+		{
+			"name": "Offline interceptor",
+			"id": "offline-interceptor",
+			"description": "Caches data and allows updates in real-time with backends that supports it.",
+			"tag": [
+				"backend-interceptor"
+			],
+			"repo": "valterkraemer/mavo-offline-interceptor",
+			"author": "valterkraemer"
 		}
 	]
 }
