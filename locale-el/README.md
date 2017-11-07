@@ -2,7 +2,7 @@
 
 To use, simply include the plugin and then use `lang="el"` on your Mavo root, or the `<html>` element.
 
-## Example
+## Demo
 
 ```markup
 <div mv-app mv-plugins="locale-el" lang="el">
