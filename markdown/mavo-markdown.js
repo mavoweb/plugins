@@ -10,6 +10,7 @@ Mavo.Plugins.register("markdown", {
 		"init-start": function() {
 			// Disable expressions on Markdown properties, before expressions are parsed
 			var selector = Mavo.selectors.and(Mavo.selectors.primitive, ".markdown");
+
 			for (var element of $$(selector, this.element)) {
 				element.setAttribute("mv-expressions", element.getAttribute("mv-expressions") || "none");
 			}
@@ -40,6 +41,7 @@ Mavo.Elements.register("markdown", {
 	},
 	done: function() {
 		this.element.innerHTML = Showdown.makeHtml(this.value);
+		$.fire(this.element, "mv-markdown-render");
 	},
 	setValue: function(element, value) {
 		if (this.editor) {
@@ -47,8 +49,11 @@ Mavo.Elements.register("markdown", {
 		}
 		else {
 			this.element.innerHTML = Showdown.makeHtml(value);
+			$.fire(this.element, "mv-markdown-render");
 		}
-	}
+	},
+	// We don't need an observer and it actually causes problems as it tries to feed HTML changes back to MD
+	observer: false
 });
 
 Mavo.Formats.Markdown = $.Class({
