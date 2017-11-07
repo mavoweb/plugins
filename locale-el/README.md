@@ -14,7 +14,8 @@ To use, simply include the plugin and then use `lang="el"` on your Mavo root, or
 ## Demo (Github storage)
 
 ```markup
-<div mv-app mv-plugins="locale-el" lang="el" mv-storage="https://github.com/mavoweb/test/blob/master/data/countries.json">
+<div mv-app mv-plugins="locale-el" lang="el" 
+     mv-storage="https://github.com/mavoweb/test/blob/master/data/countries.json">
 	<ul>
 		<li property="country" mv-multiple>
 			<span property="code">Code</span>
