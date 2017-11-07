@@ -13,6 +13,8 @@ To use, simply include the plugin and then use `lang="el"` on your Mavo root, or
 
 ## Demo (Github storage)
 
+If it displays with a compact toolbar (no text), resize the code area and then right click on the example and select "Reload Frame".
+
 ```markup
 <div mv-app="countries" mv-plugins="locale-el" lang="el" 
      mv-storage="https://github.com/mavoweb/test/data">
