@@ -131,4 +131,8 @@ a[property="tag"] {
   color: var(--color-magenta);
   font-size: 150%; }
 
+iframe {
+  border: none;
+  width: 100%; }
+
 /*# sourceMappingURL=style.css.map */

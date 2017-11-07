@@ -76,7 +76,7 @@ Mavo.Plugins.register("debug", {
 					after: this.element
 				});
 
-				this.element.addEventListener("mavo:save", evt => {
+				this.element.addEventListener("mv-save", evt => {
 					element.innerHTML = "";
 
 					element.appendChild(prettyPrint(evt.data));
@@ -383,7 +383,7 @@ Mavo.hooks.add("group-init-end", function() {
 			}
 		});
 
-		this.group.element.addEventListener("mavo:datachange", evt => {
+		this.group.element.addEventListener("mv-change", evt => {
 			$$("tr.debug-property", this.debug).forEach(tr => {
 				var property = tr.cells[1].textContent;
 				var value = _.printValue(this.children[property]);

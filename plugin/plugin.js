@@ -2,13 +2,48 @@
 
 var readme = $('[property="readme"]');
 
-$.events(readme, "mavo:datachange", function(evt) {
+$.events(readme, "mv-change", function(evt) {
+	// Create live demos
+	$$("h2[id^=demo] + pre > code.language-markup, h2[id^=demo] + p + pre > code.language-markup", readme).forEach(function(code) {
+		var markup = code.textContent;
+		var pre = code.parentNode;
+
+		var iframe = $.create("iframe", {
+			srcdoc: `<!DOCTYPE html>
+<head>
+	<link rel="stylesheet" href="https://get.mavo.io/mavo.css" />
+	<script src="https://get.mavo.io/mavo.js"></script>
+</head>
+<body>
+${markup}
+</body>
+`
+		});
+
+		$.create({
+			className: "example side-by-side",
+			around: pre
+		});
+
+		$.create({
+			className: "demo-container",
+			around: pre
+		});
+
+		$.create({
+			className: "example-container",
+			contents: iframe,
+			after: pre
+		});
+	});
+
+	// Highlight code areas
 	$$("code", readme).forEach(function(element) {
 		Prism.highlightElement(element);
 	});
 });
 
-$.events($('[mv-app="plugin"]'), "mavo:load", function(evt) {
+$.events($('[mv-app="plugin"]'), "mv-load", function(evt) {
 	$$(".github-buttons > a").forEach(function(a) {
 		a.classList.add("github-button");
 	});
