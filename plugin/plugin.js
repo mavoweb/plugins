@@ -2,7 +2,7 @@
 
 var readme = $('[property="readme"]');
 
-$.events(readme, "mv-change", function(evt) {
+$.events(readme, "mv-markdown-render", function(evt) {
 	// Create live demos
 	$$("h2[id^=demo] + pre > code.language-markup, h2[id^=demo] + p + pre > code.language-markup", readme).forEach(function(code) {
 		var markup = code.textContent;
@@ -38,8 +38,10 @@ ${markup}
 	});
 
 	// Highlight code areas
-	$$("code", readme).forEach(function(element) {
-		Prism.highlightElement(element);
+	requestAnimationFrame(() => {
+		$$("code", readme).forEach(function(element) {
+			Prism.highlightElement(element);
+		});
 	});
 });
 
