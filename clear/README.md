@@ -10,3 +10,13 @@ Therefore, after including the plugin, you need to add the clear button to the M
 ```
 
 Note that clearing a collection will not empty it, it will return it to the same state it had before any data was stored, i.e. having one item with its data taken from the HTML.
+
+## Demo
+
+```markup
+<div mv-app mv-storage="local" 
+     mv-bar="yes-clear" mv-plugins="clear">
+	<h2 property="heading">Heading</h2>
+	<p property="paragraph" mv-multiple>Lorem Ipsum</p>
+</div>
+```
