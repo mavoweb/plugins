@@ -2,13 +2,24 @@
 
 To use, simply include the plugin and then use `lang="el"` on your Mavo root, or the `<html>` element.
 
-## Demo
+## Demo (Local storage)
 
 ```markup
-<div mv-app mv-plugins="locale-el" lang="el">
-	<strong property="name">Lea Verou</strong>
-	Hobbies: <span property="hobby" mv-multiple>Cooking</span>
+<div mv-app mv-plugins="locale-el" lang="el" mv-storage="local">
+	<strong property="όνομα">Lea Verou</strong>
+	Χόμπι: <span property="χόμπι" mv-multiple>Cooking</span>
 </div>
 ```
 
-In lieu of a better demo right now, please look at the [tests page](/locale-el/test.html).
+## Demo (Github storage)
+
+```markup
+<div mv-app mv-plugins="locale-el" lang="el" mv-storage="https://github.com/mavoweb/test/blob/master/data/countries.json">
+	<ul>
+		<li property="country" mv-multiple>
+			<span property="code">Code</span>
+			<span property="name">Name</span>
+		</li>
+	</ul>
+</div>
+```
