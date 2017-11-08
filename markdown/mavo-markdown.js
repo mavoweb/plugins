@@ -1,7 +1,10 @@
 (function($, $$) {
 
 Mavo.Plugins.register("markdown", {
-	ready: $.include(self.showdown, "https://cdnjs.cloudflare.com/ajax/libs/showdown/1.6.4/showdown.min.js"),
+	ready: Promise.all([
+		$.include(self.showdown, "https://cdnjs.cloudflare.com/ajax/libs/showdown/1.6.4/showdown.min.js"),
+		$.include(self.DOMPurify, "https://cdnjs.cloudflare.com/ajax/libs/dompurify/1.0.2/purify.min.js")
+	]),
 	init: function() {
 		showdown.setFlavor("github");
 		self.Showdown = new showdown.Converter();
@@ -40,16 +43,14 @@ Mavo.Elements.register("markdown", {
 		return editor;
 	},
 	done: function() {
-		this.element.innerHTML = Showdown.makeHtml(this.value);
-		$.fire(this.element, "mv-markdown-render");
+		renderMarkdown(this.element, this.value);
 	},
 	setValue: function(element, value) {
 		if (this.editor) {
 			this.editor.value = value;
 		}
 		else {
-			this.element.innerHTML = Showdown.makeHtml(value);
-			$.fire(this.element, "mv-markdown-render");
+			renderMarkdown(this.element, value);
 		}
 	},
 	// We don't need an observer and it actually causes problems as it tries to feed HTML changes back to MD
@@ -71,5 +72,10 @@ Mavo.Formats.Markdown = $.Class({
 		stringify: Mavo.Formats.Text.stringify
 	}
 });
+
+function renderMarkdown(element, markdown) {
+	element.innerHTML = DOMPurify.sanitize(Showdown.makeHtml(markdown));
+	$.fire(element, "mv-markdown-render");
+}
 
 })(Bliss, Bliss.$);

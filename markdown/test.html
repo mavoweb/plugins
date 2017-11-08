@@ -44,6 +44,9 @@ Mavo.init();
 	</table>
 </section>
 
+	<h2 property="heading"></h2>
+	<p property="paragraph" mv-multiple></p>
+
 <section mv-app="markdown" mv-storage="#data">
 	<h1>Rendered</h1>
 
@@ -51,7 +54,7 @@ Mavo.init();
 		<tr>
 			<td>
 				<pre id="data">{
-	"markdown": "Foo **bar** [baz](http://mavo.io)"
+	"markdown": "Foo **bar** [baz](http://mavo.io) &lt;img src=123 onerror=\"console.log('XSS')\" />"
 }</pre>
 			</td>
 			<td>
@@ -96,7 +99,7 @@ Paragraph **bold** *italic*
 
 <script src="mavo-markdown.js"></script>
 
-<script src="//test.mavo.io/test.js"></script>
+<script src="https://test.mavo.io/test.js"></script>
 
 </body>
 </html>
