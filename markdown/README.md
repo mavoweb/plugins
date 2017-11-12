@@ -15,3 +15,5 @@ And some code `foo.bar();`
 	</div>
 </div>
 ```
+
+***Credits:** Besides [Showdown](http://showdownjs.github.io/demo/), this plugin also uses the awesome [DOMPurify](https://github.com/cure53/DOMPurify) library to filter the resulting HTML.*
