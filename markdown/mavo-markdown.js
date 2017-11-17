@@ -33,7 +33,7 @@ Mavo.Elements.register("markdown", {
 	},
 	editor: function() {
 		var editor = $.create("textarea");
-		editor.style.whiteSpace = "pre";
+		editor.style.whiteSpace = "pre-wrap";
 
 		var width = this.element.offsetWidth;
 
