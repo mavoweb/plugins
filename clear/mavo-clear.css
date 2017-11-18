@@ -1,4 +1,4 @@
-.mv-clear::before {
+.mv-bar.mv-ui .mv-clear::before {
 	content: var(--mv-rubbish-bin);
 	width: 1em;
 	height: 1em;
@@ -7,6 +7,6 @@
 	filter: saturate(0) brightness(600%);
 }
 
-.mv-clear:enabled:hover {
+.mv-bar.mv-ui .mv-clear:enabled:hover {
 	background: #b00;
 }
