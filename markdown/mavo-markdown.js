@@ -32,26 +32,29 @@ Mavo.Elements.register("markdown", {
 		}.bind(this));
 	},
 	editor: function() {
-		var editor = $.create("textarea");
-		editor.style.whiteSpace = "pre-wrap";
+		var env = {context: this};
+		env.editor = $.create("textarea");
+		env.editor.style.whiteSpace = "pre-wrap";
 
 		var width = this.element.offsetWidth;
 
 		if (width) {
-			editor.width = width;
+			env.editor.width = width;
 		}
 
-		return editor;
+		Mavo.hooks.run("markdown-editor-create", env);
+
+		return env.editor;
 	},
 	done: function() {
-		renderMarkdown(this.element, this.value);
+		Mavo.Formats.Markdown.render(this.element, this.value);
 	},
 	setValue: function(element, value) {
 		if (this.editor) {
 			this.editor.value = value;
 		}
 		else {
-			renderMarkdown(this.element, value);
+			Mavo.Formats.Markdown.render(this.element, value);
 		}
 	},
 	// We don't need an observer and it actually causes problems as it tries to feed HTML changes back to MD
@@ -70,13 +73,21 @@ Mavo.Formats.Markdown = $.Class({
 	static: {
 		extensions: [".md", ".markdown"],
 		parse: Mavo.Formats.Text.parse,
-		stringify: Mavo.Formats.Text.stringify
+		stringify: Mavo.Formats.Text.stringify,
+
+		render: function(element, markdown) {
+			var env = {element, markdown};
+			Mavo.hooks.run("markdown-render-before", env);
+
+			env.rawHTML = Showdown.makeHtml(env.markdown);
+			env.html = DOMPurify.sanitize(env.rawHTML);
+			Mavo.hooks.run("markdown-render-after", env);
+
+			element.innerHTML = env.html;
+			$.fire(element, "mv-markdown-render");
+		}
 	}
 });
 
-function renderMarkdown(element, markdown) {
-	element.innerHTML = DOMPurify.sanitize(Showdown.makeHtml(markdown));
-	$.fire(element, "mv-markdown-render");
-}
-
+console.log("hello");
 })(Bliss, Bliss.$);
