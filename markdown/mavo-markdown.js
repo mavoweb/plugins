@@ -89,5 +89,4 @@ Mavo.Formats.Markdown = $.Class({
 	}
 });
 
-console.log("hello");
 })(Bliss, Bliss.$);
