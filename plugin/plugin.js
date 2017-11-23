@@ -2,6 +2,12 @@
 
 var readme = $('[property="readme"]');
 
+Mavo.hooks.add("markdown-render-before", function(env) {
+	env.markdown = env.markdown.replace(/^(Note|Tip): /mi, function($0, $1) {
+		return "<p class=" + $1 + ">";
+	});
+});
+
 $.events(readme, "mv-markdown-render", function(evt) {
 	// Create live demos
 	$$("h2[id^=demo] + pre > code.language-markup, h2[id^=demo] + p + pre > code.language-markup", readme).forEach(function(code) {
