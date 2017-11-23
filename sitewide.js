@@ -9,7 +9,19 @@ if (!self.document) {
 
 			if (url.indexOf("get.mavo.io/mavo.") > -1 || url.indexOf("dev.mavo.io/dist/mavo.") > -1) {
 				var newURL = url.replace(/.+?(get|dev)\.mavo\.io\/(dist\/)?/, "http://localhost:8000/dist/") + "?" + Date.now();
+			}
+			else if (/plugins.mavo.io\/(\w+)\/(?:mavo-\1.js|mavo-\1.css|README.md)$/.test(url)) {
+				var newURL = new URL(url);
+				newURL.host = location.host;
+				newURL.protocol = location.protocol;
+				newURL += "";
+			}
+			else if (/\/plugin\/\w+\/?$/.test(url)) {
+				// Doesn't currently work :(
+				var newURL = url.replace("/plugin/", "/plugin/?plugin=");
+			}
 
+			if (newURL) {
 				var response = fetch(new Request(newURL), evt.request)
 					.then(r => r.status < 400? r : Promise.reject())
 					.catch(err => fetch(evt.request)); // if that fails, return original request
