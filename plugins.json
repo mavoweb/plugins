@@ -20,6 +20,13 @@
 			"author": "leaverou"
 		},
 		{
+			"name": "Import HTML",
+			"id": "importhtml",
+			"description": "Use CSS properties instead of Mavo attributes, which lets you add them to **a lot** of elements at once and import data from existing HTML!",
+			"tag": [],
+			"author": "leaverou"
+		},
+		{
 			"name": "Yaml",
 			"id": "yaml",
 			"description": "Store and/or read data in Yaml instead of JSON. Uses the popular [JS-Yaml](http://nodeca.github.io/js-yaml/) library.",
