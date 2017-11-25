@@ -70,7 +70,7 @@ You could now even delete the HTML (except the first item) or leave it there, up
 
 You can also mix and match attributes and CSS properties! The example above could also be written as follows.
 
-<h2 hidden>Demo</h2>
+<h2 hidden id=demo>Demo</h2>
 
 ```html
 <style>
@@ -87,7 +87,7 @@ You can also mix and match attributes and CSS properties! The example above coul
 		--mv-property: content;
 	}
 </style>
-<div id="main" mv-app="test" mv-storage="local">
+<div mv-app="test" mv-storage="local" mv-plugins="importhtml">
 	<article>
 		<h1>Heading1</h1>
 		<p>Content1</p>
@@ -117,3 +117,4 @@ You can also mix and match attributes and CSS properties! The example above coul
 - The CSS that contains these properties **must** be either a `<style>` element or a CSS file **in the same domain**, otherwise the properties will be ignored (in some cases you may be able to get around this by using the [`crossorigin`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link) attribute on the `<link>` element).
 - All this plugin really does is set the corresponding attributes on your actual HTML before Mavo reads them. If you use CSS to change the value of any of them (e.g. via a pseudo-class), the changes will **not** be applied.
 - If you change the HTML after you have saved your data, the changes will be visible, unless they don't interfere with the data. E.g. in the example above, changing "Heading1" to "Foo Bar" after saving the data, would not have any effect. On the other hand, adding a class or id to any of the elements, or putting the `<p>` before the `<h1>` will work just fine.
+- You cannot use an `--mv-plugins` property to include this or any other plugin, you would need to include it conventionally.
