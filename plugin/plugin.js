@@ -20,8 +20,8 @@ $.events(readme, "mv-markdown-render", function(evt) {
 		var iframe = $.create("iframe", {
 			srcdoc: `<!DOCTYPE html>
 <head>
-	<link rel="stylesheet" href="https://get.mavo.io/mavo.css" />
-	<script src="https://get.mavo.io/mavo.js"></script>
+	<link rel="stylesheet" href="https://dev.mavo.io/dist/mavo.css" />
+	<script src="https://dev.mavo.io/dist/mavo.js"></script>
 </head>
 <body>
 ${markup}
