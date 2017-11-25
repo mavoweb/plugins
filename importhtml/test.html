@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+	<meta charset="UTF-8">
+	<title>Import HTML tests</title>
+	<link rel="stylesheet" href="https://test.mavo.io/style.css" />
+	<link rel="stylesheet" href="https://get.mavo.io/mavo.css" />
+	<script src="https://get.mavo.io/mavo.js"></script>
+	<script src="//test.mavo.io/test.js"></script>
+	<style>
+		table article {
+			--mv-property: collection;
+			--mv-multiple: true;
+		}
+
+		article h1 {
+			--mv-property: title;
+		}
+
+		article p {
+			--mv-property: content;
+		}
+	</style>
+</head>
+<body style="max-width: 70em">
+
+<h1>Import HTML tests</h1>
+
+<table class="reftest">
+
+	<tr>
+		<td>
+			<pre id="data"></pre>
+		</td>
+		<td>
+			<pre>{
+	"collection": [
+		{
+			"title": "Heading1",
+			"content": "Content1"
+		},
+		{
+			"title": "Heading2",
+			"content": "Content2"
+		},
+		{
+			"title": "Heading3",
+			"content": "Content3"
+		},
+		{
+			"title": "Heading4",
+			"content": "Content4"
+		},
+		{
+			"title": "Heading5",
+			"content": "Content5"
+		}
+	]
+}</pre>
+		</td>
+	</tr>
+	<tr data-test="selector">
+		<td mv-app mv-storage="#data">
+			<article>
+				<h1>Heading1</h1>
+				<p>Content1</p>
+			</article>
+			<article>
+				<h1>Heading2</h1>
+				<p>Content2</p>
+			</article>
+			<article>
+				<h1>Heading3</h1>
+				<p>Content3</p>
+			</article>
+			<article id="foo">
+				<h1>Heading4</h1>
+				<p>Content4</p>
+			</article>
+			<article>
+				<h1>Heading5</h1>
+				<p>Content5</p>
+			</article>
+		</td>
+		<td>
+			article[property=collection][mv-multiple] > h1[property=title]:not([mv-multiple]) + p[property=content]:not([mv-multiple])
+		</td>
+	</tr>
+</table>
+
+<script src="mavo-importhtml.js"></script>
+<script src="../sitewide.js"></script>
+
+</body>
+</html>
