@@ -87,7 +87,8 @@ You can also mix and match attributes and CSS properties! The example above coul
 		--mv-property: content;
 	}
 </style>
-<div mv-app="test" mv-storage="local" mv-plugins="importhtml">
+<div mv-app="test" mv-storage="local" 
+     mv-plugins="importhtml" mv-bar="with export">
 	<article>
 		<h1>Heading1</h1>
 		<p>Content1</p>
@@ -111,6 +112,8 @@ You can also mix and match attributes and CSS properties! The example above coul
 	...
 </div>
 ```
+
+Try it out: save or export and verify that the data saved/exported is the data from the HTML!
 
 ## Caveats
 
