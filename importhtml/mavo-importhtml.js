@@ -12,6 +12,8 @@ Mavo.Plugins.register("importhtml", {
 			properties["--" + name] = name;
 		});
 
+		delete properties["--mv-plugins"];
+
 		var propertyNames = Object.keys(properties);
 
 		var selectors = [];
