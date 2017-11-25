@@ -3,7 +3,7 @@
 var readme = $('[property="readme"]');
 
 Mavo.hooks.add("markdown-render-before", function(env) {
-	env.markdown = env.markdown.replace(/^(Note|Tip): /mi, function($0, $1) {
+	env.markdown = env.markdown.replace(/^(Note|Tip|Warning): /mi, function($0, $1) {
 		return "<p class=" + $1.toLowerCase() + ">";
 	});
 });
