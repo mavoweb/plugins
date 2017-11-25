@@ -10,7 +10,10 @@ Mavo.hooks.add("markdown-render-before", function(env) {
 
 $.events(readme, "mv-markdown-render", function(evt) {
 	// Create live demos
-	$$("h2[id^=demo] + pre > code.language-markup, h2[id^=demo] + p + pre > code.language-markup", readme).forEach(function(code) {
+	$$(`h2[id^=demo] + pre > code.language-markup,
+		h2[id^=demo] + p + pre > code.language-markup,
+		h2[id^=demo] + pre > code.language-html,
+			h2[id^=demo] + p + pre > code.language-html`, readme).forEach(function(code) {
 		var markup = code.textContent;
 		var pre = code.parentNode;
 
