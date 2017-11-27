@@ -27,7 +27,7 @@ Mavo.init();
 			</td>
 			<td>
 				<div>
-					<h2 id="heading">Heading</h2>
+					<h2>Heading</h2>
 					<p>Hello, I am <strong>Lea Verou</strong>. <a href="http://mavo.io">Mavo</a> is awesome.</p>
 					<pre><code class="js language-js">Mavo.init();</code></pre>
 				</div>
@@ -39,6 +39,16 @@ Mavo.init();
 			</td>
 			<td mv-expressions="none">
 				<script>document.write($$('td div[property="markdown"]').pop().innerHTML)</script>
+			</td>
+		</tr>
+		<tr data-test="elements" title="With options">
+			<td>
+				<div property="markdown2" mv-markdown-options="headerLevelStart: 2"># Heading</div>
+			</td>
+			<td>
+				<div>
+					<h2>Heading</h2>
+				</div>
 			</td>
 		</tr>
 	</table>

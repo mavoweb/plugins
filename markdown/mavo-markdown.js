@@ -18,14 +18,31 @@ Mavo.Plugins.register("markdown", {
 				element.setAttribute("mv-expressions", element.getAttribute("mv-expressions") || "none");
 			}
 		}
+	},
+	render: function(element, markdown, showdown = Showdown) {
+		var env = {element, markdown};
+		Mavo.hooks.run("markdown-render-before", env);
+
+		env.rawHTML = showdown.makeHtml(env.markdown);
+		env.html = DOMPurify.sanitize(env.rawHTML);
+		Mavo.hooks.run("markdown-render-after", env);
+
+		element.innerHTML = env.html;
+		$.fire(element, "mv-markdown-render");
 	}
 });
 
 Mavo.Elements.register("markdown", {
 	default: true,
-	selector: ".markdown",
+	selector: ".markdown, [mv-markdown-options]",
 	init: function() {
 		this.element.setAttribute("mv-expressions", "none");
+
+		var options = this.element.getAttribute("mv-markdown-options");
+
+		if (options && !this.fromTemplate("showdown")) {
+			this.showdown = new showdown.Converter(Mavo.options(options));
+		}
 
 		requestAnimationFrame(function() {
 			this.done();
@@ -47,14 +64,14 @@ Mavo.Elements.register("markdown", {
 		return env.editor;
 	},
 	done: function() {
-		Mavo.Formats.Markdown.render(this.element, this.value);
+		Mavo.Plugins.loaded.markdown.render(this.element, this.value, this.showdown);
 	},
 	setValue: function(element, value) {
 		if (this.editor) {
 			this.editor.value = value;
 		}
 		else {
-			Mavo.Formats.Markdown.render(this.element, value);
+			Mavo.Plugins.loaded.markdown.render(this.element, value, this.showdown);
 		}
 	},
 	// We don't need an observer and it actually causes problems as it tries to feed HTML changes back to MD
@@ -73,19 +90,7 @@ Mavo.Formats.Markdown = $.Class({
 	static: {
 		extensions: [".md", ".markdown"],
 		parse: Mavo.Formats.Text.parse,
-		stringify: Mavo.Formats.Text.stringify,
-
-		render: function(element, markdown) {
-			var env = {element, markdown};
-			Mavo.hooks.run("markdown-render-before", env);
-
-			env.rawHTML = Showdown.makeHtml(env.markdown);
-			env.html = DOMPurify.sanitize(env.rawHTML);
-			Mavo.hooks.run("markdown-render-after", env);
-
-			element.innerHTML = env.html;
-			$.fire(element, "mv-markdown-render");
-		}
+		stringify: Mavo.Formats.Text.stringify
 	}
 });
 
