@@ -16,6 +16,23 @@ And some code `foo.bar();`
 </div>
 ```
 
+## Customize conversion to HTML
+
+Showdown supports [a number of options for customizing the way it converts Markdown to HTML](https://github.com/showdownjs/showdown#valid-options). You can specify these options on a per-property basis by using the `mv-markdown-options` attribute.
+The syntax of this attribute is a CSS-like list of declarations, where you can use either commas or semicolons to separate the option-value pairs. If you just want to set an option to `true`, you can just provide no value.
+Also, if you use this attribute, you can omit the `markdown` class from your element, it's not needed.
+
+## Demo
+
+```markup
+<div mv-app mv-storage="local"  mv-plugins="markdown">
+	<div property="text" mv-markdown-options=" mv-markdown-options="headerLevelStart: 3, tasklists""># Heading
+- [x] This task is done
+- [ ] This is still pending
+	</div>
+</div>
+```
+
 <h2 class=advanced> Advanced customization: Events and Hooks</h2>
 
 If you wish to modify the HTML produced, this plugin fires an `mv-markdown-render` event on the property element that is markdown-enabled right after it converts the Markdown to HTML and renders it. The current Plugins directory uses this for the live demos, you can find the [code here](https://github.com/mavoweb/plugins/blob/master/plugin/plugin.js#L9).
