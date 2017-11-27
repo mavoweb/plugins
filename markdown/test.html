@@ -43,11 +43,20 @@ Mavo.init();
 		</tr>
 		<tr data-test="elements" title="With options">
 			<td>
-				<div property="markdown2" mv-markdown-options="headerLevelStart: 2"># Heading</div>
+				<div property="markdown2" mv-markdown-options="headerLevelStart: 2, tasklists">
+# Heading
+
+- [x] This task is done
+- [ ] This is still pending
+				</div>
 			</td>
 			<td>
 				<div>
 					<h2>Heading</h2>
+					<ul>
+						<li style="list-style-type: none;" class="task-list-item"><input checked="" style="margin: 0px 0.35em 0.25em -1.6em; vertical-align: middle;" disabled="" type="checkbox"> This task is done</li>
+						<li style="list-style-type: none;" class="task-list-item"><input style="margin: 0px 0.35em 0.25em -1.6em; vertical-align: middle;" disabled="" type="checkbox"> This is still pending</li>
+					</ul>
 				</div>
 			</td>
 		</tr>

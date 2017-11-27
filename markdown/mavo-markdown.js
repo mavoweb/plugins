@@ -1,8 +1,10 @@
 (function($, $$) {
 
+const SELECTOR = ".markdown, [mv-markdown-options]";
+
 Mavo.Plugins.register("markdown", {
 	ready: Promise.all([
-		$.include(self.showdown, "https://cdnjs.cloudflare.com/ajax/libs/showdown/1.6.4/showdown.min.js"),
+		$.include(self.showdown, "https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.2/showdown.min.js"),
 		$.include(self.DOMPurify, "https://cdnjs.cloudflare.com/ajax/libs/dompurify/1.0.2/purify.min.js")
 	]),
 	init: function() {
@@ -12,7 +14,7 @@ Mavo.Plugins.register("markdown", {
 	hooks: {
 		"init-start": function() {
 			// Disable expressions on Markdown properties, before expressions are parsed
-			var selector = Mavo.selectors.and(Mavo.selectors.primitive, ".markdown");
+			var selector = Mavo.selectors.and(Mavo.selectors.primitive, SELECTOR);
 
 			for (var element of $$(selector, this.element)) {
 				element.setAttribute("mv-expressions", element.getAttribute("mv-expressions") || "none");
@@ -34,14 +36,13 @@ Mavo.Plugins.register("markdown", {
 
 Mavo.Elements.register("markdown", {
 	default: true,
-	selector: ".markdown, [mv-markdown-options]",
+	selector: SELECTOR,
 	init: function() {
-		this.element.setAttribute("mv-expressions", "none");
-
 		var options = this.element.getAttribute("mv-markdown-options");
 
 		if (options && !this.fromTemplate("showdown")) {
 			this.showdown = new showdown.Converter(Mavo.options(options));
+			this.showdown.setFlavor("github");
 		}
 
 		requestAnimationFrame(function() {
