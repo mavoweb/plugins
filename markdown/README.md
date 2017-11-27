@@ -22,11 +22,12 @@ Showdown supports [a number of options for customizing the way it converts Markd
 The syntax of this attribute is a CSS-like list of declarations, where you can use either commas or semicolons to separate the option-value pairs. If you just want to set an option to `true`, you can just provide no value.
 Also, if you use this attribute, you can omit the `markdown` class from your element, it's not needed.
 
-## Demo
+<h2 hidden id="demo">Demo</h2>
 
 ```markup
 <div mv-app mv-storage="local"  mv-plugins="markdown">
-	<div property="text" mv-markdown-options=" mv-markdown-options="headerLevelStart: 3, tasklists">
+	<div property="text" 
+	     mv-markdown-options="headerLevelStart: 3, tasklists">
 # Heading
 
 - [x] This task is done
