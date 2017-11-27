@@ -26,7 +26,9 @@ Also, if you use this attribute, you can omit the `markdown` class from your ele
 
 ```markup
 <div mv-app mv-storage="local"  mv-plugins="markdown">
-	<div property="text" mv-markdown-options=" mv-markdown-options="headerLevelStart: 3, tasklists""># Heading
+	<div property="text" mv-markdown-options=" mv-markdown-options="headerLevelStart: 3, tasklists">
+# Heading
+
 - [x] This task is done
 - [ ] This is still pending
 	</div>
