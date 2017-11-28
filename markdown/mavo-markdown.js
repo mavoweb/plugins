@@ -30,7 +30,10 @@ Mavo.Plugins.register("markdown", {
 		Mavo.hooks.run("markdown-render-after", env);
 
 		element.innerHTML = env.html;
-		$.fire(element, "mv-markdown-render");
+
+		requestAnimationFrame(function() {
+			$.fire(element, "mv-markdown-render");
+		});
 	}
 });
 
@@ -44,10 +47,6 @@ Mavo.Elements.register("markdown", {
 			this.showdown = new showdown.Converter(Mavo.options(options));
 			this.showdown.setFlavor("github");
 		}
-
-		requestAnimationFrame(function() {
-			this.done();
-		}.bind(this));
 	},
 	editor: function() {
 		var env = {context: this};
@@ -65,7 +64,10 @@ Mavo.Elements.register("markdown", {
 		return env.editor;
 	},
 	done: function() {
-		Mavo.Plugins.loaded.markdown.render(this.element, this.value, this.showdown);
+		// Has it actually been edited?
+		this.preEdit.then(function() {
+			Mavo.Plugins.loaded.markdown.render(this.element, this.value, this.showdown);
+		}.bind(this));
 	},
 	setValue: function(element, value) {
 		if (this.editor) {
