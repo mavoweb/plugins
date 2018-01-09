@@ -46,6 +46,7 @@ Mavo.Elements.register(".tinymce", {
 	},
 	setValue: (element, value) => {
 		const content = serializer.serialize(parser.parse(value));
+		
 		if (!element.tinymce) {
 			element.innerHTML = content;
 		}
