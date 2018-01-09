@@ -116,6 +116,30 @@ Paragraph **bold** *italic*
 	</table>
 </section>
 
+<section mv-app mv-storage="https://github.com/leaverou/foo/bar.json">
+	<h1>Default value with nonexistent remote storage</h1>
+	<table class="reftest">
+		<tr data-test="elements">
+			<td>
+				<div class="markdown" property="markdown">
+## Heading
+Hello, I am **Lea Verou**. [Mavo](http://mavo.io) is awesome.
+
+```js
+Mavo.init();
+```</div>
+			</td>
+			<td>
+				<div>
+					<h2>Heading</h2>
+					<p>Hello, I am <strong>Lea Verou</strong>. <a href="http://mavo.io">Mavo</a> is awesome.</p>
+					<pre><code class="js language-js">Mavo.init();</code></pre>
+				</div>
+			</td>
+		</tr>
+	</table>
+</section>
+
 <script src="mavo-markdown.js"></script>
 
 <script src="https://test.mavo.io/test.js"></script>

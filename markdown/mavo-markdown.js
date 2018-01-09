@@ -40,6 +40,7 @@ Mavo.Plugins.register("markdown", {
 Mavo.Elements.register("markdown", {
 	default: true,
 	selector: SELECTOR,
+	hasChildren: true,
 	init: function() {
 		var options = this.element.getAttribute("mv-markdown-options");
 
