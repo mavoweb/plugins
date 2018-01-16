@@ -103,7 +103,7 @@
 		{
 			"name": "Firebase",
 			"id": "firebase",
-			"description": "Google Firebase backend",
+			"description": "Google Firebase backend that supports syncing data in real-time.",
 			"tag": [
 				"backend"
 			],
@@ -111,23 +111,23 @@
 			"author": "valterkraemer"
 		},
 		{
-			"name": "PouchDB/CouchDB",
-			"id": "pouchdb",
-			"description": "PouchDB/CouchDB backend",
+			"name": "CouchDB",
+			"id": "couchdb",
+			"description": "CouchDB backend that supports syncing data in real-time.",
 			"tag": [
 				"backend"
 			],
-			"repo": "valterkraemer/mavo-pouchdb",
+			"repo": "valterkraemer/mavo-couchdb",
 			"author": "valterkraemer"
 		},
 		{
-			"name": "Offline interceptor",
-			"id": "offline-interceptor",
-			"description": "Caches data and allows updates in real-time with backends that supports it.",
+			"name": "Mavo Offline",
+			"id": "offline",
+			"description": "Caches data and allows saving when offline, then automatically saves when online again.",
 			"tag": [
-				"backend-interceptor"
+				"backend"
 			],
-			"repo": "valterkraemer/mavo-offline-interceptor",
+			"repo": "valterkraemer/mavo-offline",
 			"author": "valterkraemer"
 		}
 	]
