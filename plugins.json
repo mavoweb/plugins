@@ -84,13 +84,6 @@
 			"author": "leaverou"
 		},
 		{
-			"name": "Mavo inspector",
-			"id": "debug",
-			"description": "Inspect the current values of properties and expressions and change them on the fly (some parts are currently broken).",
-			"tag": [],
-			"author": "leaverou"
-		},
-		{
 			"name": "Mavo sort",
 			"id": "sort",
 			"description": "Sort collections in your Mavos.",
