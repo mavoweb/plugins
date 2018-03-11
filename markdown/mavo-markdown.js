@@ -66,7 +66,7 @@ Mavo.Elements.register("markdown", {
 	},
 	done: function() {
 		// Has it actually been edited?
-		this.preEdit.then(function() {
+		this.preEdit && this.preEdit.then(function() {
 			Mavo.Plugins.loaded.markdown.render(this.element, this.value, this.showdown);
 		}.bind(this));
 	},
