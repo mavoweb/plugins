@@ -122,6 +122,16 @@
 			],
 			"repo": "valterkraemer/mavo-offline",
 			"author": "valterkraemer"
+		},
+		{
+			"name": "Hebrew Locale",
+			"id": "locale-he",
+			"description": "Translates all Mavo UI to Hebrew",
+			"tag": [
+				"LOCALE"
+			],
+			"repo": "https://github.com/seffyfisher/mavo-locale-he/",
+			"author": "seffyfisher"
 		}
 	]
 }
