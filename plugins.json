@@ -84,6 +84,15 @@
 			"author": "leaverou"
 		},
 		{
+			"name": "Hebrew Locale",
+			"id": "locale-he",
+			"description": "Translates all Mavo UI to Hebrew",
+			"tag": [
+				"LOCALE"
+			],
+			"author": "SeffyFisher"
+		},
+		{
 			"name": "Mavo sort",
 			"id": "sort",
 			"description": "Sort collections in your Mavos.",
