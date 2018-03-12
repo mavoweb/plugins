@@ -128,9 +128,9 @@
 			"id": "locale-he",
 			"description": "Translates all Mavo UI to Hebrew",
 			"tag": [
-				"LOCALE"
+				"Locale"
 			],
-			"repo": "https://github.com/seffyfisher/mavo-locale-he/",
+			"repo": "seffyfisher/mavo-locale-he/",
 			"author": "seffyfisher"
 		}
 	]
