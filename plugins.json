@@ -84,15 +84,6 @@
 			"author": "leaverou"
 		},
 		{
-			"name": "Hebrew Locale",
-			"id": "locale-he",
-			"description": "Translates all Mavo UI to Hebrew",
-			"tag": [
-				"LOCALE"
-			],
-			"author": "seffyfisher"
-		},
-		{
 			"name": "Mavo sort",
 			"id": "sort",
 			"description": "Sort collections in your Mavos.",
@@ -131,6 +122,16 @@
 			],
 			"repo": "valterkraemer/mavo-offline",
 			"author": "valterkraemer"
+		},
+		{
+			"name": "Hebrew Locale",
+			"id": "locale-he",
+			"description": "Translates all Mavo UI to Hebrew",
+			"tag": [
+				"LOCALE"
+			],
+			"repo": "https://github.com/seffyfisher/mavo-locale-he/",
+			"author": "seffyfisher"
 		}
 	]
 }
