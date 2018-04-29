@@ -26,7 +26,7 @@ Mavo.Plugins.register("importhtml", {
 
 			if (rules) {
 				for (var rule of rules) {
-					if (Mavo.Functions.intersects(propertyNames, Array.from(rule.style))) {
+					if (rule && Mavo.Functions.intersects(propertyNames, Array.from(rule.style))) {
 						selectors.push(rule.selectorText);
 					}
 				}
