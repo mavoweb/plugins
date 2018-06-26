@@ -2,9 +2,7 @@
 
 var TwitterWidgets = $.include("https://platform.twitter.com/widgets.js");
 
-Mavo.Plugins.register("twitter", {
-	widgets: TwitterWidgets
-});
+Mavo.Plugins.register("twitter", { widgets: TwitterWidgets });
 
 Mavo.hooks.add("markdown-render-before", function(env) {
 	env.markdown = env.markdown.replace(/^\s*https:\/\/twitter.com\/\w{1,50}\/status\/\d+\s*$/gim, function(url) {
