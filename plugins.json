@@ -22,7 +22,7 @@
 		{
 			"name": "Twitter Embed",
 			"id": "twitter",
-			"description": "Turn Twitter URLs in your Markdown properties into embdedded tweets!",
+			"description": "Turn Twitter URLs in your Markdown properties into embedded tweets! Requires the [Markdown](https://plugins.mavo.io/plugin/markdown) plugin.",
 			"tag": [],
 			"author": "leaverou"
 		},
