@@ -20,6 +20,13 @@
 			"author": "leaverou"
 		},
 		{
+			"name": "Twitter Embed",
+			"id": "twitter",
+			"description": "Turn Twitter URLs in your Markdown properties into embdedded tweets!",
+			"tag": [],
+			"author": "leaverou"
+		},
+		{
 			"name": "Import HTML",
 			"id": "importhtml",
 			"description": "Use CSS properties to set Mavo attributes, which lets you add them to **a lot** of elements at once and import data from existing HTML!",
