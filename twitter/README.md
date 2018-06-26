@@ -9,7 +9,7 @@ No setup needed, it works automatically on any Markdown properties!
 https://twitter.com/mavoweb/status/864474590420008960
 
 Tweet URLs need to be on their own line to be converted.
-This will not be converted: https://twitter.com/LeaVerou/status/1011006218712834050
+See: https://twitter.com/LeaVerou/status/1011006218712834050
 
 Some text here
 https://twitter.com/LeaVerou/status/1011006217248964608
