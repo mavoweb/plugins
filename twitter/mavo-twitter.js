@@ -1,5 +1,7 @@
 (function($, $$) {
 
+Mavo.Plugins.register("twitter");
+
 var TwitterWidgets = $.include("https://platform.twitter.com/widgets.js");
 
 Mavo.hooks.add("markdown-render-before", function(env) {
@@ -9,7 +11,9 @@ Mavo.hooks.add("markdown-render-before", function(env) {
 });
 
 document.addEventListener("mv-markdown-render", function(evt) {
-	TwitterWidgets.then(() => twttr.widgets.load(evt.target));
+	TwitterWidgets.then(function() {
+		twttr.widgets.load(evt.target);
+	});
 });
 
 })(Bliss, Bliss.$);
