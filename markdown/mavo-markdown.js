@@ -88,7 +88,6 @@ Mavo.Formats.Markdown = $.Class({
 		this.property = this.mavo.root.getNames("Primitive")[0];
 		var primitive = this.mavo.root.children[this.property];
 		primitive.config = Mavo.Elements.markdown;
-		primitive.observer.destroy();
 	},
 
 	static: {
