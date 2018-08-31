@@ -139,6 +139,16 @@
 			],
 			"repo": "seffyfisher/mavo-locale-he/",
 			"author": "seffyfisher"
+		},
+		{
+			"name": "Russian Locale",
+			"id": "locale-ru",
+			"description": "Translate all Mavo UI into Russian",
+			"tag": [
+				"locale"
+			],
+			"repo": "DmitrySharabin/mavo-locale-ru/",
+			"author": "dmitrysharabin"
 		}
 	]
 }
