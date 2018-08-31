@@ -143,7 +143,7 @@
 		{
 			"name": "Russian Locale",
 			"id": "locale-ru",
-			"description": "Translate all Mavo UI into Russian",
+			"description": "Translates all Mavo UI into Russian",
 			"tag": [
 				"locale"
 			],
