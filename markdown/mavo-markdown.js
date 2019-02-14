@@ -14,10 +14,10 @@ Mavo.Plugins.register("markdown", {
 	hooks: {
 		"init-start": function() {
 			// Disable expressions on Markdown properties, before expressions are parsed
-			var selector = Mavo.selectors.and(Mavo.selectors.primitive, SELECTOR);
-
-			for (var element of $$(selector, this.element)) {
-				element.setAttribute("mv-expressions", element.getAttribute("mv-expressions") || "none");
+			for (var element of $$(SELECTOR, this.element)) {
+				if (element.matches(Mavo.selectors.primitive)) {
+					element.setAttribute("mv-expressions", element.getAttribute("mv-expressions") || "none");
+				}
 			}
 		}
 	},
