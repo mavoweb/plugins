@@ -52,6 +52,16 @@
 			"author": "leaverou"
 		},
 		{
+			"name": "Google Drive Backend",
+			"id": "gdrive",
+			"description": "Store Mavo app data in Google Drive",
+			"tag": [
+				"backend"
+			],
+			"repo": "efeichen/mavo-gdrive",
+			"author": "efeichen"
+		},
+		{
 			"name": "PHP Backend",
 			"id": "php",
 			"description": "Use your own PHP-enabled server with Mavo",
