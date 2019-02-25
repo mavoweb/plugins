@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+	<meta charset="UTF-8">
+	<title>Microdata tests</title>
+	<link rel="stylesheet" href="https://test.mavo.io/style.css" />
+	<link rel="stylesheet" href="https://get.mavo.io/mavo.css" />
+	<script src="https://get.mavo.io/mavo.js"></script>
+	<script src="//test.mavo.io/test.js"></script>
+</head>
+<body style="max-width: 70em">
+
+<h1>Microdata tests</h1>
+
+<table class="reftest">
+	<tr>
+		<td></td>
+		<td>
+			<pre id="data-storage"></pre>
+		</td>
+		<td>
+			<pre>{
+	"col": [
+		{
+			"name": "Heading1",
+			"description": "Content1",
+			"@type": "http://schema.org/Person"
+		},
+		{
+			"name": "Heading2",
+			"description": "Content2",
+			"@type": "http://schema.org/Person"
+		},
+		{
+			"name": "Heading3",
+			"description": "Content3",
+			"@type": "http://schema.org/Person"
+		},
+		{
+			"name": "Heading4",
+			"description": "Content4",
+			"@type": "http://schema.org/Person"
+		},
+		{
+			"name": "Heading5",
+			"description": "Content5",
+			"@type": "http://schema.org/Person"
+		}
+	]
+}</pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<pre id="data">{
+	"col": [
+		{
+			"name": "Heading1",
+			"description": "Content1"
+		},
+		{
+			"name": "Heading2",
+			"description": "Content2"
+		},
+		{
+			"name": "Heading3",
+			"description": "Content3"
+		},
+		{
+			"name": "Heading4",
+			"description": "Content4"
+		},
+		{
+			"name": "Heading5",
+			"description": "Content5"
+		}
+	]
+}</pre>
+		</td>
+		<td mv-app mv-source="#data" mv-storage="#data-storage" data-click=".mv-save after mv-load">
+			<article itemprop="col" mv-multiple itemscope itemtype="http://schema.org/Person">
+				<h1 itemprop="name">Heading1</h1>
+				<p itemprop="description">Content1</p>
+			</article>
+		</td>
+		<td>
+			<article>Heading1 Content1</article>
+			<article>Heading2 Content2</article>
+			<article>Heading3 Content3</article>
+			<article>Heading4 Content4</article>
+			<article>Heading5 Content5</article>
+		</td>
+	</tr>
+</table>
+
+<script src="mavo-microdata.js"></script>
+
+</body>
+</html>

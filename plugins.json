@@ -159,6 +159,16 @@
 			],
 			"repo": "DmitrySharabin/mavo-locale-ru",
 			"author": "dmitrysharabin"
+		},
+		{
+			"id": "microdata",
+			"name": "Microdata migration",
+			"description": "Use Microdata itemprop/itemscope/itemtype attributes to define Mavo stuff. Useful if you were relying on this functionality that got removed in v0.2.0.",
+			"tag": [
+				"Editing"
+			],
+			"github": "https://github.com/mavoweb/plugins/microdata",
+			"author": "leaverou"
 		}
 	]
 }
