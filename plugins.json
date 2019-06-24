@@ -169,6 +169,16 @@
 			],
 			"github": "https://github.com/mavoweb/plugins/microdata",
 			"author": "leaverou"
+		},
+		{
+			"name": "Cropper",
+			"id": "cropper",
+			"description": "Edit (crop, scale, rotate, flip) an image in place and upload it to the chosen backend. Uses the [Cropper.js](https://fengyuanchen.github.io/cropperjs/) library.",
+			"tag": [
+				"Editing"
+			],
+			"repo": "https://github.com/DmitrySharabin/mavo-cropper",
+			"author": "dmitrysharabin"
 		}
 	]
 }
