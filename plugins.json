@@ -177,7 +177,8 @@
 			"tag": [
 				"editing"
 			],
-			"repo": "https://github.com/DmitrySharabin/mavo-cropper"
+			"repo": "https://github.com/DmitrySharabin/mavo-cropper",
+			"author": "dmitrysharabin"
 		}
 	]
 }
