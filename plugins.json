@@ -72,16 +72,6 @@
 			"author": "falafel65"
 		},
 		{
-			"name": "Mavo Firebase",
-			"id": "firebase0",
-			"description": "Store your data in Google Firebase. A work in progress.",
-			"tag": [
-				"backend"
-			],
-			"repo": "lizziew/mavo-firebase",
-			"author": "lizziew"
-		},
-		{
 			"name": "French Locale",
 			"id": "locale-fr",
 			"description": "Translates all Mavo UI to French",
