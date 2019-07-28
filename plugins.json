@@ -169,6 +169,16 @@
 			],
 			"repo": "DmitrySharabin/mavo-cropper",
 			"author": "dmitrysharabin"
+		},
+		{
+			"name": "Chart",
+			"id": "chart",
+			"description": "Visualize data in your Mavo apps with animated, customizable, and responsive charts. Uses [Chart.js](https://www.chartjs.org/).",
+			"tag": [
+				"visualization"
+			],
+			"repo": "DmitrySharabin/mavo-chart",
+			"author": "dmitrysharabin"
 		}
 	]
 }
