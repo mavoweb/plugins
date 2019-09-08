@@ -179,6 +179,15 @@
 			],
 			"repo": "DmitrySharabin/mavo-chart",
 			"author": "dmitrysharabin"
+		},
+		{
+			"name": "Spanish Locale",
+			"id": "locale-es",
+			"description": "Translates all Mavo UI to Spanish",
+			"tag": [
+				"Locale"
+			],
+			"author": "eridanired123"
 		}
 	]
 }
