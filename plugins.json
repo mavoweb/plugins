@@ -179,6 +179,15 @@
 			],
 			"repo": "DmitrySharabin/mavo-chart",
 			"author": "dmitrysharabin"
+		},
+		{
+			"name": "Chinese Locale",
+			"id": "locale-cn",
+			"tag": [
+				"LOCALE"
+			],
+			"repo": "https://github.com/roadlabs/mavo-locale-cn",
+			"author": "https://github.com/roadlabs"
 		}
 	]
 }
