@@ -1,6 +1,7 @@
 (function($, $$) {
 
 const SELECTOR = ".markdown, [mv-markdown-options]";
+const CMD = navigator.platform.indexOf("Mac") === 0? "metaKey" : "ctrlKey";
 
 Mavo.Plugins.register("markdown", {
 	ready: Promise.all([
@@ -59,6 +60,51 @@ Mavo.Elements.register("markdown", {
 		if (width) {
 			env.editor.width = width;
 		}
+
+		// Keyboard shortcuts
+		env.editor.addEventListener("keydown", evt => {
+			if (evt[CMD]) {
+				var t = evt.target;
+				var text = t.value.slice(t.selectionStart, t.selectionEnd);
+				var hadSelection = t.selectionStart != t.selectionEnd;
+				var newText;
+
+				if (evt.key == "k") {
+					newText = "[" + text + "]()";
+					document.execCommand("insertText", false, newText);
+
+					if (hadSelection) {
+						// Place caret inside the parens
+						t.selectionStart = t.selectionEnd = t.selectionEnd - 1;
+					}
+					else {
+						// Place caret inside the braces
+						t.selectionStart = t.selectionEnd = t.selectionEnd - 3;
+					}
+				}
+				else {
+					if (evt.key === "b") {
+						newText = "**" + text + "**";
+					}
+					else if (evt.key == "i") {
+						newText = "*" + text + "*";
+					}
+
+					if (newText && newText != text) {
+						document.execCommand("insertText", false, newText);
+
+						if (hadSelection) {
+							// By default inserText places the caret at the end, losing any selection
+							// What we want instead is the replaced text to be selected
+							t.selectionStart = t.selectionEnd - newText.length;
+						}
+						else {
+							t.selectionStart = t.selectionEnd = t.selectionEnd - 2;
+						}
+					}
+				}
+			}
+		});
 
 		Mavo.hooks.run("markdown-editor-create", env);
 
