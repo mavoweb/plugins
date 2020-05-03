@@ -179,6 +179,16 @@
 			],
 			"repo": "DmitrySharabin/mavo-chart",
 			"author": "dmitrysharabin"
+		},
+		{
+			"name": "Math",
+			"id": "math",
+			"description": "Beautiful math in Mavo apps in all browsers. Uses the [MathJax](https://www.mathjax.org/) library.",
+			"tag": [
+				"Editing"
+			],
+			"repo": "DmitrySharabin/mavo-math",
+			"author": "dmitrysharabin"
 		}
 	]
 }
