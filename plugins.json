@@ -52,6 +52,16 @@
 			"author": "leaverou"
 		},
 		{
+			"name": "Firebase Firestore",
+			"id": "firebase-firestore",
+			"description": "Store and sync app data in milliseconds. Store and serve files at Google scale. Authenticate users simply and securely.\nAll the [Google Firebase](https://firebase.google.com/) powers are at your fingertips.",
+			"tag": [
+				"Backend"
+			],
+			"repo": "DmitrySharabin/mavo-firebase-firestore",
+			"author": "dmitrysharabin"
+		},
+		{
 			"name": "Google Drive",
 			"id": "gdrive",
 			"description": "Store and read data from Google Drive.",
@@ -188,16 +198,6 @@
 				"Editing"
 			],
 			"repo": "DmitrySharabin/mavo-math",
-			"author": "dmitrysharabin"
-		},
-		{
-			"name": "Firebase Firestore",
-			"id": "firebase-firestore",
-			"description": "Store and sync app data in milliseconds. Store and serve files at Google scale. Authenticate users simply and securely.\nAll the [Google Firebase](https://firebase.google.com/) powers are at your fingertips.",
-			"tag": [
-				"Backend"
-			],
-			"repo": "DmitrySharabin/mavo-firebase-firestore",
 			"author": "dmitrysharabin"
 		}
 	]
