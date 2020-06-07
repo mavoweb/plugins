@@ -10,7 +10,7 @@ Mavo.Plugins.register("markdown", {
 	]),
 	init: function() {
 		showdown.setFlavor("github");
-		self.Showdown = new showdown.Converter();
+		self.Showdown = new showdown.Converter(Mavo.Plugins.loaded.markdown.defaultOptions);
 	},
 	hooks: {
 		"init-start": function() {
@@ -45,9 +45,9 @@ Mavo.Elements.register("markdown", {
 	hasChildren: true,
 	init: function() {
 		var options = this.element.getAttribute("mv-markdown-options");
-		options = Object.assign(Mavo.Plugins.loaded.markdown.defaultOptions, Mavo.options(options));
-
+		
 		if (options && !this.fromTemplate("showdown")) {
+			options = Object.assign(Mavo.Plugins.loaded.markdown.defaultOptions, Mavo.options(options));
 			this.showdown = new showdown.Converter(options);
 			this.showdown.setFlavor("github");
 		}
