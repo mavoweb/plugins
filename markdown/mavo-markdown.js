@@ -45,7 +45,7 @@ Mavo.Elements.register("markdown", {
 	hasChildren: true,
 	init: function() {
 		var options = this.element.getAttribute("mv-markdown-options");
-		
+
 		if (options && !this.fromTemplate("showdown")) {
 			options = Object.assign(Mavo.Plugins.loaded.markdown.defaultOptions, Mavo.options(options));
 			this.showdown = new showdown.Converter(options);
@@ -114,9 +114,11 @@ Mavo.Elements.register("markdown", {
 	},
 	done: function() {
 		// Has it actually been edited?
-		this.preEdit && this.preEdit.then(function() {
-			Mavo.Plugins.loaded.markdown.render(this.element, this.value, this.showdown);
-		}.bind(this));
+		if (this.preEdit || this.editor && this.editor.closest("html")) {
+			(this.preEdit || Promise.resolve()).then(function() {
+				Mavo.Plugins.loaded.markdown.render(this.element, this.value, this.showdown);
+			}.bind(this));
+		}
 	},
 	setValue: function(element, value) {
 		if (this.editor) {

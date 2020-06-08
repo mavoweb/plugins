@@ -13,7 +13,11 @@ Mavo.Elements.register(".tinymce", {
 	hasChildren: true,
 	default: true,
 	edit: function() {
-		this.preEdit.then(evt => {
+		(this.preEdit || Promise.resolve()).then(v => {
+			if (v === "abort") {
+				return;
+			}
+
 			if (this.element.tinymce) {
 				// Previously edited, we already have an editor
 				tinymce.EditorManager.execCommand("mceAddEditor", true, this.element.tinymce.id);
