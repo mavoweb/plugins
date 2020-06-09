@@ -20,6 +20,13 @@
 			"author": "leaverou"
 		},
 		{
+			"name": "Github Gist",
+			"id": "gist",
+			"description": "Use Github gists for storage. Supports updating, forking, and even creating new gists!",
+			"tag": [],
+			"author": "leaverou"
+		},
+		{
 			"name": "Twitter Embed",
 			"id": "twitter",
 			"description": "Turn Twitter URLs in your Markdown properties into embedded tweets! Requires the [Markdown](https://plugins.mavo.io/plugin/markdown) plugin.",
