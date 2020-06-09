@@ -23,7 +23,9 @@
 			"name": "Github Gist",
 			"id": "gist",
 			"description": "Use Github gists for storage. Supports updating, forking, and even creating new gists!",
-			"tag": [],
+			"tag": [
+				"Backend"
+			],
 			"author": "leaverou"
 		},
 		{
