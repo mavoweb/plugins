@@ -1,5 +1,7 @@
 (function($, $$) {
 
+Mavo.Plugins.register("gist");
+
 var _ = Mavo.Backend.register($.Class({
 	extends: Mavo.Backend,
 	id: "Github Gist",
@@ -64,7 +66,7 @@ var _ = Mavo.Backend.register($.Class({
 	 * @param {String} path - Optional file path
 	 * @return {Promise} A promise that resolves when the file is saved.
 	 */
-	put: async function(serialized, path = this.path, o = {}) {
+	put: async function(serialized) {
 		let apiCall = "gists";
 		let gistId = this.info.gistId;
 
