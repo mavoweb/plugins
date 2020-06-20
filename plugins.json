@@ -208,6 +208,16 @@
 			],
 			"repo": "DmitrySharabin/mavo-mathjax",
 			"author": "dmitrysharabin"
+		},
+		{
+			"name": "Brasil Locale",
+			"id": "locale-pt-br",
+			"description": "Translates all Mavo UI to Português-Brasil",
+			"tag": [
+				"locale"
+			],
+			"repo": "https://github.com/rubensdemelo/mavo-locale-pt-br",
+			"author": "rubensdemelo"
 		}
 	]
 }
