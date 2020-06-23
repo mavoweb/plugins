@@ -20,6 +20,15 @@
 			"author": "leaverou"
 		},
 		{
+			"name": "Github Gist",
+			"id": "gist",
+			"description": "Use Github gists for storage. Supports updating, forking, and even creating new gists!",
+			"tag": [
+				"Backend"
+			],
+			"author": "leaverou"
+		},
+		{
 			"name": "Twitter Embed",
 			"id": "twitter",
 			"description": "Turn Twitter URLs in your Markdown properties into embedded tweets! Requires the [Markdown](https://plugins.mavo.io/plugin/markdown) plugin.",
@@ -50,6 +59,16 @@
 				"Toolbar"
 			],
 			"author": "leaverou"
+		},
+		{
+			"name": "Firebase Firestore",
+			"id": "firebase-firestore",
+			"description": "Store and sync app data in milliseconds. Store and serve files at Google scale. Authenticate users simply and securely.\nAll the [Google Firebase](https://firebase.google.com/) powers are at your fingertips.",
+			"tag": [
+				"Backend"
+			],
+			"repo": "DmitrySharabin/mavo-firebase-firestore",
+			"author": "dmitrysharabin"
 		},
 		{
 			"name": "Google Drive",
@@ -188,6 +207,24 @@
 			],
 			"repo": "https://github.com/roadlabs/mavo-locale-cn",
 			"author": "https://github.com/roadlabs"
+			"name": "MathJax",
+			"id": "mathjax",
+			"description": "Beautiful math in Mavo apps in all browsers. Uses the [MathJax](https://www.mathjax.org/) library.",
+			"tag": [
+				"Editing"
+			],
+			"repo": "DmitrySharabin/mavo-mathjax",
+			"author": "dmitrysharabin"
+		},
+		{
+			"name": "Brasil Locale",
+			"id": "locale-pt-br",
+			"description": "Translates all Mavo UI to Português-Brasil",
+			"tag": [
+				"locale"
+			],
+			"repo": "https://github.com/rubensdemelo/mavo-locale-pt-br",
+			"author": "rubensdemelo"
 		}
 	]
 }

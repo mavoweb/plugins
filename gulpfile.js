@@ -63,9 +63,9 @@ gulp.task("html", function() {
 });
 
 gulp.task("watch", function() {
-	gulp.watch(["../mavo/.eslintrc.json"], ["update"]);
-	gulp.watch(["**/*.scss"], ["sass"]);
-	gulp.watch(["**/*.tpl.html", "../mavo.io/templates/*.html"], ["html"]);
+	gulp.watch(["../mavo/.eslintrc.json"], gulp.series("update"));
+	gulp.watch(["**/*.scss"], gulp.series("sass"));
+	gulp.watch(["**/*.tpl.html", "../mavo.io/templates/*.html"], gulp.series("html"));
 });
 
-gulp.task("default", ["sass"]);
+gulp.task("default", gulp.series("sass"));

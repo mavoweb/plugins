@@ -13,7 +13,11 @@ Mavo.Elements.register(".tinymce", {
 	hasChildren: true,
 	default: true,
 	edit: function() {
-		this.preEdit.then(evt => {
+		(this.preEdit || Promise.resolve()).then(v => {
+			if (v === "abort") {
+				return;
+			}
+
 			if (this.element.tinymce) {
 				// Previously edited, we already have an editor
 				tinymce.EditorManager.execCommand("mceAddEditor", true, this.element.tinymce.id);
@@ -37,8 +41,8 @@ Mavo.Elements.register(".tinymce", {
 		});
 	},
 	done: function() {
-		if (this.tinymce) {
-			tinymce.EditorManager.execCommand("mceRemoveEditor", true, this.tinymce.id);
+		if (this.element.tinymce) {
+			tinymce.EditorManager.execCommand("mceRemoveEditor", true, this.element.tinymce.id);
 		}
 	},
 	getValue: (element) => {
@@ -46,7 +50,7 @@ Mavo.Elements.register(".tinymce", {
 	},
 	setValue: (element, value) => {
 		const content = serializer.serialize(parser.parse(value));
-		
+
 		if (!element.tinymce) {
 			element.innerHTML = content;
 		}
