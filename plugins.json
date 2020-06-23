@@ -200,6 +200,13 @@
 			"author": "dmitrysharabin"
 		},
 		{
+			"name": "Chinese Locale",
+			"id": "locale-cn",
+			"tag": [
+				"LOCALE"
+			],
+			"repo": "https://github.com/roadlabs/mavo-locale-cn",
+			"author": "https://github.com/roadlabs"
 			"name": "MathJax",
 			"id": "mathjax",
 			"description": "Beautiful math in Mavo apps in all browsers. Uses the [MathJax](https://www.mathjax.org/) library.",
