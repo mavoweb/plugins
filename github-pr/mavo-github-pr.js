@@ -124,51 +124,45 @@
 
 	Mavo.Plugins.register("github-pr", {
 		hooks: {
-			"gh-after-commit": env => {
-				const fileInfo = env.fileInfo;
-				env = env.context;
-
+			"gh-after-commit": function (env) {
 				// Storage points to current user's repo (but maybe they want to submit PR)
-				if (env.repoInfo.fork) {
+				if (this.repoInfo.fork) {
 					// Ask if they want to send PR
-					env.forkInfo = env.repoInfo.parent;
-					env.request(`repos/${env.repoInfo.parent.owner.login}/${env.repoInfo.parent.name}/pulls`, {
-						head: `${env.user.username}:${env.branch}`,
-						base: env.repoInfo.parent.default_branch
+					this.forkInfo = this.repoInfo.parent;
+					this.request(`repos/${this.repoInfo.parent.owner.login}/${this.repoInfo.parent.name}/pulls`, {
+						head: `${this.user.username}:${this.branch}`,
+						base: this.repoInfo.parent.default_branch
 					}).then(prs => {
-						env.pullRequest(prs[0]);
+						this.pullRequest(prs[0]);
 					});
 				}
 				// Storage points to another user's repo
-				else if (env.forkInfo) {
+				else if (this.forkInfo) {
 					// Update url to include storage = their fork
 					let params = (new URL(location)).searchParams;
 
-					params.append("storage", fileInfo.content.download_url);
+					params.append("storage", env.fileInfo.content.download_url);
 					history.pushState({}, "", `${location.pathname}?${params}`);
 					location.replace(`${location.pathname}?${params}`);
 
 					// We saved in a fork, do we have a pull request?
-					env.request(`repos/${env.username}/${env.repo}/pulls`, {
-						head: `${env.user.username}:${env.branch}`,
-						base: env.branch
+					this.request(`repos/${this.username}/${this.repo}/pulls`, {
+						head: `${this.user.username}:${this.branch}`,
+						base: this.branch
 					}).then(prs => {
-						env.pullRequest(prs[0]);
+						this.pullRequest(prs[0]);
 					});
 				}
 			},
 
-			"gh-after-login": env => {
-				const repoInfo = env.repoInfo;
-				env = env.context;
-
-				if (repoInfo.fork) { // if current repo is a fork, we can display PR dialog
-					env.forkInfo = repoInfo.parent;
-					env.request(`repos/${repoInfo.parent.owner.login}/${repoInfo.parent.name}/pulls`, {
-						head: `${env.user.username}:${env.branch}`,
-						base: repoInfo.parent.default_branch
+			"gh-after-login": function (env) {
+				if (env.repoInfo.fork) { // if current repo is a fork, we can display PR dialog
+					this.forkInfo = env.repoInfo.parent;
+					this.request(`repos/${env.repoInfo.parent.owner.login}/${env.repoInfo.parent.name}/pulls`, {
+						head: `${this.user.username}:${this.branch}`,
+						base: env.repoInfo.parent.default_branch
 					}).then(prs => {
-						env.pullRequest(prs[0]);
+						this.pullRequest(prs[0]);
 					});
 				}
 			}
