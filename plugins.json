@@ -205,8 +205,8 @@
 			"tag": [
 				"LOCALE"
 			],
-			"repo": "https://github.com/roadlabs/mavo-locale-cn",
-			"author": "https://github.com/roadlabs"
+			"repo": "roadlabs/mavo-locale-cn",
+			"author": "roadlabs"
 		},
 		{
 			"name": "MathJax",
@@ -225,7 +225,7 @@
 			"tag": [
 				"locale"
 			],
-			"repo": "https://github.com/rubensdemelo/mavo-locale-pt-br",
+			"repo": "rubensdemelo/mavo-locale-pt-br",
 			"author": "rubensdemelo"
 		}
 	]
