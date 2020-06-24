@@ -29,6 +29,15 @@
 			"author": "leaverou"
 		},
 		{
+			"name": "Github PR",
+			"id": "github-pr",
+			"description": "Send pull requests when using Github as a backend!",
+			"tag": [
+				"Backend"
+			],
+			"author": "dmitrysharabin"
+		},
+		{
 			"name": "Twitter Embed",
 			"id": "twitter",
 			"description": "Turn Twitter URLs in your Markdown properties into embedded tweets! Requires the [Markdown](https://plugins.mavo.io/plugin/markdown) plugin.",
