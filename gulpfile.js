@@ -28,13 +28,14 @@ gulp.task("sass", function () {
 });
 
 gulp.task("update", function() {
-	return gulp.src(["../mavo/.eslintrc.json"]).pipe(gulp.dest("."));
+	gulp.src(["../mavo/.eslintrc.json"]).pipe(gulp.dest("."));
+	return gulp.src(["../mavo.io/templates/*.html"]).pipe(gulp.dest("templates"));
 });
 
 gulp.task("html", function() {
 	return gulp.src(["**/*.tpl.html"])
 		.pipe(fileinclude({
-			basepath: "../mavo.io/templates/",
+			basepath: "templates/",
 			context: {
 				webRoot: "//mavo.io"
 			}
