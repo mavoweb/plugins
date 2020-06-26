@@ -68,4 +68,4 @@ gulp.task("watch", function() {
 	gulp.watch(["**/*.tpl.html", "../mavo.io/templates/*.html"], gulp.series("html"));
 });
 
-gulp.task("default", gulp.series("sass"));
+gulp.task("default", gulp.parallel("sass", "html"));
