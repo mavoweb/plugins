@@ -40,7 +40,7 @@
 <section id="plugin-list">
 	<p class="intro">Plugins teach Mavo new tricks, so you can create even more awesomeness!</p>
 
-	<section mv-app="plugins" mv-storage="https://github.com/LeaVerou/mavo-plugins" mv-plugins="markdown">
+	<section mv-app="plugins" mv-storage="https://github.com/LeaVerou/mavo-plugins" mv-plugins="markdown github-pr">
 		<meta property="tagFilter" content="[$url.tag]">
 		<p class="notice" mv-if="tagFilter">
 			Some plugins are hidden. <a href="?">Show All.</a>
@@ -73,7 +73,7 @@
 
 <footer>
 	<p>
-		Made with &hearts; by <a href="http://lea.verou.me">Lea Verou</a> and <a href="https://github.com/mavoweb/mavo/graphs/contributors">all these awesome people</a>.
+		Made with &hearts; by <a href="https://lea.verou.me">Lea Verou</a> and <a href="https://github.com/mavoweb/mavo/graphs/contributors">all these awesome people</a>.
 		Proudly hosted by <a href="https://www.netlify.com" class="netlify">Netlify</a>.
 	</p>
 	<article>
@@ -103,13 +103,23 @@
 		</ul>
 	</article>
 
-	<a href="http://mit.edu" class="logo"><img src="//mavo.io/img/logo-mit.svg" alt="MIT" /></a>
-	<a href="http://csail.mit.edu" class="logo"><img src="//mavo.io/img/logo-csail.svg" alt="CSAIL" /></a>
+	<a href="https://mit.edu" class="logo"><img src="//mavo.io/img/logo-mit.svg" alt="MIT" /></a>
+	<a href="https://csail.mit.edu" class="logo"><img src="//mavo.io/img/logo-csail.svg" alt="CSAIL" /></a>
 </footer>
 
 <script src="//mavo.io/js/prism.js"></script>
 <script src="/sitewide.js"></script>
 <script async defer src="https://buttons.github.io/buttons.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-96752780-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 
 
 </body>

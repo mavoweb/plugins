@@ -11,23 +11,11 @@ var sourcemaps = require("gulp-sourcemaps");
 var notify = require("gulp-notify");
 var fileinclude = require("gulp-file-include");
 
-gulp.task("sass", function() {
-	gulp.src(["src-css/*.scss", "!**/_*.scss"])
+gulp.task("sass", function () {
+	return gulp.src(["**/*.scss", "!node_modules/**"])
 		.pipe(sourcemaps.init())
 		.pipe(sass().on("error", sass.logError))
 		.pipe(autoprefixer({
-			browsers: ["last 2 versions"],
-			cascade: false
-		}))
-		.pipe(rename({ extname: ".css" }))
-		.pipe(sourcemaps.write("maps"))
-		.pipe(gulp.dest("dist"));
-
-	return gulp.src(["**/*.scss", "!node_modules/**", "!src-css/*.scss"])
-		.pipe(sourcemaps.init())
-		.pipe(sass().on("error", sass.logError))
-		.pipe(autoprefixer({
-			browsers: ["last 2 versions"],
 			cascade: false
 		}))
 		.pipe(rename({ extname: ".css" }))
@@ -40,11 +28,11 @@ gulp.task("sass", function() {
 });
 
 gulp.task("update", function() {
-	gulp.src(["../mavo/.eslintrc.json"]).pipe(gulp.dest("."));
+	return gulp.src(["../mavo/.eslintrc.json"]).pipe(gulp.dest("."));
 });
 
 gulp.task("html", function() {
-	gulp.src(["**/*.tpl.html"])
+	return gulp.src(["**/*.tpl.html"])
 		.pipe(fileinclude({
 			basepath: "../mavo.io/templates/",
 			context: {

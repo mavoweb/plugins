@@ -92,7 +92,6 @@
           background: rgba(255, 247, 0, 0.3); }
     .mv-debuginfo > table tr.mv-debug-property td:nth-child(1)::before {
       content: "P"; }
-    .mv-debuginfo > table tr.mv-debug-property,
     .mv-debuginfo > table tr.mv-debug-property td:nth-child(2) {
       overflow: hidden; }
     .mv-debuginfo > table tr.mv-debug-expression td:nth-child(1)::before {
@@ -151,7 +150,6 @@
       vertical-align: top; }
     .mv-debug-storage table td {
       white-space: nowrap; }
-    .mv-debug-storage table,
     .mv-debug-storage table th {
       text-align: left; }
     .mv-debug-storage table thead th {

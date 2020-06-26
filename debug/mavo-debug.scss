@@ -144,7 +144,7 @@ $font-mono: Consolas, Monaco, monospace;
 			&.mv-debug-property {
 				td:nth-child(1)::before {
 					content: "P";
-				},
+				}
 
 				td:nth-child(2) {
 					overflow: hidden;
@@ -234,7 +234,7 @@ $font-mono: Consolas, Monaco, monospace;
 
 		td {
 			white-space: nowrap;
-		},
+		}
 
 		th {
 			text-align: left;

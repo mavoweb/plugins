@@ -14,11 +14,8 @@ body > header + h2 {
   font-size: 200%; }
 
 section[mv-app="plugins"] > div {
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-flow: row wrap;
   flex-flow: row wrap;
-  -ms-flex-pack: justify;
   justify-content: space-between; }
 
 [property="plugin"] {
@@ -29,16 +26,13 @@ section[mv-app="plugins"] > div {
       width: 46%; } }
 
 .plugin {
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-flow: column;
   flex-flow: column;
   vertical-align: top;
   padding: .75em 1rem;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: .2em; }
   .plugin > div {
-    -ms-flex: 1;
     flex: 1; }
   .plugin h1 {
     margin: 0;
@@ -46,12 +40,10 @@ section[mv-app="plugins"] > div {
     font-weight: 300;
     font-family: var(--font-body); }
     .plugin h1 a {
-      display: -ms-flexbox;
       display: flex;
       color: var(--color-magenta);
       font-weight: inherit; }
     .plugin h1 [property="name"] {
-      -ms-flex: 1;
       flex: 1; }
     .plugin h1 [property="id"] {
       padding: .5em .8em;
@@ -66,18 +58,14 @@ section[mv-app="plugins"] > div {
       color: white;
       text-decoration: none; }
   .plugin footer {
-    display: -ms-flexbox;
     display: flex;
     padding: inherit;
     margin: .6em -1rem -.75em;
     background: rgba(0, 0, 0, 0.05); }
     .plugin footer > div {
-      display: -ms-flexbox;
       display: flex;
-      -ms-flex-align: center;
       align-items: center; }
     .plugin footer .author {
-      -ms-flex: 1;
       flex: 1; }
     .plugin footer .button, .plugin footer .github-button, .plugin footer .github-buttons > a {
       padding: .35em .8em;
