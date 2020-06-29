@@ -53,7 +53,7 @@ var _ = Mavo.Backend.register($.Class({
 		else {
 			// Unauthenticated, use simple GET request to avoid rate limit
 			let filename = this.filename === this.defaults.filename? "" : this.filename + "/";
-			url = new URL(`https://gist.githubusercontent.com/${this.username}/${this.gistId}/raw/${filename}`);
+			url = new URL(`https://gist.githubusercontent.com/${this.info.username}/${this.gistId}/raw/${filename}`);
 			url.searchParams.set("timestamp", Date.now()); // ensure fresh copy
 
 			return $.fetch(url.href).then(xhr => Promise.resolve(xhr.responseText), () => Promise.resolve(null));
@@ -90,6 +90,7 @@ var _ = Mavo.Backend.register($.Class({
 			public: true
 		}, "POST").then(gistInfo => {
 			this.info.gistId = gistInfo.id;
+			this.info.username = gistInfo.owner.login;
 
 			if (this.info.gistId !== gistId) {
 				// New gist created (or forked), update URL
@@ -117,7 +118,7 @@ var _ = Mavo.Backend.register($.Class({
 	canPush: function() {
 		// Just check if authenticated user is the same as our URL username
 		// A gist can't have multiple collaborators
-		return this.user && this.user.username.toLowerCase() == this.username.toLowerCase();
+		return this.user && this.user.username.toLowerCase() == this.info.username.toLowerCase();
 	},
 
 	oAuthParams: () => "&scope=gist",
