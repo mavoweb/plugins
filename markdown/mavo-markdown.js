@@ -108,6 +108,58 @@ Mavo.Elements.register("markdown", {
 			}
 		});
 
+		// Image upload
+		env.editor.addEventListener("paste", async evt => {
+			if (env.context.mavo.uploadBackend && self.FileReader) {
+				// Look for the first image in the clipboard
+				const item = Array.from(evt.clipboardData.items).find(item => item.kind == "file" && item.type.indexOf("image/") === 0);
+				
+				if (item) {
+					// Is found, upload!
+					const ext = item.type.split("/")[1];
+					const defaultName = `pasted-image-${Date.now()}.${ext}`;
+					let name = prompt(this.mavo._("filename"), defaultName);
+
+					if (name === "") {
+						name = defaultName;
+					}
+
+					if (name !== null) {
+						// Disable editor and show placeholder while waiting for an image to upload
+						const placeholder = `![${env.context.mavo._("uploading")}...]()`;
+						document.execCommand("insertText", false, placeholder);
+						
+						env.editor.disabled = true;
+
+						const path = env.context.element.getAttribute("mv-upload-path") || "images";
+						const relative = path + "/" + name;
+
+						let url = await env.context.mavo.upload(item.getAsFile(), relative);
+						// Do we have a URL override?
+						const base = Mavo.getClosestAttribute(env.context.element, "mv-upload-url");
+
+						if (base) {
+							// Throw away backend-provided URL and use the override instead
+							url = new URL(relative, new URL(base, location)) + "";
+						}
+
+						// Enable editor and replace the placeholder with the image element
+						env.editor.disabled = false;
+
+						const t = evt.target;
+						t.focus();
+						t.selectionStart = t.selectionEnd - placeholder.length;
+						t.setSelectionRange(t.selectionStart, t.selectionEnd);
+
+						const image = `![](${url})`;
+						document.execCommand("insertText", false, image);
+
+						evt.preventDefault();
+					}
+				}
+			}
+		});
+
 		Mavo.hooks.run("markdown-editor-create", env);
 
 		return env.editor;
