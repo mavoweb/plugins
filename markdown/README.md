@@ -16,6 +16,22 @@ And some code `foo.bar();`
 </div>
 ```
 
+## Keyboard shortcuts
+
+This plugin supports some basic keyboard shortcuts:
+
+Mac  | Windows | Result |
+-----|---------|--------|
+⌘ + B|CTRL + B |Make highlighted text **bold**.|
+⌘ + I|CTRL + I |Make highlighted text *italic*.|
+⌘ + K|CTRL + K |Convert highlighted text into a link or insert a placeholder for a link. In either case, you should provide a URL.|
+
+## Image upload
+
+If you are using one of the backends that support uploads such as Github, Dropbox, or Firebase, you can paste an image *from the clipboard* right into the text. The plugin will upload it automatically.
+
+The plugin also supports the `mv-upload-path` and `mv-upload-url` attributes. For more information, see the [Uploads](https://mavo.io/docs/storage#uploads) section of the Mavo docs.
+
 ## Customize conversion to HTML
 
 Showdown supports [a number of options for customizing the way it converts Markdown to HTML](https://github.com/showdownjs/showdown#valid-options). You can specify these options on a per-property basis by using the `mv-markdown-options` attribute.
