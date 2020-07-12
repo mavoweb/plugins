@@ -112,12 +112,13 @@ Mavo.Elements.register("markdown", {
 		env.editor.addEventListener("paste", async evt => {
 			if (env.context.mavo.uploadBackend && self.FileReader) {
 				// Look for the first image in the clipboard
-				const item = Array.from(evt.clipboardData.items).find(item => item.kind == "file" && item.type.indexOf("image/") === 0);
-				
+				const item = Array.from(evt.clipboardData.items).find(item => item.kind === "file" && item.type.indexOf("image/") === 0);
+
 				if (item) {
 					// Is found, upload!
 					const ext = item.type.split("/")[1];
-					const defaultName = `pasted-image-${Date.now()}.${ext}`;
+					// First, try to use filename from the clipboard
+					const defaultName = evt.clipboardData.getData("text") || `pasted-image-${Date.now()}.${ext}`;
 					let name = prompt(this.mavo._("filename"), defaultName);
 
 					if (name === "") {
@@ -125,31 +126,30 @@ Mavo.Elements.register("markdown", {
 					}
 
 					if (name !== null) {
+						const t = evt.target;
+
 						// Disable editor and show placeholder while waiting for an image to upload
 						const placeholder = `![${env.context.mavo._("uploading")}...]()`;
 						document.execCommand("insertText", false, placeholder);
-						
+						const cursorPosition = t.selectionEnd - placeholder.length;
+
 						env.editor.disabled = true;
 
-						const path = env.context.element.getAttribute("mv-upload-path") || "images";
-						const relative = path + "/" + name;
+						// Save a user's text because Primitive#upload will replace it
+						const oldValue = env.editor.value;
 
-						let url = await env.context.mavo.upload(item.getAsFile(), relative);
-						// Do we have a URL override?
-						const base = Mavo.getClosestAttribute(env.context.element, "mv-upload-url");
+						Mavo.setAttributeShy(env.context.element, "mv-upload-path", "images");
+						await env.context.upload(item.getAsFile(), name);
+						const url = env.editor.value;
 
-						if (base) {
-							// Throw away backend-provided URL and use the override instead
-							url = new URL(relative, new URL(base, location)) + "";
-						}
+						// Restore the user's text after an image upload
+						env.editor.value = oldValue;
 
 						// Enable editor and replace the placeholder with the image element
 						env.editor.disabled = false;
 
-						const t = evt.target;
 						t.focus();
-						t.selectionStart = t.selectionEnd - placeholder.length;
-						t.setSelectionRange(t.selectionStart, t.selectionEnd);
+						t.setSelectionRange(cursorPosition, cursorPosition + placeholder.length);
 
 						const image = `![](${url})`;
 						document.execCommand("insertText", false, image);
