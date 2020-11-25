@@ -110,7 +110,7 @@ Mavo.Elements.register("markdown", {
 
 		// Image upload
 		env.editor.addEventListener("paste", async evt => {
-			if (env.context.mavo.uploadBackend && self.FileReader) {
+			if (this.mavo.uploadBackend && self.FileReader) {
 				// Look for the first image in the clipboard
 				const item = Array.from(evt.clipboardData.items).find(item => item.kind == "file" && item.type.indexOf("image/") === 0);
 
@@ -129,7 +129,7 @@ Mavo.Elements.register("markdown", {
 						const t = evt.target;
 
 						// Disable editor and show placeholder while waiting for an image to upload
-						const placeholder = `![${env.context.mavo._("uploading")}...]()`;
+						const placeholder = `![${this.mavo._("uploading")}...]()`;
 						document.execCommand("insertText", false, placeholder);
 						const cursorPosition = t.selectionEnd - placeholder.length;
 
@@ -138,8 +138,8 @@ Mavo.Elements.register("markdown", {
 						// Save a user's text because Primitive#upload will replace it
 						const oldValue = env.editor.value;
 
-						Mavo.setAttributeShy(env.context.element, "mv-upload-path", "images");
-						await env.context.upload(item.getAsFile(), name);
+						Mavo.setAttributeShy(this.element, "mv-upload-path", "images");
+						await this.upload(item.getAsFile(), name);
 						const url = env.editor.value;
 
 						// Restore the user's text after an image upload
