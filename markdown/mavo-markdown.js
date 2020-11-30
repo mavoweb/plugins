@@ -109,10 +109,8 @@ Mavo.Elements.register("markdown", {
 		});
 
 		// Image upload
-		const canUpload = Boolean(this.mavo.uploadBackend && self.FileReader);
-
 		env.editor.addEventListener("paste", async evt => {
-			if (canUpload) {
+			if (this.mavo.uploadBackend && self.FileReader) {
 				// Look for the first image in the clipboard
 				const item = Array.from(evt.clipboardData.items).find(item => item.kind == "file" && item.type.indexOf("image/") === 0);
 
