@@ -135,7 +135,9 @@ Mavo.Elements.register("markdown", {
 						env.editor.disabled = true;
 
 						// Disable the Save button until the upload finishes
-						this.mavo.bar.save?.disabled = true;
+						if (this.mavo.bar.save) {
+							this.mavo.bar.save.disabled = true;
+						}
 
 						const path = this.element.getAttribute("mv-upload-path") || "images";
 						const relative = path + "/" + name;
@@ -164,7 +166,9 @@ Mavo.Elements.register("markdown", {
 							t.selectionStart = t.selectionEnd - image.length;
 						}
 
-						this.mavo.bar.save?.disabled = false;
+						if (this.mavo.bar.save) {
+							this.mavo.bar.save.disabled = false;
+						}
 
 						evt.preventDefault();
 					}
