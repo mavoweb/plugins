@@ -109,15 +109,17 @@ Mavo.Elements.register("markdown", {
 		});
 
 		// Image upload
+		const canUpload = Boolean(this.mavo.uploadBackend && self.FileReader);
+
 		env.editor.addEventListener("paste", async evt => {
-			if (env.context.mavo.uploadBackend && self.FileReader) {
+			if (canUpload) {
 				// Look for the first image in the clipboard
 				const item = Array.from(evt.clipboardData.items).find(item => item.kind == "file" && item.type.indexOf("image/") === 0);
-				
+
 				if (item) {
 					// Is found, upload!
 					const ext = item.type.split("/")[1];
-					const defaultName = `pasted-image-${Date.now()}.${ext}`;
+					const defaultName = evt.clipboardData.getData("text") || `pasted-image-${Date.now()}.${ext}`;
 					let name = prompt(this.mavo._("filename"), defaultName);
 
 					if (name === "") {
@@ -125,18 +127,24 @@ Mavo.Elements.register("markdown", {
 					}
 
 					if (name !== null) {
+						const t = evt.target;
+						const hadSelection = t.selectionStart != t.selectionEnd;
+
 						// Disable editor and show placeholder while waiting for an image to upload
-						const placeholder = `![${env.context.mavo._("uploading")}...]()`;
+						const placeholder = `![${this.mavo._("uploading")}...]()`;
 						document.execCommand("insertText", false, placeholder);
-						
+
 						env.editor.disabled = true;
 
-						const path = env.context.element.getAttribute("mv-upload-path") || "images";
+						// Disable the Save button until the upload finishes
+						this.mavo.bar.save.disabled = true;
+
+						const path = this.element.getAttribute("mv-upload-path") || "images";
 						const relative = path + "/" + name;
 
-						let url = await env.context.mavo.upload(item.getAsFile(), relative);
+						let url = await this.mavo.upload(item.getAsFile(), relative);
 						// Do we have a URL override?
-						const base = Mavo.getClosestAttribute(env.context.element, "mv-upload-url");
+						const base = Mavo.getClosestAttribute(this.element, "mv-upload-url");
 
 						if (base) {
 							// Throw away backend-provided URL and use the override instead
@@ -146,13 +154,19 @@ Mavo.Elements.register("markdown", {
 						// Enable editor and replace the placeholder with the image element
 						env.editor.disabled = false;
 
-						const t = evt.target;
 						t.focus();
 						t.selectionStart = t.selectionEnd - placeholder.length;
 						t.setSelectionRange(t.selectionStart, t.selectionEnd);
 
 						const image = `![](${url})`;
 						document.execCommand("insertText", false, image);
+
+						// Select the code for the inserted image element if, before the paste, there was a selected text
+						if (hadSelection) {
+							t.selectionStart = t.selectionEnd - image.length;
+						}
+
+						this.mavo.bar.save.disabled = false;
 
 						evt.preventDefault();
 					}
