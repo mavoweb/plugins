@@ -5,7 +5,11 @@
 
 	Mavo.Backend.Github.prototype.pullRequest = function (existing) {
 		const previewURL = new URL(location);
-		previewURL.searchParams.set(this.mavo.id + "-storage", `https://github.com/${this.forkInfo.full_name}/${this.path}`);
+
+		// We don't want to delete the previously added parameter: storage that points to another user's fork
+		if (!previewURL.searchParams.has(`${this.mavo.id}-storage`)) {
+			previewURL.searchParams.set(`${this.mavo.id}-storage`, `https://github.com/${this.forkInfo.full_name}/${this.path}`);
+		}
 
 		const message = this.mavo._("gh-edit-suggestion-saved-in-profile", { previewURL });
 
@@ -141,7 +145,7 @@
 					// Update url to include storage = their fork
 					let params = (new URL(location)).searchParams;
 
-					params.append("storage", env.fileInfo.content.download_url);
+					params.append(`${this.mavo.id}-storage`, env.fileInfo.content.download_url);
 					history.pushState({}, "", `${location.pathname}?${params}`);
 					location.replace(`${location.pathname}?${params}`);
 
