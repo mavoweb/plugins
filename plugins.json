@@ -80,6 +80,17 @@
 			"author": "dmitrysharabin"
 		},
 		{
+			"name": "Google Sheets",
+			"id": "gsheets",
+			"description": "Use [Google Sheets](https://www.google.com/sheets/about/) as a data source and storage. Collaborate with others on the same spreadsheet simultaneously, use formulas and functions. And then use the obtained data in your app.",
+			"tag": [
+				"Backend",
+				"Alpha"
+			],
+			"repo": "DmitrySharabin/mavo-gsheets",
+			"author": "dmitrysharabin"
+		},
+		{
 			"name": "Google Drive",
 			"id": "gdrive",
 			"description": "Store and read data from Google Drive.",
