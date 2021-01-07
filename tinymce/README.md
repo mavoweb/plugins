@@ -1,1 +1,1 @@
-To use TinyMCE, follow the installation instructions below. Then add `class="tinymce"` to the property that you want to be edited via TinyMCE.
+To use TinyMCE, follow the installation instructions below. Then add `class="tinymce"` to the property that you want to be edited via TinyMCE. If you would like to pass a custom toolbar for tinymce, you can pass the following attribute: `mv-tinymce-toolbar="styleselect | bold italic"`
