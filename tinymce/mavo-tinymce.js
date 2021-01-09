@@ -24,12 +24,14 @@ Mavo.Elements.register(".tinymce", {
 				return;
 			}
 
+			const toolbar = this.element.getAttribute("mv-tinymce-toolbar")
+
 			// Init for the first time
 			tinymce.init({
 				target: this.element,
 				inline: true,
 				menubar: false,
-				toolbar: "styleselect | bold italic | image link | table | bullist numlist",
+				toolbar: toolbar || "styleselect | bold italic | image link | table | bullist numlist",
 				plugins: "image code link table lists media tabfocus"
 			}).then(editors => {
 				this.element.tinymce = editors[0];
