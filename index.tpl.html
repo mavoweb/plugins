@@ -31,7 +31,7 @@
 					<div property="description" class="markdown">Description</div>
 					<a href="?tag=[tag]" property="tag" mv-attribute="null" mv-multiple></a>
 					<meta property="repo" mv-edit-placeholder="E.g. [author]/mavo-[id]">
-					<meta property="url" mv-edit-placeholder="E.g. for self-hosted plugin">
+					<meta mv-if="repo" property="url" mv-edit-placeholder="E.g. https://[author].github.io/[from(repo, '/')]/mavo-[id].js">
 				</div>
 
 				<footer>
