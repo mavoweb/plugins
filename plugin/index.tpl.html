@@ -69,6 +69,11 @@
 	<p>You can have multiple <code>mv-plugins</code> attributes on different elements. Its value also accepts multiple plugin ids, separated by spaces (e.g. <code>mv-plugins="[plugin.id] plugin1 plugin2"</code>).
 		This way, every Mavo app can individually declare which plugins it needs and each plugin is only fetched once.</p>
 
+	<div mv-if="plugin.url">
+		<p>Alternatively, you can download the source file for this plugin</p>
+
+		<p><a href="[plugin.url]" class="call-to-action button">Visit [plugin.url]</a></p>
+	</div>
 	<div mv-if="plugin.repo">
 		<p>Alternatively, you can download the source files for this plugin by visiting its repository on Github</p>
 
