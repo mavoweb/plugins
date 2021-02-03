@@ -70,16 +70,16 @@
 		This way, every Mavo app can individually declare which plugins it needs and each plugin is only fetched once.</p>
 
 	<div mv-if="plugin.url">
-		<p>Alternatively, you can download the source file for this plugin</p>
+		<p>Alternatively, you can download the JavaScript file of this plugin by clicking below:</p>
 
-		<p><a href="[plugin.url]" class="call-to-action button">Visit [plugin.url]</a></p>
+		<p><a href="[plugin.url]" class="call-to-action button">Download mavo-[plugin.id].js</a></p>
 	</div>
 	<div mv-if="plugin.repo">
 		<p>Alternatively, you can download the source files for this plugin by visiting its repository on Github</p>
 
 		<p><a href="https://github.com/[plugin.repo]" class="call-to-action button">Visit [plugin.repo]</a></p>
 	</div>
-	<div mv-if="!plugin.repo">
+	<div mv-if="!plugin.repo or !plugin.url">
 		<p>Alternatively, you can download the JavaScript file of this plugin by clicking below:</p>
 
 		<p><a href="/[plugin.id]/mavo-[plugin.id].js" class="call-to-action button">Download mavo-[plugin.id].js</a></p>
