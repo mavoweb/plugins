@@ -5,12 +5,6 @@
 
 	Mavo.Backend.Github.prototype.pullRequest = function (existing) {
 		const previewURL = new URL(location);
-
-		// We don't want to delete the previously added parameter: storage that points to another user's fork
-		if (!previewURL.searchParams.has(`${this.mavo.id}-storage`)) {
-			previewURL.searchParams.set(`${this.mavo.id}-storage`, `https://github.com/${this.forkInfo.full_name}/${this.path}`);
-		}
-
 		const message = this.mavo._("gh-edit-suggestion-saved-in-profile", { previewURL });
 
 		let lastNoticeName = "";
@@ -144,8 +138,25 @@
 				else if (this.forkInfo) {
 					// Update url to include storage = their fork
 					let params = (new URL(location)).searchParams;
+					let prefix = `${this.mavo.id}-`;
 
-					params.append(`${this.mavo.id}-storage`, env.fileInfo.content.download_url);
+					if (this.mavo.index === 1 && params.has("storage")) {
+						prefix = "";
+					}
+					params.set(`${this.mavo.id}-storage`, env.fileInfo.content.download_url);
+
+					// Why? If an author provides both mv-source and mv-storage, end-users won't see their data if we only change the storage location.
+					// And since we don't want that, we must disable the source.
+					if (this.mavo.source) {
+						prefix = `${this.mavo.id}-`;
+
+						if (this.mavo.index === 1 && params.has("source")) {
+							prefix = "";
+						}
+
+						params.set(`${prefix}source`, "none");
+					}
+
 					history.pushState({}, "", `${location.pathname}?${params}`);
 					location.replace(`${location.pathname}?${params}`);
 
