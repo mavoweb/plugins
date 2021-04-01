@@ -143,7 +143,7 @@
 					if (this.mavo.index === 1 && params.has("storage")) {
 						prefix = "";
 					}
-					params.set(`${this.mavo.id}-storage`, env.fileInfo.content.download_url);
+					params.set(`${prefix}storage`, env.fileInfo.content.download_url);
 
 					// Why? If an author provides both mv-source and mv-storage, end-users won't see their data if we only change the storage location.
 					// And since we don't want that, we must disable the source.
