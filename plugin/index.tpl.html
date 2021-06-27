@@ -43,9 +43,9 @@
 				<a href="https://github.com/[repo]/issues" data-icon="octicon-issue-opened" data-size="large" data-show-count="true" data-count-aria-label="# issues on GitHub" aria-label="Issue [repo] on GitHub">Issues</a>
 				<a href="[github]" data-icon="octicon-star" data-size="large" data-count-href="/[repo]/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star [repo] on GitHub">Star</a>
 			</div>
-			<div mv-if="!repo">
-				<a class="github-button" href="http://github.com/mavoweb/plugins/tree/master/[id]" data-icon="octicon-mark-github" data-size="large" aria-label="Plugin files on GitHub">Files</a>
-				<a href="http://github.com/mavoweb/plugins/issues?q=[id]%20in%3Atitle%20" class="bugs button">Issues</a>
+			<div mv-if="!repo" class="github-buttons">
+				<a href="http://github.com/mavoweb/plugins/tree/master/[id]" data-icon="octicon-mark-github" data-size="large" aria-label="Plugin files on GitHub">Files</a>
+				<a href="http://github.com/mavoweb/plugins/issues?q=[id]%20in%3Atitle%20" data-icon="octicon-issue-opened" data-size="large" data-show-count="false">Issues</a>
 			</div>
 		</footer>
 	</article>
