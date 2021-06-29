@@ -80,7 +80,7 @@ section[mv-app="plugins"] > div {
         text-decoration: none; }
     .plugin footer .button,
     .plugin footer .github-button,
-    .plugin footer .github-buttons > a,
+    .plugin footer .github-buttons > span,
     .plugin footer iframe {
       margin: 0 .1em; }
     .plugin footer a {
