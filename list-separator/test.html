@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+	<meta charset="UTF-8">
+	<title>List separator tests</title>
+	<link rel="stylesheet" href="https://test.mavo.io/style.css" />
+	<link rel="stylesheet" href="https://get.mavo.io/mavo.css" />
+	<script src="https://get.mavo.io/mavo.js"></script>
+	<style>
+		[mv-list-item] {
+			border: 1px solid silver;
+			padding: .2em;
+			margin: .2em;
+			background: hsl(0 0% 100% / .3);
+			white-space: pre-line
+		}
+	</style>
+</head>
+<body>
+
+<h1>List separator tests</h1>
+<pre id="datarr">
+{
+	"foo": ["1, 4", "2", "3"]
+}
+</pre>
+
+<section>
+	<h1>Basic</h1>
+
+	<table class="reftest" data-click=".mv-bar .mv-save wait .1s">
+		<tr title="Load array, save string">
+			<td mv-app mv-source="#datarr" mv-storage="#data2">
+				<div mv-list="foo" mv-list-separator=", ">
+					<span mv-list-item=""></span>
+				</div>
+			</td>
+			<td>
+				1, 423
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<pre id="data2"></pre>
+			</td>
+			<td>
+				<pre>{
+	"foo": "1\\, 4, 2, 3"
+}</pre>
+			</td>
+		</tr>
+		<tr title="Load string, save string" data-click="[mv-action] after mv-load wait .1s, .mv-save after mv-load wait .3s">
+			<td mv-app mv-source="#data2" mv-storage="#data3">
+				<div mv-list="foo" mv-list-separator=", ">
+					<span mv-list-item=""></span>
+				</div>
+				<button mv-action="add(5, foo)" class="test-content-ignore">Add foo</button>
+			</td>
+			<td>
+				1, 4235
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<pre id="data3"></pre>
+			</td>
+			<td>
+				<pre>{
+	"foo": "1\\, 4, 2, 3, 5"
+}</pre>
+			</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>Line breaks</h1>
+
+	<pre id="datarr2">{
+		"foo": ["1\n4", "2", "3"]
+	}</pre>
+
+	<table class="reftest" data-click=".mv-bar .mv-save wait .1s">
+		<tr title="Load array, save string">
+			<td mv-app mv-source="#datarr2" mv-storage="#data4">
+				<div mv-list="foo" mv-list-separator="\n">
+					<span mv-list-item=""></span>
+				</div>
+			</td>
+			<td>
+				1
+				423
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<pre id="data4"></pre>
+			</td>
+			<td>
+				<pre>{
+	"foo": "1\\\n4\n2\n3"
+}</pre>
+			</td>
+		</tr>
+		<tr title="Load string, save string" data-click="[mv-action] after mv-load wait .1s, .mv-save after mv-load wait .3s">
+			<td mv-app mv-source="#data4" mv-storage="#data5">
+				<div mv-list="foo" mv-list-separator="\n">
+					<span mv-list-item=""></span>
+				</div>
+				<button mv-action="add(5, foo)" class="test-content-ignore">Add foo</button>
+			</td>
+			<td>
+				1
+				4235
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<pre id="data5"></pre>
+			</td>
+			<td>
+				<pre>{
+	"foo": "1\\\n4\n2\n3\n5"
+}</pre>
+			</td>
+		</tr>
+	</table>
+</section>
+
+<script src="mavo-list-separator.js"></script>
+<script src="https://test.mavo.io/test.js"></script>
+
+</body>
+</html>

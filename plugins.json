@@ -91,6 +91,13 @@
 			"author": "dmitrysharabin"
 		},
 		{
+			"name": "List Separator",
+			"id": "list-separator",
+			"description": "Store and read lists of simple properties as a single text value. Useful in conjunction with the Google Sheets plugin to store multiple values in a single cell.",
+			"tag": [],
+			"author": "leaverou"
+		},
+		{
 			"name": "Google Drive",
 			"id": "gdrive",
 			"description": "Store and read data from Google Drive.",
