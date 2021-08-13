@@ -1,11 +1,13 @@
-(function($, $$) {
+(function($) {
 
 Mavo.Plugins.register("gist");
 
-var _ = Mavo.Backend.register($.Class({
-	extends: Mavo.Backend,
-	id: "Github Gist",
-	constructor: function() {
+let _ = Mavo.Backend.register(class Gist extends Mavo.Backend {
+	id = "Github Gist"
+
+	constructor (url, o) {
+		super(url, o);
+
 		this.permissions.on(["login", "read"]);
 
 		this.key = this.mavo.element.getAttribute("mv-github-key") || "7e08e016048000bc594e";
@@ -21,16 +23,16 @@ var _ = Mavo.Backend.register($.Class({
 		$.extend(this, this.info);
 
 		this.login(true);
-	},
+	}
 
-	update: function(url, o) {
-		this.super.update.call(this, url, o);
+	update (url, o) {
+		super.update(url, o);
 
 		this.info = _.parseURL(this.source, this.defaults);
 		$.extend(this, this.info);
-	},
+	}
 
-	get: function(url) {
+	get (url) {
 		if (this.isAuthenticated()) {
 			// Authenticated API call
 			var info = url? _.parseURL(url) : this.info;
@@ -58,7 +60,7 @@ var _ = Mavo.Backend.register($.Class({
 
 			return $.fetch(url.href).then(xhr => Promise.resolve(xhr.responseText), () => Promise.resolve(null));
 		}
-	},
+	}
 
 	/**
 	 * Saves a file to the backend.
@@ -66,7 +68,7 @@ var _ = Mavo.Backend.register($.Class({
 	 * @param {String} path - Optional file path
 	 * @return {Promise} A promise that resolves when the file is saved.
 	 */
-	put: async function(serialized) {
+	async put (serialized) {
 		let apiCall = "gists";
 		let gistId = this.info.gistId;
 
@@ -105,7 +107,7 @@ var _ = Mavo.Backend.register($.Class({
 				history.pushState("", null, url);
 			}
 		});
-	},
+	}
 
 	async login (passive) {
 		let user = await Mavo.Backend.Github.prototype.login.call(this, passive);
@@ -113,47 +115,53 @@ var _ = Mavo.Backend.register($.Class({
 		if (this.user) {
 			this.permissions.on(["edit", "save"]);
 		}
-	},
+	}
 
-	canPush: function() {
+	async logout (...args) {
+		return Mavo.Backend.Github.prototype.logout.call(this, ...args);
+	}
+
+	canPush () {
 		// Just check if authenticated user is the same as our URL username
 		// A gist can't have multiple collaborators
 		return this.user && this.user.username.toLowerCase() == this.info.username.toLowerCase();
-	},
-
-	oAuthParams: () => "&scope=gist",
-	logout: Mavo.Backend.Github.prototype.logout,
-	getUser: Mavo.Backend.Github.prototype.getUser,
-
-	static: {
-		apiDomain: Mavo.Backend.Github.apiDomain,
-		oAuth: Mavo.Backend.Github.oAuth,
-
-		test: function(url) {
-			url = new URL(url, Mavo.base);
-			return url.host === "gist.github.com";
-		},
-
-		/**
-		 * Parse Gist URLs, return username, gist id, filename
-		 */
-		parseURL: function(source, {filename} = {}) {
-			var ret = {};
-			var url = new URL(source, Mavo.base);
-			var path = url.pathname.slice(1).split("/");
-
-			ret.username = path.shift();
-			ret.gistId = path.shift();
-
-			if (ret.gistId === "NEW") {
-				ret.gistId = undefined;
-			}
-
-			ret.filename = path.pop() || filename;
-
-			return ret;
-		}
 	}
-}));
 
-})(Bliss, Bliss.$);
+	oAuthParams () {
+		return "&scope=gist"
+	}
+
+	getUser (...args) {
+		return Mavo.Backend.Github.prototype.getUser.call(this, ...args);
+	}
+
+	static apiDomain = Mavo.Backend.Github.apiDomain
+	static oAuth = Mavo.Backend.Github.oAuth
+
+	static test (url) {
+		url = new URL(url, Mavo.base);
+		return url.host === "gist.github.com";
+	}
+
+	/**
+	 * Parse Gist URLs, return username, gist id, filename
+	 */
+	static parseURL (source, {filename} = {}) {
+		let ret = {};
+		let url = new URL(source, Mavo.base);
+		let path = url.pathname.slice(1).split("/");
+
+		ret.username = path.shift();
+		ret.gistId = path.shift();
+
+		if (ret.gistId === "NEW") {
+			ret.gistId = undefined;
+		}
+
+		ret.filename = path.pop() || filename;
+
+		return ret;
+	}
+});
+
+})(Bliss);
