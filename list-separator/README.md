@@ -1,1 +1,1 @@
-Use `mv-list-separator` on the collection (element with `mv-list` or `mv-multiple). E.g. `mv-list-separator=", "`. Spaces are significant, they are not trimmed. For line breaks, use `mv-list-separator="\n"`.
+Use `mv-list-separator` on the collection (element with `mv-list` or `mv-multiple`). E.g. `mv-list-separator=", "`. Spaces are significant, they are not trimmed. For line breaks, use `mv-list-separator="\n"`.
