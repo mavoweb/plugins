@@ -7,75 +7,100 @@
 	<link rel="stylesheet" href="https://get.mavo.io/mavo.css" />
 	<script src="https://get.mavo.io/mavo.js"></script>
 </head>
-<body>
+<body mv-plugins="clear">
 
 <h1>Clear tests</h1>
 
-<section mv-app mv-storage="#data" mv-bar="yes-clear">
+<section>
 	<h1>Basic</h1>
 
 	<p>Press Clear and Save</p>
-	<table class="reftest">
-		<tr title="Does save work? Interactive" class="interactive" data-test="contents" mv-expressions="none">
-			<td>
-				<pre id="data">{
-	"prop1": 5,
-	"collection": [
-		{
-			"prop2": 6,
-			"prop3": 7
-		},
-		{
-			"prop2": 8,
-			"prop3": 9
-		}
-	],
-	"primitives": [
-		10,
-		11
-	]
-}</pre>
+	<table class="reftest" data-click=".clickme wait .2s after mv-load">
+		<tr title="Primitive">
+			<td mv-app mv-storage="#data">
+				<span property="primitive">42</span>
+				[primitive]
+				<button class="clickme test-content-ignore" onclick="Mavo.Node.getClosest(this).clear()">Clear</button>
 			</td>
 			<td>
-				<pre>{
-	"prop1": 1,
-	"collection": [
-		{
-			"prop2": 2,
-			"prop3": 3
-		}
-	],
-	"primitives": [
-		4
-	]
-}</pre>
+				42 42
 			</td>
 		</tr>
-		<tr data-test="selector">
-			<td>
-				<div class="mv-bar mv-ui"></div>
+		<tr title="Primitive with mv-default">
+			<td mv-app mv-storage="#data">
+				<span property="primitive" mv-default="6">42</span>
+				[primitive]
+				<button class="clickme test-content-ignore" onclick="Mavo.Node.getClosest(this).clear()">Clear</button>
 			</td>
-			<td>.mv-bar .mv-clear</td>
+			<td>
+				6 6
+			</td>
 		</tr>
-		<tr>
-			<td>
-				<span property="prop1">1</span>
-				<span mv-multiple>
-					<span property="prop2">2</span>
-					<span property="prop3">3</span>
-				</span>
-				<span mv-multiple="primitives">4</span>
+		<tr title="Collection of primitives">
+			<td mv-app mv-storage="#data">
+				<div mv-list="primitives">
+					<span mv-list-item>42</span>
+				</div>
+				[sum(primitives)]
+				<button class="clickme test-content-ignore" onclick="Mavo.Node.getClosest(this).clear()">Clear</button>
 			</td>
 			<td>
-				1 2 3 4
+				42 42
+			</td>
+		</tr>
+		<tr title="Single group">
+			<td mv-app mv-storage="#data">
+				<div property="yolo">
+					<span property="foo">9</span>
+					<span property="bar" mv-default="10"></span>
+				</div>
+				[yolo.foo]
+				<button class="clickme test-content-ignore" onclick="Mavo.Node.getClosest(this).clear()">Clear</button>
+			</td>
+			<td>
+				9 10 9
+			</td>
+		</tr>
+		<tr title="Collection of groups">
+			<td mv-app mv-storage="#data">
+				<div mv-list="item">
+					<div mv-list-item="">
+						<span property="foo">1</span>
+						<span property="bar" mv-default="2"></span>
+					</div>
+				</div>
+				[count(item)]
+				<button class="clickme test-content-ignore" onclick="Mavo.Node.getClosest(this).clear()">Clear</button>
+			</td>
+			<td>
+				1 2
+				1
+			</td>
+		</tr>
+		<tr title="Invisible properties">
+			<td mv-app mv-storage="#data">
+				[invisible]
+				<button class="clickme test-content-ignore" onclick="Mavo.Node.getClosest(this).clear()">Clear</button>
+			</td>
+			<td>
+
 			</td>
 		</tr>
 	</table>
+	<pre id="data">
+		{
+			"primitive": 5,
+			"primitives": [1, 2, 3],
+			"item": [{"foo": 3, "bar": 4}, {"foo": 5, "bar": 6}],
+			"yolo": {"foo": 7, "bar": 8},
+			"invisible": 60
+		}
+	</pre>
 </section>
 
 <script src="mavo-clear.js"></script>
 
-<script src="//test.mavo.io/test.js"></script>
+<script src="https://test.mavo.io/test.js"></script>
 
 </body>
 </html>

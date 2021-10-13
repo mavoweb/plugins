@@ -14,8 +14,26 @@ Mavo.Plugins.register("clear", {
 		},
 		Node: {
 			clear: function() {
-				if (this.modes != "read") {
-					this.propagate("clear");
+				this.propagate("clear");
+			}
+		},
+		Group: {
+			clear: function() {
+				// Delete invisible properties
+				let hasInvisible = false;
+
+				for (let prop in this.data) {
+					if (!(prop in this.children)) {
+						hasInvisible = true;
+						delete this.data[prop];
+						delete this.liveData.data[prop];
+					}
+				}
+
+				this.propagate("clear");
+
+				if (hasInvisible) {
+					this.dataChanged("clear");
 				}
 			}
 		},
@@ -24,19 +42,10 @@ Mavo.Plugins.register("clear", {
 			 * Delete all items in the collection. Not undoable.
 			 */
 			clear: function() {
-				if (this.modes == "read") {
-					return;
-				}
+				this.render([]);
 
-				if (this.mutable) {
-					for (var i = 1, item; item = this.children[i]; i++) {
-						item.element.remove();
-						item.destroy();
-					}
-
-					this.children = this.children.slice(0, 1);
-
-					this.dataChanged("clear");
+				if (this.initializeData) {
+					this.initializeData();
 				}
 
 				this.propagate("clear");
@@ -44,9 +53,7 @@ Mavo.Plugins.register("clear", {
 		},
 		Primitive: {
 			clear: function() {
-				if (this.modes != "read") {
-					this.value = this.templateValue;
-				}
+				this.render(this.initialValue);
 			}
 		}
 	}
