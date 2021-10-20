@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Dropbox tests</title>
+	<link rel="stylesheet" href="https://test.mavo.io/style.css" />
+	<link rel="stylesheet" href="https://get.mavo.io/mavo.css" />
+</head>
+
+<body>
+
+	<h1>Dropbox tests</h1>
+
+	<section mv-app="dropboxtest" mv-storage="https://www.dropbox.com/s/5djray22aj0v7le/countries.json?dl=0">
+		<h1>Basic</h1>
+
+		<table class="reftest">
+			<tr>
+				<td>
+					<ul mv-list property="country">
+						<li mv-list-item>
+							<span property="code">Code</span>
+							<span property="name">Name</span>
+						</li>
+					</ul>
+				</td>
+				<td>
+					<ul>
+						<li>Online</li>
+						<li>us United States</li>
+						<li>gb United Kingdom</li>
+					</ul>
+				</td>
+			</tr>
+		</table>
+	</section>
+
+	<section mv-app="dropboxupload" mv-storage="https://www.dropbox.com/s/qqbm90zqi3yigtc/test.json?dl=0"
+		class="mv-autoedit">
+		<h1>Upload</h1>
+
+		<p>Try to upload an image below. Try pasting an image, or drag & drop too.</p>
+		<img property="image" src="https://mavo.io/logo.svg" style="max-width: 100%">
+	</section>
+
+	<script src="https://get.mavo.io/mavo.js"></script>
+	<script src="mavo-dropbox.js"></script>
+
+	<script src="https://test.mavo.io/test.js"></script>
+
+</body>
+
+</html>
