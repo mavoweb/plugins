@@ -20,6 +20,15 @@
 			"author": "leaverou"
 		},
 		{
+			"id": "dropbox",
+			"name": "Dropbox",
+			"description": "Use [Dropbox](https://dropbox.com) for remote storage. It takes care of authentication, and only provides editing and saving controls to users that have appropriate permissions.",
+			"tag": [
+				"Backend"
+			],
+			"author": "leaverou"
+		},
+		{
 			"name": "Github Gist",
 			"id": "gist",
 			"description": "Use Github gists for storage. Supports updating, forking, and even creating new gists!",
