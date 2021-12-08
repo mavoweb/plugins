@@ -11,7 +11,7 @@
 <h2>Plugins</h2>
 
 <section id="plugin-info">
-	<article class="plugin" mv-app="plugin"
+	<article class="plugin" mv-app="plugin" mv-bar="no-login"
 					 mv-storage="https://github.com/mavoweb/plugins/plugins.json" mv-storage-branch="master" mv-source="https://plugins.mavo.io/plugins.json"
 					 mv-plugins="github-pr"
 	         mv-path="plugin/id=[url('plugin')]">
@@ -51,8 +51,14 @@
 	</article>
 </section>
 
-<section mv-app="pluginreadme" mv-storage="[plugin.github]/README.md" mv-source="[plugin.web]/README.md" mv-plugins="github-pr">
+<section mv-app="pluginreadme" mv-bar="no-login" mv-storage="[plugin.github]/README.md" mv-source="[plugin.web]/README.md" mv-plugins="github-pr">
 	<div property="readme">This plugin has no readme :(</div>
+
+	<section class="mv-logged-out">
+		<p>
+			<a href="?login" class="mv-login">Edit this page with Mavo</a>
+		</p>
+	</section>
 </section>
 
 <section mv-app mv-bar="none" class="language-markup">
