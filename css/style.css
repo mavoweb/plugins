@@ -18,11 +18,11 @@ section[mv-app="plugins"] > div {
   flex-flow: row wrap;
   justify-content: space-between; }
 
-[property="plugin"] {
+article[property="plugin"] {
   width: 100%;
   margin: .5rem 0; }
   @media (min-width: 950px) {
-    [property="plugin"] {
+    article[property="plugin"] {
       width: 46%; } }
 
 .plugin {
