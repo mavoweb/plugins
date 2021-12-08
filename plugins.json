@@ -93,8 +93,7 @@
 			"id": "gsheets",
 			"description": "Use [Google Sheets](https://www.google.com/sheets/about/) as a data source and storage. Collaborate with others on the same spreadsheet simultaneously, use formulas and functions. And then use the obtained data in your app.",
 			"tag": [
-				"Backend",
-				"Alpha"
+				"Backend"
 			],
 			"repo": "DmitrySharabin/mavo-gsheets",
 			"author": "dmitrysharabin"
