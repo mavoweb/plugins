@@ -1,6 +1,14 @@
 {
 	"plugin": [
 		{
+			"name": "Autoload",
+			"id": "autoload",
+			"description": "Let Mavo load all the needed plugins for you automatically!",
+			"tag": [],
+			"repo": "DmitrySharabin/mavo-autoload",
+			"author": "dmitrysharabin"
+		},
+		{
 			"name": "TinyMCE",
 			"id": "tinymce",
 			"description": "Edit rich text, straight from Mavo!",
