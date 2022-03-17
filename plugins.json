@@ -231,6 +231,16 @@
 			"author": "dmitrysharabin"
 		},
 		{
+			"name": "Spanish Locale",
+			"id": "locale-es",
+			"description": "Translates all Mavo UI to Spanish",
+			"tag": [
+				"Locale"
+			],
+			"selector": "[lang|=\"es\"]",
+			"author": "speciale"
+		},
+		{
 			"id": "microdata",
 			"name": "Microdata migration",
 			"description": "Use Microdata itemprop/itemscope/itemtype attributes to define Mavo stuff. Useful if you were relying on this functionality that got removed in v0.2.0.",
