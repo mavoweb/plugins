@@ -4,6 +4,7 @@
 			"name": "TinyMCE",
 			"id": "tinymce",
 			"description": "Edit rich text, straight from Mavo!",
+			"selector": "[mv-app] :where(.tinymce, [mv-tinymce-toolbar])",
 			"tag": [
 				"Editing"
 			],
@@ -13,6 +14,7 @@
 			"id": "markdown",
 			"name": "Markdown",
 			"description": "Edit properties in Markdown and display them with HTML. Uses the popular [Showdown](http://showdownjs.github.io/demo/) library.",
+			"selector": "[mv-app] :where(.markdown, [mv-markdown-options]), [mv-app]:where([mv-format=\"markdown\"], [mv-storage-format=\"markdown\"], [mv-source-format=\"markdown\"], [mv-init-format=\"markdown\"], [mv-storage$=\".md\"], [mv-source$=\".md\"], [mv-init$=\".md\"], [mv-storage$=\".markdown\"], [mv-source$=\".markdown\"], [mv-init$=\".markdown\"])",
 			"tag": [
 				"Editing"
 			],
@@ -23,6 +25,7 @@
 			"id": "dropbox",
 			"name": "Dropbox",
 			"description": "Use [Dropbox](https://dropbox.com) for remote storage. It takes care of authentication, and only provides editing and saving controls to users that have appropriate permissions.",
+			"selector": "[mv-app]:where([mv-storage^=\"https://www.dropbox.com/\"], [mv-source^=\"https://www.dropbox.com/\"], [mv-init^=\"https://www.dropbox.com/\"], [mv-uploads^=\"https://www.dropbox.com/\"])",
 			"tag": [
 				"Backend"
 			],
@@ -32,6 +35,7 @@
 			"name": "Github Gist",
 			"id": "gist",
 			"description": "Use Github gists for storage. Supports updating, forking, and even creating new gists!",
+			"selector": "[mv-app]:where([mv-storage^=\"https://gist.github.com\"], [mv-source^=\"https://gist.github.com\"], [mv-init^=\"https://gist.github.com\"])",
 			"tag": [
 				"Backend"
 			],
@@ -64,6 +68,7 @@
 			"name": "Yaml",
 			"id": "yaml",
 			"description": "Store and/or read data in Yaml instead of JSON. Uses the popular [JS-Yaml](http://nodeca.github.io/js-yaml/) library.",
+			"selector": "[mv-app]:where([mv-format=\"yaml\"], [mv-source-format=\"yaml\"], [mv-storage-format=\"yaml\"], [mv-init-format=\"yaml\"], [mv-storage$=\".yaml\"], [mv-source$=\".yaml\"], [mv-init$=\".yaml\"], [mv-storage$=\".yml\"], [mv-source$=\".yml\"], [mv-init$=\".yml\"])",
 			"tag": [
 				"Format"
 			],
@@ -73,6 +78,7 @@
 			"name": "Clear/Reset toolbar button",
 			"id": "clear",
 			"description": "Clears any data in storage and returns the app to its initial state, before any data was stored.",
+			"selector": "[mv-app] [class~=\"mv-clear\"], [mv-app][mv-bar~=\"clear\"]",
 			"tag": [
 				"Toolbar"
 			],
@@ -82,6 +88,7 @@
 			"name": "Firebase Firestore",
 			"id": "firebase-firestore",
 			"description": "Store and sync app data in milliseconds. Store and serve files at Google scale. Authenticate users simply and securely.\nAll the [Google Firebase](https://firebase.google.com/) powers are at your fingertips.",
+			"selector": "[mv-app]:where([mv-storage^=\"firebase:\"], [mv-source^=\"firebase:\"], [mv-init^=\"firebase:\"], [mv-uploads^=\"firebase:\"])",
 			"tag": [
 				"Backend"
 			],
@@ -92,6 +99,7 @@
 			"name": "Google Sheets",
 			"id": "gsheets",
 			"description": "Use [Google Sheets](https://www.google.com/sheets/about/) as a data source and storage. Collaborate with others on the same spreadsheet simultaneously, use formulas and functions. And then use the obtained data in your app.",
+			"selector": "[mv-app]:where([mv-storage^=\"https://docs.google.com/spreadsheets/\"], [mv-source^=\"https://docs.google.com/spreadsheets/\"], [mv-init^=\"https://docs.google.com/spreadsheets/\"])",
 			"tag": [
 				"Backend"
 			],
@@ -102,6 +110,7 @@
 			"name": "List Separator",
 			"id": "list-separator",
 			"description": "Store and read lists of simple properties as a single text value. Useful in conjunction with the Google Sheets plugin to store multiple values in a single cell.",
+			"selector": "[mv-app] [mv-list-separator]",
 			"tag": [],
 			"author": "leaverou"
 		},
@@ -109,6 +118,7 @@
 			"name": "Google Drive",
 			"id": "gdrive",
 			"description": "Store and read data from Google Drive.",
+			"selector": "[mv-app]:where([mv-storage^=\"https://drive.google.com/\"], [mv-source^=\"https://drive.google.com/\"], [mv-init^=\"https://drive.google.com/\"], [mv-uploads^=\"https://drive.google.com/\"], [mv-storage^=\"gdrive:\"], [mv-source^=\"gdrive:\"], [mv-init^=\"gdrive:\"], [mv-uploads^=\"gdrive:\"])",
 			"tag": [
 				"backend"
 			],
@@ -119,6 +129,7 @@
 			"name": "PHP Backend",
 			"id": "php",
 			"description": "Use your own PHP-enabled server with Mavo",
+			"selector": "[mv-app][mv-storage-type=\"php\" i]",
 			"tag": [
 				"backend"
 			],
@@ -129,6 +140,7 @@
 			"name": "French Locale",
 			"id": "locale-fr",
 			"description": "Translates all Mavo UI to French",
+			"selector": "[lang|=\"fr\"]",
 			"tag": [
 				"Locale"
 			],
@@ -139,6 +151,7 @@
 			"name": "Greek Locale",
 			"id": "locale-el",
 			"description": "Translates all Mavo UI to Greek",
+			"selector": "[lang|=\"el\"]",
 			"tag": [
 				"Locale"
 			],
@@ -148,6 +161,7 @@
 			"name": "Mavo sort",
 			"id": "sort",
 			"description": "Sort collections in your Mavos.",
+			"selector": "[mv-app] :where([mv-sort], [mv-value*=\"sort(\"], [mv-default*=\"sort(\"], [mv-action*=\"sort(\"])",
 			"tag": [
 				"data exploration"
 			],
@@ -168,6 +182,7 @@
 			"name": "CouchDB",
 			"id": "couchdb",
 			"description": "CouchDB backend that supports syncing data in real-time.",
+			"selector": "[mv-app]:where([mv-storage^=\"couchdb=\"], [mv-source^=\"couchdb=\"], [mv-init^=\"couchdb=\"], [mv-uploads^=\"couchdb=\"])",
 			"tag": [
 				"backend"
 			],
@@ -178,6 +193,7 @@
 			"name": "Mavo Offline",
 			"id": "offline",
 			"description": "Caches data and allows saving when offline, then automatically saves when online again.",
+			"selector": "[mv-app][mv-storage^=\"offline?\"]",
 			"tag": [
 				"backend"
 			],
@@ -188,6 +204,7 @@
 			"name": "Hebrew Locale",
 			"id": "locale-he",
 			"description": "Translates all Mavo UI to Hebrew",
+			"selector": "[lang|=\"he\"]",
 			"tag": [
 				"Locale"
 			],
@@ -198,6 +215,7 @@
 			"name": "Russian Locale",
 			"id": "locale-ru",
 			"description": "Translates all Mavo UI into Russian",
+			"selector": "[lang|=\"ru\"]",
 			"tag": [
 				"locale"
 			],
@@ -208,6 +226,7 @@
 			"id": "microdata",
 			"name": "Microdata migration",
 			"description": "Use Microdata itemprop/itemscope/itemtype attributes to define Mavo stuff. Useful if you were relying on this functionality that got removed in v0.2.0.",
+			"selector": "[mv-app] :where([itemprop]:not([property]), [itemtype]:not([typeof]):not([mv-group]), [itemscope]:not([typeof]):not([mv-group]))",
 			"tag": [
 				"Editing"
 			],
@@ -218,6 +237,7 @@
 			"name": "Cropper",
 			"id": "cropper",
 			"description": "Edit (crop, scale, rotate, flip) an image in place and upload it to the chosen backend. Uses the [Cropper.js](https://fengyuanchen.github.io/cropperjs/) library.",
+			"selector": "[mv-app] [mv-cropper-options]",
 			"tag": [
 				"Editing"
 			],
@@ -228,6 +248,7 @@
 			"name": "Chart",
 			"id": "chart",
 			"description": "Visualize data in your Mavo apps with animated, customizable, and responsive charts. Uses [Chart.js](https://www.chartjs.org/).",
+			"selector": "[mv-app] canvas[mv-chart-data]",
 			"tag": [
 				"visualization"
 			],
@@ -237,6 +258,7 @@
 		{
 			"name": "Chinese Locale",
 			"id": "locale-cn",
+			"selector": "[lang|=\"cn\"]",
 			"tag": [
 				"LOCALE"
 			],
@@ -247,6 +269,7 @@
 			"name": "MathJax",
 			"id": "mathjax",
 			"description": "Beautiful math in Mavo apps in all browsers. Uses the [MathJax](https://www.mathjax.org/) library.",
+			"selector": "[mv-app] :where(.mv-mathjax, [mv-mathjax-options]), [mv-app]:where([mv-format=\"mathjax\"], [mv-source-format=\"mathjax\"], [mv-storage-format=\"mathjax\"], [mv-init-format=\"mathjax\"], [mv-storage$=\".tex\"], [mv-source$=\".tex\"], [mv-init$=\".tex\"], [mv-storage$=\".latex\"], [mv-source$=\".latex\"], [mv-init$=\".latex\"], [mv-storage$=\".ltx\"], [mv-source$=\".ltx\"], [mv-init$=\".ltx\"])",
 			"tag": [
 				"Editing"
 			],
