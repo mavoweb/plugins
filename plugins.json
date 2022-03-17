@@ -136,7 +136,7 @@
 		{
 			"name": "PHP Backend",
 			"id": "php",
-			"description": "Use your own PHP-enabled server with Mavo",
+			"description": "Use your own PHP-enabled server with Mavo.",
 			"selector": "[mv-app][mv-storage-type=\"php\" i]",
 			"tag": [
 				"backend"
@@ -147,7 +147,7 @@
 		{
 			"name": "French Locale",
 			"id": "locale-fr",
-			"description": "Translates all Mavo UI to French",
+			"description": "Translates all Mavo UI to French.",
 			"selector": "[lang|=\"fr\"]",
 			"tag": [
 				"Locale"
@@ -158,7 +158,7 @@
 		{
 			"name": "Greek Locale",
 			"id": "locale-el",
-			"description": "Translates all Mavo UI to Greek",
+			"description": "Translates all Mavo UI to Greek.",
 			"selector": "[lang|=\"el\"]",
 			"tag": [
 				"Locale"
@@ -211,7 +211,7 @@
 		{
 			"name": "Hebrew Locale",
 			"id": "locale-he",
-			"description": "Translates all Mavo UI to Hebrew",
+			"description": "Translates all Mavo UI to Hebrew.",
 			"selector": "[lang|=\"he\"]",
 			"tag": [
 				"Locale"
@@ -222,7 +222,7 @@
 		{
 			"name": "Russian Locale",
 			"id": "locale-ru",
-			"description": "Translates all Mavo UI into Russian",
+			"description": "Translates all Mavo UI to Russian.",
 			"selector": "[lang|=\"ru\"]",
 			"tag": [
 				"locale"
@@ -233,7 +233,7 @@
 		{
 			"name": "Spanish Locale",
 			"id": "locale-es",
-			"description": "Translates all Mavo UI to Spanish",
+			"description": "Translates all Mavo UI to Spanish.",
 			"tag": [
 				"Locale"
 			],
@@ -281,7 +281,8 @@
 				"LOCALE"
 			],
 			"repo": "roadlabs/mavo-locale-cn",
-			"author": "roadlabs"
+			"author": "roadlabs",
+			"description": "Translates all Mavo UI to Chinese."
 		},
 		{
 			"name": "MathJax",
@@ -297,7 +298,7 @@
 		{
 			"name": "Brasil Locale",
 			"id": "locale-pt-br",
-			"description": "Translates all Mavo UI to Português-Brasil",
+			"description": "Translates all Mavo UI to Português-Brasil.",
 			"tag": [
 				"locale"
 			],
