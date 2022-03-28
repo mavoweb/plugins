@@ -15,12 +15,12 @@
 	<p class="intro">Plugins teach Mavo new tricks, so you can create even more awesomeness!</p>
 
 	<section mv-app="plugins" mv-bar="no-login" mv-storage="https://github.com/mavoweb/plugins" mv-storage-branch="master" mv-plugins="markdown github-pr">
-		<meta property="tagFilter" content="[$url.tag]">
+		<meta property="tagFilter" content="[lowercase(url('tag'))]">
 		<p class="notice" mv-if="tagFilter">
 			Some plugins are hidden. <a href="?">Show All.</a>
 		</p>
 		<div>
-			<article property class="plugin" mv-multiple mv-if="!tagFilter or count(tag = tagFilter) > 0">
+			<article property class="plugin" mv-multiple mv-if="!tagFilter or count(lowercase(tag) = tagFilter) > 0">
 				<div>
 					<h1>
 						<a href="/plugin/[id]">
