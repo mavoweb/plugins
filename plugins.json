@@ -66,6 +66,17 @@
 			"author": "leaverou"
 		},
 		{
+			"name": "Share",
+			"id": "share",
+			"description": "Share data via system clipboard, email, contacts or messaging applications, and Bluetooth or Wi-Fi channels.",
+			"tag": [
+				"Actions"
+			],
+			"repo": "dmitrysharabin/mavo-share",
+			"selector": "[mv-app] [mv-action*=\"share(\"]",
+			"author": "dmitrysharabin"
+		},
+		{
 			"name": "Import HTML",
 			"id": "importhtml",
 			"description": "Use CSS properties to set Mavo attributes, which lets you add them to **a lot** of elements at once and import data from existing HTML!",
