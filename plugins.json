@@ -136,7 +136,7 @@
 		{
 			"name": "Google Calendar",
 			"id": "gcalendar",
-			"description": "Integrate Google calendars into your Mavo apps!",
+			"description": "Integrate [Google calendars](https://www.google.com/calendar/about/) into your Mavo apps!",
 			"tag": [
 				"Backend"
 			],
