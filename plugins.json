@@ -134,6 +134,17 @@
 			"author": "leaverou"
 		},
 		{
+			"name": "Google Calendar",
+			"id": "gcalendar",
+			"description": "Integrate Google calendars into your Mavo apps!",
+			"tag": [
+				"Backend"
+			],
+			"repo": "DmitrySharabin/mavo-gcalendar",
+			"selector": "[mv-app]:where([mv-source^=\"https://calendar.google.com/calendar/\"], [mv-init^=\"https://calendar.google.com/calendar/\"])",
+			"author": "dmitrysharabin"
+		},
+		{
 			"name": "Google Drive",
 			"id": "gdrive",
 			"description": "Store and read data from Google Drive.",
