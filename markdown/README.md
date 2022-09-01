@@ -24,6 +24,7 @@ Mac  | Windows | Result |
 -----|---------|--------|
 ⌘ + B|CTRL + B |Make highlighted text **bold**.|
 ⌘ + I|CTRL + I |Make highlighted text *italic*.|
+⌘ + E|CTRL + E |Mark highlighted text as a block of `code`.|
 ⌘ + K|CTRL + K |Convert highlighted text into a link or insert a placeholder for a link. In either case, you should provide a URL.|
 
 ## Image upload
