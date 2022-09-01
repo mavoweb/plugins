@@ -91,6 +91,9 @@ Mavo.Elements.register("markdown", {
 					else if (evt.key == "i") {
 						newText = "*" + text + "*";
 					}
+					else if (evt.key == "e") {
+						newText = "`" + text + "`";
+					}
 
 					if (newText && newText != text) {
 						document.execCommand("insertText", false, newText);
