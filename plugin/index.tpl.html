@@ -73,6 +73,9 @@
 		</div>
 	</script>
 
+	<p>Starting from v0.3.0, you can specify the plugin version in <code>mv-plugins</code>, like so <code>mv-plugins="[plugin.id]@version"</code>.
+		If there are no releases (versions), the latest code will be used.</p>
+
 	<p>You can have multiple <code>mv-plugins</code> attributes on different elements. Its value also accepts multiple plugin ids, separated by spaces (e.g. <code>mv-plugins="[plugin.id] plugin1 plugin2"</code>).
 		This way, every Mavo app can individually declare which plugins it needs and each plugin is only fetched once.</p>
 
