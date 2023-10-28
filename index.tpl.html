@@ -20,7 +20,7 @@
 			Some plugins are hidden. <a href="?">Show All.</a>
 		</p>
 		<div>
-			<article property class="plugin" mv-multiple mv-if="!tagFilter or count(lowercase(tag) = tagFilter) > 0">
+			<article property class="plugin" mv-list-item mv-if="!tagFilter or count(lowercase(tag) = tagFilter) > 0">
 				<div>
 					<h1>
 						<a href="/plugin/[id]">
@@ -29,14 +29,14 @@
 						</a>
 					</h1>
 					<div property="description" class="markdown">Description</div>
-					<a href="?tag=[tag]" property="tag" mv-attribute="null" mv-multiple></a>
-					<meta property="repo" mv-edit-placeholder="E.g. [author]/mavo-[id]">
+					<div class="mv-container"><a href="?tag=[tag]" property="tag" mv-attribute="null" mv-list-item></a></div>
+					<meta property="repo" mv-editor-placeholder="E.g. [author]/mavo-[id]">
 					<meta property="selector" mv-expressions="{{ }}" mv-editor-placeholder="E.g. [mv-{{id}}], .{{id}}" />
 				</div>
 
 				<footer>
 					<a class="author" href="https://github.com/[author]">
-						<img src="https://github.com/[author].png?size=40" alt="">
+						<img src="https://github.com/leaverou.png?size=40" mv-attr-src="'https://github.com/' & author & '.png?size=40'" alt="">
 						<span property="author">leaverou</span>
 					</a>
 				</footer>
