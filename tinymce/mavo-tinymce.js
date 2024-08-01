@@ -114,6 +114,7 @@ Mavo.Elements.register(".tinymce", {
 			}
 
 			const toolbar = this.element.getAttribute("mv-tinymce-toolbar")?.trim() || defaultToolbar;
+			const extendedValidElements = this.element.getAttribute("mv-tinymce-extended-valid-elements")?.trim() || '';
 
 			// Parse the passed-in toolbar
 			const groups = toolbar.split("|").filter(g => g.length);
@@ -143,7 +144,8 @@ Mavo.Elements.register(".tinymce", {
 				inline: true,
 				menubar: false,
 				toolbar,
-				plugins: Array.from(plugins).join(" ") // "plugin plugin ... plugin"
+				plugins: Array.from(plugins).join(" "), // "plugin plugin ... plugin"
+				extended_valid_elements: extendedValidElements
 			}).then(editors => {
 				this.element.tinymce = editors[0];
 
